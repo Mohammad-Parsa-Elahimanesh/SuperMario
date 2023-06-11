@@ -12,7 +12,14 @@ public class Game {
     final static int delayMS = 80;
     public Level[] levels;
     public Mario mario;
-    public int levelNumber;    public transient Timer timer = new Timer(delayMS, e -> {
+    public int levelNumber;
+    public int sectionNumber;
+    public int score = 0;
+    public int coins = 0;
+    transient GameFrame gameFrame = new GameFrame();
+    Difficulty difficulty;
+    boolean dieASAP, nextASAP;
+    public transient Timer timer = new Timer(delayMS, e -> {
         Manager.getInstance().CurrentGame().dieASAP = Manager.getInstance().CurrentGame().nextASAP = false;
         for (Block block : Manager.getInstance().CurrentSection().blocks)
             block.Update();
@@ -25,21 +32,8 @@ public class Game {
         else if (Manager.getInstance().CurrentGame().nextASAP)
             Manager.getInstance().CurrentGame().NextSection();
     });
-    public int sectionNumber;
-    public int score = 0;
-    public int coins = 0;
-    transient GameFrame gameFrame = new GameFrame();
-    Difficulty difficulty;
-    boolean dieASAP, nextASAP;
     Game() {
         new SetGameSettings();
-    }
-
-    Game(boolean Shhhhh) {
-        if (Shhhhh)
-            levels = new Level[]{new Level(0)};
-        else
-            System.err.println("Error: Shhhhh");
     }
 
     public static String State(Game game) {
