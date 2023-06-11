@@ -1,7 +1,6 @@
 package frontend;
 
 import backend.Block;
-import backend.Game;
 import backend.Manager;
 import backend.Sky;
 
@@ -27,9 +26,11 @@ public class GameFrame extends JFrame {
 
             public void keyPressed(KeyEvent e) {
                 switch (e.getExtendedKeyCode()) {
-                    case 37 -> Manager.getInstance().CurrentGame().mario.left = Manager.getInstance().CurrentGame().mario.getSpeed();
+                    case 37 ->
+                            Manager.getInstance().CurrentGame().mario.left = Manager.getInstance().CurrentGame().mario.getSpeed();
                     case 38 -> Manager.getInstance().CurrentGame().mario.Jump();
-                    case 39 -> Manager.getInstance().CurrentGame().mario.right = Manager.getInstance().CurrentGame().mario.getSpeed();
+                    case 39 ->
+                            Manager.getInstance().CurrentGame().mario.right = Manager.getInstance().CurrentGame().mario.getSpeed();
                     case 40 -> Manager.getInstance().CurrentGame().mario.PushDown();
                 }
             }

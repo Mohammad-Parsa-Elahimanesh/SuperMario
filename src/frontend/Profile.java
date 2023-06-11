@@ -17,6 +17,7 @@ public class Profile extends JFrame {
         add(panel);
         setVisible(true);
     }
+
     public static String CommaSeparatedList(List list) {
         StringBuilder ret = new StringBuilder(" ");
         for (int i = 0; i < list.size(); i++) {

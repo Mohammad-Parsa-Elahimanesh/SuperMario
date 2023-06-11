@@ -9,8 +9,8 @@ public class User {
     public final String password;
     public int coin = 0;
     public int maxRating = -1;
-    int currentGameIndex = -1;
     public List<String> bought = new ArrayList<>();
+    int currentGameIndex = -1;
 
     public User(String name, String password) {
         this.name = name;

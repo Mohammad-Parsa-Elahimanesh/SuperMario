@@ -6,9 +6,9 @@ import java.io.File;
 import java.io.IOException;
 
 public abstract class Block {
+    public int X;
     int W;
     int H;
-    public int X;
     int Y;
     Image image;
 

@@ -1,15 +1,18 @@
 package backend;
 
-import frontend.*;
+import frontend.GameFrame;
+import frontend.MainMenu;
+import frontend.SetGameSettings;
+
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
     final static int delayMS = 80;
-    transient GameFrame gameFrame = new GameFrame();
     public Level[] levels;
-    public transient Timer timer = new Timer(delayMS, e -> {
+    public Mario mario;
+    public int levelNumber;    public transient Timer timer = new Timer(delayMS, e -> {
         Manager.getInstance().CurrentGame().dieASAP = Manager.getInstance().CurrentGame().nextASAP = false;
         for (Block block : Manager.getInstance().CurrentSection().blocks)
             block.Update();
@@ -22,12 +25,11 @@ public class Game {
         else if (Manager.getInstance().CurrentGame().nextASAP)
             Manager.getInstance().CurrentGame().NextSection();
     });
-    public Mario mario;
-    public int levelNumber;
     public int sectionNumber;
-    Difficulty difficulty;
     public int score = 0;
     public int coins = 0;
+    transient GameFrame gameFrame = new GameFrame();
+    Difficulty difficulty;
     boolean dieASAP, nextASAP;
     Game() {
         new SetGameSettings();

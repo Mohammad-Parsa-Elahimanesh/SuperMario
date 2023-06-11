@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Mario extends Block implements Saleable {
-    int jump;
-    int power;
     public int heart;
     public int right = 0;
     public int left = 0;
+    int jump;
+    int power;
 
     // TODO power
     void Set(int jump, int power, int heart) {
