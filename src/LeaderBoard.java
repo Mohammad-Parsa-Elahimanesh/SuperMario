@@ -5,9 +5,9 @@ import java.util.ArrayList;
 public class LeaderBoard extends JFrame {
     LeaderBoard() {
         setSize(800, 350);
-        setLocation((Main.W - getWidth()) / 2, (Main.H - getHeight()) / 2);
+        setLocation((Manager.getInstance().W - getWidth()) / 2, (Manager.getInstance().H - getHeight()) / 2);
         ArrayList<User> topUsers = new ArrayList<>();
-        for (User user : Main.superMario.users)
+        for (User user : Manager.getInstance().superMario.users)
             if (user.maxRating != -1)
                 topUsers.add(user);
         for (int i = 0; i < topUsers.size(); i++)

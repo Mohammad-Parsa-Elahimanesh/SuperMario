@@ -24,7 +24,7 @@ public class KillerPlant extends Block {
 
     @Override
     void Update() {
-        int H = (Main.CurrentSection().spentTimeMS / 1000 + base) % Height.length;
+        int H = (Manager.getInstance().CurrentSection().spentTimeMS / 1000 + base) % Height.length;
         setShape(home.W, Height[H], home.X, home.Y + home.H);
     }
 }

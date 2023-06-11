@@ -8,7 +8,7 @@ public class GameFrame extends JFrame {
         super();
         setBackground(Color.cyan);
         setUndecorated(true);
-        setSize(Main.W, Main.H);
+        setSize(Manager.getInstance().W, Manager.getInstance().H);
         addKeyListener(ArrowsListener());
         addKeyListener(StopListener());
     }
@@ -20,10 +20,10 @@ public class GameFrame extends JFrame {
 
             public void keyPressed(KeyEvent e) {
                 switch (e.getExtendedKeyCode()) {
-                    case 37 -> Main.CurrentGame().mario.left = Main.CurrentGame().mario.getSpeed();
-                    case 38 -> Main.CurrentGame().mario.Jump();
-                    case 39 -> Main.CurrentGame().mario.right = Main.CurrentGame().mario.getSpeed();
-                    case 40 -> Main.CurrentGame().mario.PushDown();
+                    case 37 -> Manager.getInstance().CurrentGame().mario.left = Manager.getInstance().CurrentGame().mario.getSpeed();
+                    case 38 -> Manager.getInstance().CurrentGame().mario.Jump();
+                    case 39 -> Manager.getInstance().CurrentGame().mario.right = Manager.getInstance().CurrentGame().mario.getSpeed();
+                    case 40 -> Manager.getInstance().CurrentGame().mario.PushDown();
                 }
             }
 
@@ -36,7 +36,7 @@ public class GameFrame extends JFrame {
         return new KeyListener() {
             public void keyTyped(KeyEvent e) {
                 if (Game.timer.isRunning() && e.getKeyChar() == 's') {
-                    Main.CurrentGame().Stop();
+                    Manager.getInstance().CurrentGame().Stop();
                     new ExitOrResume();
                 }
             }
@@ -52,25 +52,25 @@ public class GameFrame extends JFrame {
     public void PaintInfo(Graphics g) {
         g.setFont(new Font("Arial", Font.ITALIC, 40));
         g.setColor(Color.DARK_GRAY);
-        g.drawString("Time : " + (Integer) (Main.CurrentSection().wholeTime - Main.CurrentSection().spentTimeMS / 1000), 0, 40);
+        g.drawString("Time : " + (Integer) (Manager.getInstance().CurrentSection().wholeTime - Manager.getInstance().CurrentSection().spentTimeMS / 1000), 0, 40);
         g.setColor(Color.LIGHT_GRAY);
-        g.drawString("Score: " + Main.CurrentGame().score, Main.W / 4, 40);
+        g.drawString("Score: " + Manager.getInstance().CurrentGame().score, Manager.getInstance().W / 4, 40);
         g.setColor(Color.YELLOW);
-        g.drawString("Coins: " + Main.CurrentGame().coins, Main.W / 4 * 2, 40);
+        g.drawString("Coins: " + Manager.getInstance().CurrentGame().coins, Manager.getInstance().W / 4 * 2, 40);
         g.setColor(Color.RED);
-        g.drawString("Heart: " + Main.CurrentGame().mario.heart, Main.W / 4 * 3, 40);
+        g.drawString("Heart: " + Manager.getInstance().CurrentGame().mario.heart, Manager.getInstance().W / 4 * 3, 40);
     }
 
     public void paint(Graphics g) {
         final int cameraBeforeMario = 10;
-        int cameraLeftLine = Math.min(Math.max(0, Main.CurrentGame().mario.X - cameraBeforeMario), Main.CurrentSection().W - Main.column);
+        int cameraLeftLine = Math.min(Math.max(0, Manager.getInstance().CurrentGame().mario.X - cameraBeforeMario), Manager.getInstance().CurrentSection().W - Manager.getInstance().column);
         g.setColor(Color.cyan);
-        for (int i = cameraLeftLine; i < cameraLeftLine + Main.column; i++)
-            for (int j = 0; j < Main.row; j++) {
+        for (int i = cameraLeftLine; i < cameraLeftLine + Manager.getInstance().column; i++)
+            for (int j = 0; j < Manager.getInstance().row; j++) {
                 boolean empty = true;
                 Sky sky = new Sky();
                 sky.setShape(1, 1, i, j);
-                for (Block block : Main.CurrentSection().blocks)
+                for (Block block : Manager.getInstance().CurrentSection().blocks)
                     if (Block.Intersect(sky, block)) {
                         empty = false;
                         break;
@@ -79,10 +79,10 @@ public class GameFrame extends JFrame {
                     sky.Draw(g, cameraLeftLine);
             }
         PaintInfo(g);
-        for (Block block : Main.CurrentSection().blocks)
+        for (Block block : Manager.getInstance().CurrentSection().blocks)
             block.Draw(g, cameraLeftLine);
 
-        if (Main.CurrentGame().levels.length == Main.CurrentGame().levelNumber + 1 && Main.CurrentGame().levels[Main.CurrentGame().levelNumber].sections.length == Main.CurrentGame().sectionNumber + 1 && cameraLeftLine + 40 > Main.CurrentSection().W) {
+        if (Manager.getInstance().CurrentGame().levels.length == Manager.getInstance().CurrentGame().levelNumber + 1 && Manager.getInstance().CurrentGame().levels[Manager.getInstance().CurrentGame().levelNumber].sections.length == Manager.getInstance().CurrentGame().sectionNumber + 1 && cameraLeftLine + 40 > Manager.getInstance().CurrentSection().W) {
             g.setColor(Color.red);
             g.setFont(new Font("Arial", Font.BOLD, 200));
             g.drawString("Boss Fight", 0, 500);

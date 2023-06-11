@@ -15,6 +15,6 @@ public class Sky extends Block {
     @Override
     void Draw(Graphics g, int cameraLeftLine) {
         g.setColor(Color.cyan);
-        g.fillRect(Main.w * (X - cameraLeftLine), Main.H - Main.h * (Y + H), Main.w * W, Main.h * H);
+        g.fillRect(Manager.getInstance().w * (X - cameraLeftLine), Manager.getInstance().H - Manager.getInstance().h * (Y + H), Manager.getInstance().w * W, Manager.getInstance().h * H);
     }
 }

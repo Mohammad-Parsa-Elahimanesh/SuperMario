@@ -8,7 +8,7 @@ public class Shop extends JFrame {
         super();
         JPanel panel = new JPanel(new GridLayout(row, column));
         setUndecorated(true);
-        setSize(Main.W, Main.H);
+        setSize(Manager.getInstance().W, Manager.getInstance().H);
         JPanel[][] gridPanel = new JPanel[row][column];
         for (int i = 0; i < row; i++)
             for (int j = 0; j < column; j++) {
@@ -17,21 +17,21 @@ public class Shop extends JFrame {
             }
         gridPanel[0][0].add(ShowCoin());
         gridPanel[1][0].add(Back());
-        gridPanel[0][1].add(new AD(new CoinerMario(), Main.CurrentUser()));
-        gridPanel[0][2].add(new AD(new JumperMario(), Main.CurrentUser()));
-        gridPanel[1][1].add(new AD(new FasterMario(), Main.CurrentUser()));
-        gridPanel[1][2].add(new AD(new KillerMario(), Main.CurrentUser()));
+        gridPanel[0][1].add(new AD(new CoinerMario(), Manager.getInstance().CurrentUser()));
+        gridPanel[0][2].add(new AD(new JumperMario(), Manager.getInstance().CurrentUser()));
+        gridPanel[1][1].add(new AD(new FasterMario(), Manager.getInstance().CurrentUser()));
+        gridPanel[1][2].add(new AD(new KillerMario(), Manager.getInstance().CurrentUser()));
         add(panel);
         setVisible(true);
     }
 
     TileLabel ShowCoin() {
         TileLabel showCoin = new TileLabel();
-        showCoin.setTileSize(Main.column / column, Main.row / row);
-        showCoin.setText("Coins: " + Main.CurrentUser().coin);
+        showCoin.setTileSize(Manager.getInstance().column / column, Manager.getInstance().row / row);
+        showCoin.setText("Coins: " + Manager.getInstance().CurrentUser().coin);
 
         Timer t = new Timer(3000, e -> {
-            showCoin.setText("Coins: " + Main.CurrentUser().coin);
+            showCoin.setText("Coins: " + Manager.getInstance().CurrentUser().coin);
         });
         t.start();
         showCoin.setFont(new Font("Arial", Font.PLAIN, 50));
@@ -42,7 +42,7 @@ public class Shop extends JFrame {
         TileButton back = new TileButton();
         back.setText("Back");
         back.setFont(new Font("Arial", Font.PLAIN, 40));
-        back.setTileSize(Main.column / column, Main.row / row);
+        back.setTileSize(Manager.getInstance().column / column, Manager.getInstance().row / row);
         back.addActionListener(e -> {
             dispose();
             new MainMenu();

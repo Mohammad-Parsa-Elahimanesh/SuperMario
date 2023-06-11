@@ -8,7 +8,7 @@ public class EnterPage extends JFrame {
         super();
         JPanel panel = new JPanel(null);
         setUndecorated(true);
-        setSize(Main.W, Main.H);
+        setSize(Manager.getInstance().W, Manager.getInstance().H);
         panel.add(SignInButton());
         panel.add(SignUpButton());
         panel.add(ExitButton());

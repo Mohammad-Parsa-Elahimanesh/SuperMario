@@ -50,7 +50,7 @@ public abstract class Mario extends Block implements Saleable {
 
     boolean Push(Direction direction) {
         boolean push = true;
-        for (Block block : Main.CurrentSection().blocks)
+        for (Block block : Manager.getInstance().CurrentSection().blocks)
             if (Neighbor(this, block, direction))
                 push &= block.Pushed(Direction.Opposite(direction));
         return push;
@@ -59,7 +59,7 @@ public abstract class Mario extends Block implements Saleable {
     @Override
     void Intersect(Block block) {
         if (block instanceof KillerPlant)
-            Main.CurrentGame().dieASAP = true;
+            Manager.getInstance().CurrentGame().dieASAP = true;
     }
 
     void Jump() {
@@ -105,31 +105,31 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     void CheckIntersection() {
-        for (Block block : Main.CurrentSection().blocks)
+        for (Block block : Manager.getInstance().CurrentSection().blocks)
             if (Intersect(this, block))
                 Intersect(block);
     }
 
     void CheckGameState() {
-        if (Main.CurrentSection().W < X + W)
-            Main.CurrentGame().nextASAP = true;
+        if (Manager.getInstance().CurrentSection().W < X + W)
+            Manager.getInstance().CurrentGame().nextASAP = true;
         else if (Y + H < 0)
-            Main.CurrentGame().dieASAP = true;
-        else if (Main.CurrentSection().wholeTime <= Main.CurrentSection().spentTimeMS / 1000)
-            Main.CurrentGame().dieASAP = true;
+            Manager.getInstance().CurrentGame().dieASAP = true;
+        else if (Manager.getInstance().CurrentSection().wholeTime <= Manager.getInstance().CurrentSection().spentTimeMS / 1000)
+            Manager.getInstance().CurrentGame().dieASAP = true;
     }
 
     void CheckGetCoins() {
         List<Block> mustBeEaten = new ArrayList<>();
-        for (Block coin : Main.CurrentSection().blocks)
+        for (Block coin : Manager.getInstance().CurrentSection().blocks)
             if (coin instanceof Coin)
                 if (Distance(this, coin) <= getCoinRange()) {
                     mustBeEaten.add(coin);
                 }
         for (Block coin : mustBeEaten)
-            Main.CurrentSection().Del(coin);
-        Main.CurrentGame().coins += mustBeEaten.size();
-        Main.CurrentGame().score += mustBeEaten.size() * 10 * (power + 1);
+            Manager.getInstance().CurrentSection().Del(coin);
+        Manager.getInstance().CurrentGame().coins += mustBeEaten.size();
+        Manager.getInstance().CurrentGame().score += mustBeEaten.size() * 10 * (power + 1);
     }
 
     @Override

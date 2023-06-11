@@ -10,7 +10,7 @@ public class SignInPage extends JFrame {
         super();
         JPanel panel = new JPanel(null);
         setUndecorated(true);
-        setSize(Main.W, Main.H);
+        setSize(Manager.getInstance().W, Manager.getInstance().H);
         panel.add(userName);
         panel.add(password);
         panel.add(enter);
@@ -20,7 +20,7 @@ public class SignInPage extends JFrame {
     }
 
     static void SignIn(User user) {
-        Main.superMario.currentUser = user;
+        Manager.getInstance().superMario.currentUser = user;
         new MainMenu();
     }
 
@@ -46,7 +46,7 @@ public class SignInPage extends JFrame {
         enter.setTileLocation(10, 9);
         enter.setTileSize(4, 1);
         enter.addActionListener(e -> {
-            for (User user : Main.superMario.users)
+            for (User user : Manager.getInstance().superMario.users)
                 if (user.name.equals(userName.getText()))
                     if (user.password.equals(password.getText())) {
                         SignIn(user);

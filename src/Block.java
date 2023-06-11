@@ -75,8 +75,8 @@ public abstract class Block {
     abstract void Intersect(Block block);
 
     void Draw(Graphics g, int cameraLeftLine) {
-        if (cameraLeftLine <= X || X + W <= Main.column + cameraLeftLine)
-            g.drawImage(getImage(), Main.w * (X - cameraLeftLine), Main.H - Main.h * (Y + H), W * Main.w, H * Main.h, null);
+        if (cameraLeftLine <= X || X + W <= Manager.getInstance().column + cameraLeftLine)
+            g.drawImage(getImage(), Manager.getInstance().w * (X - cameraLeftLine), Manager.getInstance().H - Manager.getInstance().h * (Y + H), W * Manager.getInstance().w, H * Manager.getInstance().h, null);
     }
 
     void DrawBackground(Graphics g, int cameraLeftLine) {

@@ -8,7 +8,7 @@ public class PlayMenu extends JFrame {
         for (int i = 0; i < 3; i++)
             panel.add(new LoadGamePanel(i, this));
         setUndecorated(true);
-        setSize(Main.W, Main.H);
+        setSize(Manager.getInstance().W, Manager.getInstance().H);
         add(panel);
         setVisible(true);
     }

@@ -6,17 +6,17 @@ public class Game {
     final static int delayMS = 80;
     static GameFrame gameFrame = new GameFrame();
     Level[] levels;    static Timer timer = new Timer(delayMS, e -> {
-        Main.CurrentGame().dieASAP = Main.CurrentGame().nextASAP = false;
-        for (Block block : Main.CurrentSection().blocks)
+        Manager.getInstance().CurrentGame().dieASAP = Manager.getInstance().CurrentGame().nextASAP = false;
+        for (Block block : Manager.getInstance().CurrentSection().blocks)
             block.Update();
-        Main.CurrentGame().mario.CheckGetCoins();
-        Main.CurrentGame().mario.CheckGameState();
-        Main.CurrentSection().spentTimeMS += delayMS;
+        Manager.getInstance().CurrentGame().mario.CheckGetCoins();
+        Manager.getInstance().CurrentGame().mario.CheckGameState();
+        Manager.getInstance().CurrentSection().spentTimeMS += delayMS;
         gameFrame.repaint();
-        if (Main.CurrentGame().dieASAP)
-            Main.CurrentGame().Die();
-        else if (Main.CurrentGame().nextASAP)
-            Main.CurrentGame().NextSection();
+        if (Manager.getInstance().CurrentGame().dieASAP)
+            Manager.getInstance().CurrentGame().Die();
+        else if (Manager.getInstance().CurrentGame().nextASAP)
+            Manager.getInstance().CurrentGame().NextSection();
     });
     Mario mario;
     int levelNumber, sectionNumber;
@@ -76,21 +76,21 @@ public class Game {
     }
 
     void EndGame() {
-        if (Main.CurrentUser().maxRating < score)
-            Main.CurrentUser().maxRating = score;
-        Main.CurrentUser().game[Main.CurrentUser().currentGameIndex] = null;
+        if (Manager.getInstance().CurrentUser().maxRating < score)
+            Manager.getInstance().CurrentUser().maxRating = score;
+        Manager.getInstance().CurrentUser().game[Manager.getInstance().CurrentUser().currentGameIndex] = null;
         gameFrame.setVisible(false);
         new MainMenu();
     }
 
     void EndSection() {
         timer.stop();
-        score += (Main.CurrentSection().wholeTime - Main.CurrentSection().spentTimeMS / 1000) * (mario.power + 1);
+        score += (Manager.getInstance().CurrentSection().wholeTime - Manager.getInstance().CurrentSection().spentTimeMS / 1000) * (mario.power + 1);
         score += mario.heart * 20 * (mario.power + 1);
         mario.reset();
-        Main.CurrentUser().coin += coins;
+        Manager.getInstance().CurrentUser().coin += coins;
         coins = 0;
-        Main.CurrentSection().spentTimeMS = 0;
+        Manager.getInstance().CurrentSection().spentTimeMS = 0;
     }
 
     void Stop() {

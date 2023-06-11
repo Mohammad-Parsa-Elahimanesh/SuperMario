@@ -4,7 +4,7 @@ import java.awt.*;
 public class ExitOrResume extends JFrame {
     ExitOrResume() {
         setSize(200, 100);
-        setLocation((Main.W - getWidth()) / 2, (Main.H - getHeight()) / 2);
+        setLocation((Manager.getInstance().W - getWidth()) / 2, (Manager.getInstance().H - getHeight()) / 2);
         JPanel panel = new JPanel();
         add(panel);
         panel.setLayout(new GridLayout(2, 1));
@@ -27,7 +27,7 @@ public class ExitOrResume extends JFrame {
     JButton ResumeGame() {
         JButton resumeGame = new JButton("Continue ...");
         resumeGame.addActionListener(e -> {
-            Main.CurrentGame().Resume();
+            Manager.getInstance().CurrentGame().Resume();
         });
         return resumeGame;
     }
