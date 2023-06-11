@@ -52,15 +52,6 @@ public class EnterPage extends JFrame {
         exitButton.setTileLocation(10, 10);
         exitButton.setTileSize(4, 2);
         exitButton.addActionListener(e -> {
-            Main.superMario.currentUser = null;
-            EDS data = null;
-            try {
-                data = new EDS(false);
-                data.Write(Main.superMario);
-                data.flush();
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
             System.exit(0);
         });
         return exitButton;
