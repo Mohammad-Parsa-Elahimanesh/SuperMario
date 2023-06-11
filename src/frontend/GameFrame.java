@@ -70,8 +70,9 @@ public class GameFrame extends JFrame {
     }
 
     public void paint(Graphics g) {
+        g.clearRect(0, 0, Manager.getInstance().W, Manager.getInstance().H);
         final int cameraBeforeMario = 10;
-        int cameraLeftLine = Math.min(Math.max(0, Manager.getInstance().CurrentGame().mario.X - cameraBeforeMario), Manager.getInstance().CurrentSection().W - Manager.getInstance().column);
+        int cameraLeftLine = (int) Math.min(Math.max(0, Manager.getInstance().CurrentGame().mario.X - cameraBeforeMario), Manager.getInstance().CurrentSection().W - Manager.getInstance().column);
         g.setColor(Color.cyan);
         for (int i = cameraLeftLine; i < cameraLeftLine + Manager.getInstance().column; i++)
             for (int j = 0; j < Manager.getInstance().row; j++) {

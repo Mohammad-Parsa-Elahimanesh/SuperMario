@@ -16,9 +16,4 @@ public class Pipe extends Block {
     boolean Pushed(Direction D) {
         return false;
     }
-
-    @Override
-    public void Draw(Graphics g, int cameraLeftLine) {
-        super.Draw(g, cameraLeftLine);
-    }
 }

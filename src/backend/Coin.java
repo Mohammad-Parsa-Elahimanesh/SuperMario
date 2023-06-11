@@ -16,10 +16,4 @@ public class Coin extends Block {
     String getImageName() {
         return "Coin.png";
     }
-
-    @Override
-    public void Draw(Graphics g, int cameraLeftLine) {
-        DrawBackground(g, cameraLeftLine);
-        super.Draw(g, cameraLeftLine);
-    }
 }

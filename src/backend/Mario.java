@@ -137,11 +137,6 @@ public abstract class Mario extends Block implements Saleable {
         Manager.getInstance().CurrentGame().score += mustBeEaten.size() * 10 * (power + 1);
     }
 
-    @Override
-    public void Draw(Graphics g, int cameraLeftLine) {
-        DrawBackground(g, cameraLeftLine);
-        super.Draw(g, cameraLeftLine);
-    }
     // TODO for score calculation
     // Kill enemy 15*(power+1)
     // extra power constant score
