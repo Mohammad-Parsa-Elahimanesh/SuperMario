@@ -6,9 +6,10 @@ import java.io.File;
 import java.io.IOException;
 
 public abstract class Block {
+    final static double eps = 1e-4;
     public double X, W, H, Y;
     transient Image image;
-    final static double eps = 1e-4;
+
     Block() {
     }
 
@@ -46,7 +47,7 @@ public abstract class Block {
         d[0][1] = Math.min(first.X + first.W, second.X + second.W);
         d[1][0] = Math.max(first.Y, second.Y);
         d[1][1] = Math.min(first.Y + first.H, second.Y + second.H);
-        return Math.sqrt(Math.pow(Math.max(0, d[0][0] - d[0][1]+eps), 2) + Math.pow(Math.max(0, d[1][0] - d[1][1]+eps), 2));
+        return Math.sqrt(Math.pow(Math.max(0, d[0][0] - d[0][1] + eps), 2) + Math.pow(Math.max(0, d[1][0] - d[1][1] + eps), 2));
     }
 
     public void setShape(double w, double h, double x, double y) {
@@ -77,17 +78,10 @@ public abstract class Block {
 
     public void Draw(Graphics g, int cameraLeftLine) {
         if (cameraLeftLine <= X || X + W <= Manager.getInstance().column + cameraLeftLine) {
-            DrawBackground(g, cameraLeftLine);
             g.drawImage(getImage(), (int) (Manager.getInstance().w * (X - cameraLeftLine)), (int) (Manager.getInstance().H - Manager.getInstance().h * (Y + H)), (int) (W * Manager.getInstance().w), (int) (H * Manager.getInstance().h), null);
         }
     }
 
-    void DrawBackground(Graphics g, int cameraLeftLine) {
-        g.setColor(Color.CYAN);
-        Sky sky = new Sky();
-        sky.setShape(W, H, X, Y);
-        sky.Draw(g, cameraLeftLine);
-    }
 
     void Update() {
     }

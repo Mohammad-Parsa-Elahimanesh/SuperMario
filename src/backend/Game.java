@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    final static int delayMS = 80;
+    final static int delayMS = 60;
     public Level[] levels;
     public Mario mario;
     public int levelNumber;
@@ -19,7 +19,9 @@ public class Game {
     transient GameFrame gameFrame = new GameFrame();
     Difficulty difficulty;
     boolean dieASAP, nextASAP;
-    public transient Timer timer = new Timer(delayMS, e -> {
+    Game() {
+        new SetGameSettings();
+    }    public transient Timer timer = new Timer(delayMS, e -> {
         Manager.getInstance().CurrentGame().dieASAP = Manager.getInstance().CurrentGame().nextASAP = false;
         for (Block block : Manager.getInstance().CurrentSection().blocks)
             block.Update();
@@ -32,9 +34,6 @@ public class Game {
         else if (Manager.getInstance().CurrentGame().nextASAP)
             Manager.getInstance().CurrentGame().NextSection();
     });
-    Game() {
-        new SetGameSettings();
-    }
 
     public static String State(Game game) {
         if (game == null)

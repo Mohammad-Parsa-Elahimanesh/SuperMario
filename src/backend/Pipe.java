@@ -1,7 +1,5 @@
 package backend;
 
-import java.awt.*;
-
 public class Pipe extends Block {
     @Override
     String getImageName() {

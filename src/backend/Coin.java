@@ -1,7 +1,5 @@
 package backend;
 
-import java.awt.*;
-
 public class Coin extends Block {
     @Override
     boolean Pushed(Direction D) {
