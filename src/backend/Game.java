@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    final static int delayMS = 60;
+    final static int delayMS = 30;
+    final static double delay = 0.0001*delayMS;
     public Level[] levels;
     public Mario mario;
     public int levelNumber;
@@ -119,7 +120,7 @@ public class Game {
 
     void Level0Section0(Level.Section S) {
         S.W = 45;
-        S.wholeTime = 20;
+        S.wholeTime = 100;
         MakeSection.AddBrick(S, 9, 2, 0, 0);
         MakeSection.AddBrick(S, 28, 2, 17, 0);
 
@@ -153,7 +154,7 @@ public class Game {
 
     void Level0Section1(Level.Section S) {
         S.W = 60;
-        S.wholeTime = 20;
+        S.wholeTime = 100;
         MakeSection.AddBrick(S, 10, 2, 0, 0);
         MakeSection.AddBrick(S, 9, 2, 11, 0);
         MakeSection.AddBrick(S, 8, 2, 22, 0);
@@ -172,7 +173,7 @@ public class Game {
 
     void Level0Section2(Level.Section S) {
         S.W = 75;
-        S.wholeTime = 35;
+        S.wholeTime = 100;
         MakeSection.AddPipe(S, 0, 1);
         MakeSection.AddPipe(S, 4, 2);
         MakeSection.AddPipeWithKillerPlant(S, 8, 3);

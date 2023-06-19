@@ -1,12 +1,18 @@
 package backend;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class Mario extends Block implements Saleable {
+    final static double FRICTION = 0.9;
+    final static double G = 750;
+    final static double MAX_MOVE = 5;
     public int heart;
-    public int right = 0;
-    public int left = 0;
+    double vx = 0, vy = 0;
+    public Map<Direction, Boolean> task = new HashMap<>();
+    int upAndDownBoth = 0;
     int jump;
     int power;
 
@@ -18,7 +24,7 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     public int getSpeed() {
-        return 1;
+        return 63;
     }
 
     int getCoinRange() {
@@ -29,17 +35,16 @@ public abstract class Mario extends Block implements Saleable {
         return 3;
     }
 
-    int getJumpHeight() {
-        return 6;
-    }
-
-    @Override
-    public String toString() {
-        return getName();
+    int getJumpSpeed() {
+        return 90;
     }
 
     void reset() {
-        jump = power = left = right = 0;
+        for(Direction direction: Direction.values())
+            task.put(direction, false);
+        jump = power = 0;
+        vx = vy = 0;
+        upAndDownBoth = 0;
         W = 1;
         H = 2;
         X = 0;
@@ -52,12 +57,16 @@ public abstract class Mario extends Block implements Saleable {
         return false;
     }
 
-    boolean Push(Direction direction) {
-        boolean push = true;
+    double Push(Direction direction) {
+        double canMove = MAX_MOVE;
         for (Block block : Manager.getInstance().CurrentSection().blocks)
-            if (Neighbor(this, block, direction))
-                push &= block.Pushed(Direction.Opposite(direction));
-        return push;
+            if (Neighbor(this, block, direction)) {
+                if(!block.Pushed(direction.Opposite()))
+                    canMove = 0;
+            }
+            else if (Side(this, block, direction))
+                canMove = Math.min(canMove, DistanceManhatani(this, block));
+        return canMove;
     }
 
     @Override
@@ -66,46 +75,52 @@ public abstract class Mario extends Block implements Saleable {
             Manager.getInstance().CurrentGame().dieASAP = true;
     }
 
-    public void Jump() {
-        if (!Push(Direction.Down))
-            jump = getJumpHeight();
-    }
+    void UpdateSpeed() {
+        vx *= FRICTION;
 
-    void GoLeft() {
-        if (X > 0 && Push(Direction.Left))
-            X--;
-    }
+        if(Push(Direction.Down) > 0)
+            vy -= Game.delay* G;
+        else if(vy < 0)
+            vy = 0;
 
-    void GoRight() {
-        if (Push(Direction.Right))
-            X++;
-    }
+        if(task.get(Direction.Down) && task.get(Direction.Up))
+        {
+            task.put(Direction.Down, false);
+            task.put(Direction.Up, false);
+            upAndDownBoth++;
+        }
+        else
+            upAndDownBoth = 0;
 
-    public void PushDown() {
-        // TODO
-    }
+        if(task.get(Direction.Right) && task.get(Direction.Left))
+        {
+            task.put(Direction.Right, false);
+            task.put(Direction.Left, false);
+            upAndDownBoth++;
+        }
 
+        if (task.get(Direction.Left))
+            vx = (vx-getSpeed())/2;
+        else if(task.get(Direction.Right))
+            vx = (vx+getSpeed())/2;
+
+        if(task.get(Direction.Up) && Push(Direction.Down) == 0)
+            vy = getJumpSpeed();
+    }
 
     void Update() {
-        if (left > 0) {
-            if (Push(Direction.Left))
-                GoLeft();
-            left--;
-        }
-        if (right > 0) {
-            if (Push(Direction.Right))
-                GoRight();
-            right--;
-        }
-        if (jump > 0) {
-            if (Push(Direction.Up))
-                Y++;
-            else
-                jump = 1;
-            jump--;
-        } else if (Push(Direction.Down))
-            Y--;
+        UpdateSpeed();
+        if(vx < 0)
+            X -= Math.min(-vx*Game.delay, Push(Direction.Left));
+        if(vx > 0)
+            X += Math.min(vx*Game.delay, Push(Direction.Right));
+        if(vy < 0)
+            Y -= Math.min(-vy*Game.delay, Push(Direction.Down));
+        if(vy > 0)
+            Y += Math.min(vy*Game.delay, Push(Direction.Up));
         CheckIntersection();
+        for(Direction direction: Direction.values())
+            task.put(direction, false);
     }
 
     void CheckIntersection() {

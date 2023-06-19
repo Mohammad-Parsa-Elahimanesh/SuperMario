@@ -1,12 +1,14 @@
 package backend;
 
 import javax.imageio.ImageIO;
+import javax.sound.midi.Soundbank;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
 public abstract class Block {
-    final static double eps = 1e-4;
+    final static double eps = 0.1;
+
     public double X, W, H, Y;
     transient Image image;
 
@@ -14,40 +16,45 @@ public abstract class Block {
     }
 
     static boolean Neighbor(Block first, Block second) {
-        return Distance(first, second) <= eps;
+        double x = DistanceHorizontal(first, second);
+        double y = DistanceVertical(first, second);
+        return Math.min(x, y) < 0 && Math.max(x, y) == 0;
     }
 
-    static boolean Neighbor(Block first, Block second, Direction d) {
-        if (!Neighbor(first, second))
+    static Boolean Side(Block first, Block second, Direction side) {
+        if(Intersect(first, second))
             return false;
-        switch (d) {
-            case Left -> {
-                return Math.abs(second.X + second.W - first.X) <= eps;
-            }
-            case Up -> {
-                return Math.abs(first.Y + first.H - second.Y) <= eps;
-            }
-            case Right -> {
-                return Math.abs(first.X + first.W - second.X) <= eps;
-            }
-            case Down -> {
-                return Math.abs(second.Y + second.H - first.Y) <= eps;
-            }
-        }
-        return false;
+        if(side.isHorizontal())
+            return DistanceVertical(first, second) < 0 &&
+                    ((side == Direction.Left && second.X + second.W <= first.X) || (side == Direction.Right && first.X + first.W <= second.X));
+        else
+            return DistanceHorizontal(first, second) < 0 &&
+                    ((side == Direction.Down && second.Y + second.H <= first.Y) || (side == Direction.Up && first.Y + first.H <= second.Y));
+    }
+
+    static boolean Neighbor(Block first, Block second, Direction direction) {
+        return Neighbor(first, second) && Side(first, second, direction);
     }
 
     public static boolean Intersect(Block first, Block second) {
-        return Distance(first, second) == 0;
+        return DistanceHorizontal(first, second) < 0 && DistanceVertical(first, second) < 0;
+    }
+
+    static double DistanceManhatani(Block first, Block second) {
+        return Math.max(0, DistanceHorizontal(first, second)) + Math.max(0, DistanceVertical(first, second));
     }
 
     static double Distance(Block first, Block second) {
-        double[][] d = new double[2][2];
-        d[0][0] = Math.max(first.X, second.X);
-        d[0][1] = Math.min(first.X + first.W, second.X + second.W);
-        d[1][0] = Math.max(first.Y, second.Y);
-        d[1][1] = Math.min(first.Y + first.H, second.Y + second.H);
-        return Math.sqrt(Math.pow(Math.max(0, d[0][0] - d[0][1] + eps), 2) + Math.pow(Math.max(0, d[1][0] - d[1][1] + eps), 2));
+        return Math.sqrt(Math.pow(Math.max(0, DistanceHorizontal(first, second)) , 2)
+                + Math.pow(Math.max(0, DistanceVertical(first, second)), 2));
+    }
+
+    static double DistanceVertical(Block first, Block second) {
+        return Math.max(-eps, Math.max(first.Y, second.Y)-Math.min(first.Y + first.H, second.Y + second.H));
+    }
+
+    static double DistanceHorizontal(Block first, Block second) {
+        return Math.max(-eps, Math.max(first.X, second.X)-Math.min(first.X + first.W, second.X + second.W));
     }
 
     public void setShape(double w, double h, double x, double y) {
@@ -83,23 +90,40 @@ public abstract class Block {
     }
 
 
-    void Update() {
+    void Update() {}
+
+    @Override
+    public String toString() {
+        return "Block "+ getImageName() + " {" +
+                "X=" + X +
+                ", W=" + W +
+                ", H=" + H +
+                ", Y=" + Y +
+                '}';
     }
 
-    enum Direction {
+    public enum Direction {
         Left,
         Up,
         Right,
         Down;
 
 
-        public static Direction Opposite(Direction direction) {
-            return switch (direction) {
+        public  Direction Opposite() {
+            return switch (this) {
                 case Left -> Right;
                 case Right -> Left;
                 case Up -> Down;
                 case Down -> Up;
             };
+        }
+
+        public boolean isHorizontal() {
+            return this == Right || this == Left;
+        }
+
+        public boolean isVertical() {
+            return this == Down || this == Up;
         }
     }
 }
