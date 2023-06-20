@@ -1,7 +1,7 @@
 package backend;
 
 public class Pipe extends Block {
-    public Pipe(double h, double x) {
+    public Pipe(double x, double h) {
         super(2, h, x, 0);
     }
 
