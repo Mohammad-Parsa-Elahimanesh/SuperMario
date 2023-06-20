@@ -4,13 +4,13 @@ public class Solid extends Block {
     SolidType solidType;
     transient int used = 0;
     Solid(SolidType solidType, double x, double y) {
-        super(1, 1, x, y);
+        super(1,1,x, y);
         this.solidType = solidType;
     }
 
     @Override
     String getImageName() {
-        return used == 0 && solidType == SolidType.Prize ? "prize.png" : "solid.png";
+        return solidType == SolidType.Prize ? "prize.png" : "solid.png";
     }
 
     @Override
@@ -21,11 +21,10 @@ public class Solid extends Block {
                 Manager.getInstance().CurrentSection().Add(new Coin(X, Y+1));
                 used++;
             }
-            else if(solidType == SolidType.Prize && used == 0) {
+            else if(solidType == SolidType.Prize) {
                 // TODO: show prize
-                used++;
+                solidType = SolidType.Simple;
             }
-
         }
         return false;
     }
