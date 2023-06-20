@@ -9,13 +9,13 @@ import javax.swing.*;
 public class Game {
     final static int delayMS = 30;
     final static double delay = 0.0001 * delayMS;
-    final transient Manager manager = Manager.getInstance();
     public Level[] levels;
     public Mario mario;
     public int levelNumber;
     public int sectionNumber;
     public int score = 0;
     public int coins = 0;
+    transient Manager manager = Manager.getInstance();
     transient GameFrame gameFrame = new GameFrame();
     Difficulty difficulty;
     boolean dieASAP, nextASAP;
@@ -49,6 +49,7 @@ public class Game {
 
     void Start() {
         mario.reset();
+        //mario.manager
         timer.start();
     }
 
@@ -71,20 +72,7 @@ public class Game {
         manager.CurrentUser().game[manager.CurrentUser().currentGameIndex] = null;
         gameFrame.setVisible(false);
         new MainMenu();
-    }    public transient Timer timer = new Timer(delayMS, e -> {
-        manager.CurrentGame().dieASAP = manager.CurrentGame().nextASAP = false;
-        manager.CurrentSection().UpdateBlocks();
-        for (Block block : manager.CurrentSection().blocks)
-            block.Update();
-        manager.CurrentGame().mario.CheckGetCoins();
-        manager.CurrentGame().mario.CheckGameState();
-        manager.CurrentSection().spentTimeMS += delayMS;
-        gameFrame.repaint();
-        if (manager.CurrentGame().dieASAP)
-            manager.CurrentGame().Die();
-        else if (manager.CurrentGame().nextASAP)
-            manager.CurrentGame().NextSection();
-    });
+    }
 
     void EndSection() {
         timer.stop();
@@ -99,7 +87,20 @@ public class Game {
     public void Stop() {
         timer.stop();
         gameFrame.setVisible(false);
-    }
+    }    public transient Timer timer = new Timer(delayMS, e -> {
+        manager.CurrentGame().dieASAP = manager.CurrentGame().nextASAP = false;
+        manager.CurrentSection().UpdateBlocks();
+        for (Block block : manager.CurrentSection().blocks)
+            block.Update();
+        manager.CurrentGame().mario.CheckGetCoins();
+        manager.CurrentGame().mario.CheckGameState();
+        manager.CurrentSection().spentTimeMS += delayMS;
+        gameFrame.repaint();
+        if (manager.CurrentGame().dieASAP)
+            manager.CurrentGame().Die();
+        else if (manager.CurrentGame().nextASAP)
+            manager.CurrentGame().NextSection();
+    });
 
     public void Resume() {
         gameFrame.setVisible(true);

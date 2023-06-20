@@ -13,6 +13,7 @@ enum MarioState {
 
 public abstract class Mario extends Block implements Saleable {
     final static double FRICTION = 0.8;
+    final transient Manager manager = Manager.getInstance();
     public int heart;
     public Map<Direction, Boolean> task = new HashMap<>();
     int upAndDownBoth = 0;
@@ -54,7 +55,6 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     void reset() {
-        state = MarioState.mini;
         for (Direction direction : Direction.values())
             task.put(direction, false);
         jump = power = 0;
@@ -66,9 +66,17 @@ public abstract class Mario extends Block implements Saleable {
         Y = 2;
     }
 
+    void Upgrade() {
+        switch (state) {
+            case mini -> state = MarioState.mega;
+            case mega -> state = MarioState.giga;
+            case giga -> manager.CurrentGame().score += 100;
+        }
+    }
+
+
     @Override
     boolean Pushed(Direction D) {
-        System.err.println("ERROR");
         return false;
     }
 
@@ -76,7 +84,12 @@ public abstract class Mario extends Block implements Saleable {
     @Override
     void Intersect(Block block) {
         if (block instanceof KillerPlant)
-            Manager.getInstance().CurrentGame().dieASAP = true;
+            manager.CurrentGame().dieASAP = true;
+        if (block instanceof Flower) {
+            manager.CurrentGame().score += 20;
+            Upgrade();
+            manager.CurrentSection().Del(block);
+        }
     }
 
     void UpdateSpeed() {
@@ -97,37 +110,41 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     void Update() {
+        switch (state) {
+            case mini -> H = 1;
+            case mega, giga -> H = 2;
+        }
         UpdateSpeed();
         super.Update();
         CheckIntersection();
     }
 
     void CheckIntersection() {
-        for (Block block : Manager.getInstance().CurrentSection().blocks)
+        for (Block block : manager.CurrentSection().blocks)
             if (isIntersect(block))
                 Intersect(block);
     }
 
     void CheckGameState() {
-        if (Manager.getInstance().CurrentSection().W < X + W)
-            Manager.getInstance().CurrentGame().nextASAP = true;
+        if (manager.CurrentSection().W < X + W)
+            manager.CurrentGame().nextASAP = true;
         else if (Y + H < 0)
-            Manager.getInstance().CurrentGame().dieASAP = true;
-        else if (Manager.getInstance().CurrentSection().wholeTime <= Manager.getInstance().CurrentSection().spentTimeMS / 1000)
-            Manager.getInstance().CurrentGame().dieASAP = true;
+            manager.CurrentGame().dieASAP = true;
+        else if (manager.CurrentSection().wholeTime <= manager.CurrentSection().spentTimeMS / 1000)
+            manager.CurrentGame().dieASAP = true;
     }
 
     void CheckGetCoins() {
         List<Block> mustBeEaten = new ArrayList<>();
-        for (Block coin : Manager.getInstance().CurrentSection().blocks)
+        for (Block coin : manager.CurrentSection().blocks)
             if (coin instanceof Coin)
                 if (Distance(coin) <= getCoinRange()) {
                     mustBeEaten.add(coin);
                 }
         for (Block coin : mustBeEaten)
-            Manager.getInstance().CurrentSection().Del(coin);
-        Manager.getInstance().CurrentGame().coins += mustBeEaten.size();
-        Manager.getInstance().CurrentGame().score += mustBeEaten.size() * 10 * (power + 1);
+            manager.CurrentSection().Del(coin);
+        manager.CurrentGame().coins += mustBeEaten.size();
+        manager.CurrentGame().score += mustBeEaten.size() * 10 * (power + 1);
     }
 
     // TODO for score calculation

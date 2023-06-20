@@ -2,10 +2,13 @@ package backend;
 
 public class Manager {
     static private final Manager singleton = new Manager();
-    public final SuperMario superMario;
+    public SuperMario superMario;
 
     private Manager() {
-        superMario = new SuperMario();
+    }
+
+    public static void Start() {
+        singleton.superMario = new SuperMario();
     }
 
     public static Manager getInstance() {

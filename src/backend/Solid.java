@@ -27,7 +27,7 @@ public class Solid extends Block {
                 Manager.getInstance().CurrentSection().Add(new Coin(X, Y + 1));
                 used++;
             } else if (solidType == SolidType.Prize) {
-                // TODO: show prize
+                Manager.getInstance().CurrentSection().Add(new Flower(X, Y + 1)); // todo : possible
                 solidType = SolidType.Simple;
             }
         }

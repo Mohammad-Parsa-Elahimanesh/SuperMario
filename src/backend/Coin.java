@@ -1,18 +1,8 @@
 package backend;
 
-public class Coin extends Block {
+public class Coin extends Item {
     public Coin(double x, double y) {
-        super(1, 1, x, y);
-    }
-
-    @Override
-    boolean Pushed(Direction D) {
-        return true;
-    }
-
-    @Override
-    boolean doesGravityAffects() {
-        return true;
+        super(x, y);
     }
 
     @Override
