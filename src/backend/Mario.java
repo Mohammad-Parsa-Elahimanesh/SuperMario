@@ -7,14 +7,16 @@ import java.util.Map;
 
 public abstract class Mario extends Block implements Saleable {
     final static double FRICTION = 0.8;
-    final static double G = 980;
-    final static double MAX_MOVE = 3;
     public int heart;
     public Map<Direction, Boolean> task = new HashMap<>();
-    double vx = 0, vy = 0;
     int upAndDownBoth = 0;
     int jump;
     int power;
+
+    Mario() {
+        super(1, 2, 0, 2);
+        reset();
+    }
 
     // TODO power
     void Set(int jump, int power, int heart) {
@@ -39,6 +41,11 @@ public abstract class Mario extends Block implements Saleable {
         return 105;
     }
 
+    @Override
+    boolean doesGravityAffects() {
+        return true;
+    }
+
     void reset() {
         for (Direction direction : Direction.values())
             task.put(direction, false);
@@ -57,16 +64,6 @@ public abstract class Mario extends Block implements Saleable {
         return false;
     }
 
-    double Push(Direction direction) {
-        double canMove = MAX_MOVE;
-        for (Block block : Manager.getInstance().CurrentSection().blocks)
-            if (Neighbor(block, direction)) {
-                if (!block.Pushed(direction.Opposite()))
-                    canMove = 0;
-            } else if (Side(block, direction))
-                canMove = Math.min(canMove, ManhattanDistance(block));
-        return canMove;
-    }
 
     @Override
     void Intersect(Block block) {
@@ -76,11 +73,6 @@ public abstract class Mario extends Block implements Saleable {
 
     void UpdateSpeed() {
         vx *= FRICTION;
-
-        if (Push(Direction.Down) > 0)
-            vy -= Game.delay * G;
-        else if (vy < 0)
-            vy = 0;
 
         if (task.get(Direction.Down) && task.get(Direction.Up))
             upAndDownBoth++;
@@ -98,14 +90,7 @@ public abstract class Mario extends Block implements Saleable {
 
     void Update() {
         UpdateSpeed();
-        if (vx < 0)
-            X -= Math.min(-vx * Game.delay, Push(Direction.Left));
-        if (vx > 0)
-            X += Math.min(vx * Game.delay, Push(Direction.Right));
-        if (vy < 0)
-            Y -= Math.min(-vy * Game.delay, Push(Direction.Down));
-        if (vy > 0)
-            Y += Math.min(vy * Game.delay, Push(Direction.Up));
+        super.Update();
         CheckIntersection();
     }
 

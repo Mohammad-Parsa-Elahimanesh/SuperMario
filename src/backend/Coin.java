@@ -1,13 +1,18 @@
 package backend;
 
 public class Coin extends Block {
+    public Coin(double x, double y) {
+        super(1, 1, x, y);
+    }
+
     @Override
     boolean Pushed(Direction D) {
         return true;
     }
 
     @Override
-    void Intersect(Block block) {
+    boolean doesGravityAffects() {
+        return true;
     }
 
     @Override

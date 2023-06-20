@@ -1,13 +1,13 @@
 package backend;
 
 public class Pipe extends Block {
-    @Override
-    String getImageName() {
-        return "Pipe.png";
+    public Pipe(double h, double x) {
+        super(2, h, x, 0);
     }
 
     @Override
-    void Intersect(Block block) {
+    String getImageName() {
+        return "Pipe.png";
     }
 
     @Override

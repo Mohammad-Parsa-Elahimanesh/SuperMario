@@ -50,6 +50,19 @@ public class Game {
     void Start() {
         mario.reset();
         timer.start();
+    }
+
+    void NextSection() {
+        EndSection();
+        sectionNumber++;
+        if (levels[levelNumber].sections.length == sectionNumber) {
+            levelNumber++;
+            sectionNumber = 0;
+        }
+        if (levels.length == levelNumber)
+            EndGame();
+        else
+            timer.start();
     }    public transient Timer timer = new Timer(delayMS, e -> {
         manager.CurrentGame().dieASAP = manager.CurrentGame().nextASAP = false;
         for (Block block : manager.CurrentSection().blocks)
@@ -63,19 +76,6 @@ public class Game {
         else if (manager.CurrentGame().nextASAP)
             manager.CurrentGame().NextSection();
     });
-
-    void NextSection() {
-        EndSection();
-        sectionNumber++;
-        if (levels[levelNumber].sections.length == sectionNumber) {
-            levelNumber++;
-            sectionNumber = 0;
-        }
-        if (levels.length == levelNumber)
-            EndGame();
-        else
-            timer.start();
-    }
 
     void EndGame() {
         if (manager.CurrentUser().maxRating < score)
@@ -123,6 +123,7 @@ public class Game {
         Medium,
         Hard
     }
+
 
 
 

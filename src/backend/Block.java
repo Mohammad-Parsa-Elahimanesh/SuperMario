@@ -8,12 +8,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Block {
+    final static double G = 980;
+    final static double MAX_MOVE = 3;
     final static double eps = 0.1;
-
+    static Map<String, Image> images = new HashMap<String, Image>();
     public double X, W, H, Y;
-    transient Map<String, Image> images = new HashMap<String, Image>();
+    double vx = 0, vy = 0;
 
-    Block() {
+    Block(double w, double h, double x, double y) {
+        setShape(w, h, x, y);
     }
 
     boolean Neighbor(Block other) {
@@ -78,9 +81,25 @@ public abstract class Block {
         return images.get(getImageName());
     }
 
+    double Push(Direction direction) {
+        double canMove = MAX_MOVE;
+        for (Block block : Manager.getInstance().CurrentSection().blocks)
+            if (Neighbor(block, direction)) {
+                if (!block.Pushed(direction.Opposite()))
+                    canMove = 0;
+            } else if (Side(block, direction))
+                canMove = Math.min(canMove, ManhattanDistance(block));
+        return canMove;
+    }
+
     abstract boolean Pushed(Direction D);
 
-    abstract void Intersect(Block block);
+    boolean doesGravityAffects() {
+        return false;
+    }
+
+    void Intersect(Block block) {
+    }
 
     public void Draw(Graphics g, int cameraLeftLine) {
         if (cameraLeftLine <= Manager.getInstance().w * X || (X + W - Manager.getInstance().column) * Manager.getInstance().w <= cameraLeftLine) {
@@ -88,8 +107,21 @@ public abstract class Block {
         }
     }
 
-
     void Update() {
+        if (doesGravityAffects()) {
+            if (Push(Direction.Down) > 0)
+                vy -= Game.delay * G;
+            else if (vy < 0)
+                vy = 0;
+        }
+        if (vx < 0)
+            X -= Math.min(-vx * Game.delay, Push(Direction.Left));
+        if (vx > 0)
+            X += Math.min(vx * Game.delay, Push(Direction.Right));
+        if (vy < 0)
+            Y -= Math.min(-vy * Game.delay, Push(Direction.Down));
+        if (vy > 0)
+            Y += Math.min(vy * Game.delay, Push(Direction.Up));
     }
 
     @Override
