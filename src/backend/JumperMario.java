@@ -3,7 +3,7 @@ package backend;
 public class JumperMario extends Mario {
     @Override
     int getJumpSpeed() {
-        return super.getJumpSpeed()*3/2;
+        return super.getJumpSpeed() * 5 / 4;
     }
 
     public int getCost() {

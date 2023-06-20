@@ -1,6 +1,7 @@
 package frontend;
 
 import backend.Manager;
+import backend.Mario;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,10 +19,10 @@ public class Profile extends JFrame {
         setVisible(true);
     }
 
-    public static String CommaSeparatedList(List list) {
+    public static String CommaSeparatedList(List<Mario> list) {
         StringBuilder ret = new StringBuilder(" ");
         for (int i = 0; i < list.size(); i++) {
-            ret.append(list.get(i));
+            ret.append(list.get(i).getName());
             if (i + 1 != list.size())
                 ret.append(", ");
         }

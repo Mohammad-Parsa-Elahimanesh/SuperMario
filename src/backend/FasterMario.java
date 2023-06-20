@@ -3,7 +3,7 @@ package backend;
 public class FasterMario extends Mario {
     @Override
     public int getSpeed() {
-        return super.getSpeed()*2;
+        return super.getSpeed() * 4 / 3;
     }
 
     public int getCost() {

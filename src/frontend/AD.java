@@ -7,11 +7,12 @@ import backend.User;
 import java.awt.*;
 
 public class AD extends TileButton {
+    private final transient Manager manager = Manager.getInstance();
     boolean sold = false;
     Saleable sales;
 
     AD(Saleable sales, User user) {
-        setTileSize(Manager.getInstance().column / Shop.column, Manager.getInstance().row / Shop.row);
+        setTileSize(manager.column / Shop.column, manager.row / Shop.row);
         this.sales = sales;
         for (String sold : user.bought)
             if (sales.getName().equals(sold))
@@ -20,12 +21,12 @@ public class AD extends TileButton {
         addActionListener(e -> {
             if (sold)
                 new Massage("you have this since before !");
-            else if (Manager.getInstance().CurrentUser().coin < sales.getCost())
+            else if (manager.CurrentUser().coin < sales.getCost())
                 new Massage("you don't have enough coins :/");
             else {
                 sold = true;
-                Manager.getInstance().CurrentUser().buy(sales);
-                Manager.getInstance().CurrentUser().coin -= sales.getCost();
+                manager.CurrentUser().buy(sales);
+                manager.CurrentUser().coin -= sales.getCost();
                 new Massage("you buy this successfully !");
             }
         });

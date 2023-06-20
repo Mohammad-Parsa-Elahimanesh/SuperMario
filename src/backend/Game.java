@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Game {
     final static int delayMS = 30;
-    final static double delay = 0.0001*delayMS;
+    final static double delay = 0.0001 * delayMS;
     public Level[] levels;
     public Mario mario;
     public int levelNumber;
@@ -20,21 +20,10 @@ public class Game {
     transient GameFrame gameFrame = new GameFrame();
     Difficulty difficulty;
     boolean dieASAP, nextASAP;
+
     Game() {
         new SetGameSettings();
-    }    public transient Timer timer = new Timer(delayMS, e -> {
-        Manager.getInstance().CurrentGame().dieASAP = Manager.getInstance().CurrentGame().nextASAP = false;
-        for (Block block : Manager.getInstance().CurrentSection().blocks)
-            block.Update();
-        Manager.getInstance().CurrentGame().mario.CheckGetCoins();
-        Manager.getInstance().CurrentGame().mario.CheckGameState();
-        Manager.getInstance().CurrentSection().spentTimeMS += delayMS;
-        gameFrame.repaint();
-        if (Manager.getInstance().CurrentGame().dieASAP)
-            Manager.getInstance().CurrentGame().Die();
-        else if (Manager.getInstance().CurrentGame().nextASAP)
-            Manager.getInstance().CurrentGame().NextSection();
-    });
+    }
 
     public static String State(Game game) {
         if (game == null)
@@ -57,7 +46,19 @@ public class Game {
 
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
-    }
+    }    public transient Timer timer = new Timer(delayMS, e -> {
+        Manager.getInstance().CurrentGame().dieASAP = Manager.getInstance().CurrentGame().nextASAP = false;
+        for (Block block : Manager.getInstance().CurrentSection().blocks)
+            block.Update();
+        Manager.getInstance().CurrentGame().mario.CheckGetCoins();
+        Manager.getInstance().CurrentGame().mario.CheckGameState();
+        Manager.getInstance().CurrentSection().spentTimeMS += delayMS;
+        gameFrame.repaint();
+        if (Manager.getInstance().CurrentGame().dieASAP)
+            Manager.getInstance().CurrentGame().Die();
+        else if (Manager.getInstance().CurrentGame().nextASAP)
+            Manager.getInstance().CurrentGame().NextSection();
+    });
 
     void Start() {
         mario.reset();
@@ -213,6 +214,7 @@ public class Game {
             public int spentTimeMS = 0;
 
             Section(int level, int section) {
+                MakeSection.AddBrick(this, 1, 30, -1, 0);
                 if (level == 0) {
                     if (section == 0) Level0Section0(this);
                     else if (section == 1) Level0Section1(this);

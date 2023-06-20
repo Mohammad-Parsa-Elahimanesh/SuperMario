@@ -9,30 +9,32 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class GameFrame extends JFrame {
+    private final transient Manager manager = Manager.getInstance();
+
     public GameFrame() {
         super();
         setContentPane(new GamePanel());
         setBackground(Color.cyan);
         setUndecorated(true);
-        setSize(Manager.getInstance().W, Manager.getInstance().H);
+        setSize(manager.W, manager.H);
         addKeyListener(keyListener());
     }
 
     KeyListener keyListener() {
         return new KeyListener() {
             public void keyTyped(KeyEvent e) {
-                if (Manager.getInstance().CurrentGame().timer.isRunning() && e.getKeyChar() == KeyEvent.VK_ESCAPE) {
-                    Manager.getInstance().CurrentGame().Stop();
+                if (manager.CurrentGame().timer.isRunning() && e.getKeyChar() == KeyEvent.VK_ESCAPE) {
+                    manager.CurrentGame().Stop();
                     new ExitOrResume();
                 }
             }
 
             public void keyPressed(KeyEvent e) {
                 switch (e.getExtendedKeyCode()) {
-                    case KeyEvent.VK_LEFT -> Manager.getInstance().CurrentGame().mario.task.put(Block.Direction.Left, true);
-                    case KeyEvent.VK_UP -> Manager.getInstance().CurrentGame().mario.task.put(Block.Direction.Up, true);
-                    case KeyEvent.VK_RIGHT -> Manager.getInstance().CurrentGame().mario.task.put(Block.Direction.Right, true);
-                    case KeyEvent.VK_DOWN -> Manager.getInstance().CurrentGame().mario.task.put(Block.Direction.Down, true);
+                    case KeyEvent.VK_LEFT -> manager.CurrentGame().mario.task.put(Block.Direction.Left, true);
+                    case KeyEvent.VK_UP -> manager.CurrentGame().mario.task.put(Block.Direction.Up, true);
+                    case KeyEvent.VK_RIGHT -> manager.CurrentGame().mario.task.put(Block.Direction.Right, true);
+                    case KeyEvent.VK_DOWN -> manager.CurrentGame().mario.task.put(Block.Direction.Down, true);
                 }
             }
 
