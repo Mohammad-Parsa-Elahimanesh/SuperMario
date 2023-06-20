@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Section {
+    transient private List<Block> mustBeAdded = new ArrayList<Block>();
     public List<Block> blocks = new ArrayList<>();
     public int W;
     public int wholeTime;
@@ -26,17 +27,23 @@ public class Section {
     }
 
     void Add(Block B) {
-        blocks.add(B);
+        mustBeAdded.add(B);
     }
 
     void Del(Block B) {
         blocks.remove(B);
     }
 
+    void AddNewBlocks() {
+        blocks.addAll(mustBeAdded);
+        mustBeAdded.clear();
+    }
+
     void Level0Section0(Section S) {
         S.W = 45;
         S.wholeTime = 100;
-
+        S.Add(new Solid(SolidType.Prize,2, 5));
+        S.Add(new Solid(SolidType.Coins,3, 5));
 
         S.Add(new Brick(9, 2, 0, 0));
         S.Add(new Brick(28, 2, 17, 0));

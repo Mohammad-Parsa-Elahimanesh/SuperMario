@@ -65,6 +65,7 @@ public class Game {
             timer.start();
     }    public transient Timer timer = new Timer(delayMS, e -> {
         manager.CurrentGame().dieASAP = manager.CurrentGame().nextASAP = false;
+        manager.CurrentSection().AddNewBlocks();
         for (Block block : manager.CurrentSection().blocks)
             block.Update();
         manager.CurrentGame().mario.CheckGetCoins();

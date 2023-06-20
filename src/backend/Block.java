@@ -114,6 +114,8 @@ public abstract class Block {
             else if (vy < 0)
                 vy = 0;
         }
+        if(vy > 0 && Push(Direction.Up) == 0)
+            vy = 0;
         if (vx < 0)
             X -= Math.min(-vx * Game.delay, Push(Direction.Left));
         if (vx > 0)
