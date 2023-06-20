@@ -24,7 +24,7 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     public int getSpeed() {
-        return 90;
+        return 75;
     }
 
     int getCoinRange() {
@@ -82,25 +82,17 @@ public abstract class Mario extends Block implements Saleable {
         else if (vy < 0)
             vy = 0;
 
-        if (task.get(Direction.Down) && task.get(Direction.Up)) {
-            task.put(Direction.Down, false);
-            task.put(Direction.Up, false);
+        if (task.get(Direction.Down) && task.get(Direction.Up))
             upAndDownBoth++;
-        } else
+        else
             upAndDownBoth = 0;
 
-        if (task.get(Direction.Right) && task.get(Direction.Left)) {
-            task.put(Direction.Right, false);
-            task.put(Direction.Left, false);
-            upAndDownBoth++;
-        }
-
-        if (task.get(Direction.Left))
+        if (task.get(Direction.Left) && !task.get(Direction.Right))
             vx = (vx - getSpeed()) / 2;
-        else if (task.get(Direction.Right))
+        else if (task.get(Direction.Right) && !task.get(Direction.Left))
             vx = (vx + getSpeed()) / 2;
 
-        if (task.get(Direction.Up) && Push(Direction.Down) == 0)
+        if (task.get(Direction.Up) && !task.get(Direction.Down) && Push(Direction.Down) == 0)
             vy = getJumpSpeed();
     }
 
@@ -115,8 +107,6 @@ public abstract class Mario extends Block implements Saleable {
         if (vy > 0)
             Y += Math.min(vy * Game.delay, Push(Direction.Up));
         CheckIntersection();
-        for (Direction direction : Direction.values())
-            task.put(direction, false);
     }
 
     void CheckIntersection() {

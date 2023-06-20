@@ -39,6 +39,12 @@ public class GameFrame extends JFrame {
             }
 
             public void keyReleased(KeyEvent e) {
+                switch (e.getExtendedKeyCode()) {
+                    case KeyEvent.VK_LEFT -> manager.CurrentGame().mario.task.put(Block.Direction.Left, false);
+                    case KeyEvent.VK_UP -> manager.CurrentGame().mario.task.put(Block.Direction.Up, false);
+                    case KeyEvent.VK_RIGHT -> manager.CurrentGame().mario.task.put(Block.Direction.Right, false);
+                    case KeyEvent.VK_DOWN -> manager.CurrentGame().mario.task.put(Block.Direction.Down, false);
+                }
             }
         };
     }
