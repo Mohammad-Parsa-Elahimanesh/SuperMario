@@ -16,6 +16,8 @@ public class SimpleMario extends Mario {
 
     @Override
     public String getImageName() {
-        return "SimpleMario.png";
+        return (task.get(Direction.Down) && !task.get(Direction.Up) && state != MarioState.mini ? "Seating" : "") +
+                (state == MarioState.giga ? "Giga" : "") +
+                "SimpleMario.png";
     }
 }

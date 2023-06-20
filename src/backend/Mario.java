@@ -5,6 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+enum MarioState {
+    mini,
+    mega,
+    giga
+}
+
 public abstract class Mario extends Block implements Saleable {
     final static double FRICTION = 0.8;
     public int heart;
@@ -12,9 +18,10 @@ public abstract class Mario extends Block implements Saleable {
     int upAndDownBoth = 0;
     int jump;
     int power;
+    MarioState state = MarioState.mini;
 
     Mario() {
-        super(1, 2, 0, 2);
+        super(1, 1, 0, 2);
         reset();
     }
 
@@ -47,13 +54,14 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     void reset() {
+        state = MarioState.mini;
         for (Direction direction : Direction.values())
             task.put(direction, false);
         jump = power = 0;
         vx = vy = 0;
         upAndDownBoth = 0;
         W = 1;
-        H = 2;
+        H = 1;
         X = 0;
         Y = 2;
     }

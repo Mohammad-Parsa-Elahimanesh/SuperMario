@@ -1,10 +1,17 @@
 package backend;
 
+enum SolidType {
+    Simple,
+    Coins,
+    Prize
+}
+
 public class Solid extends Block {
     SolidType solidType;
     transient int used = 0;
+
     Solid(SolidType solidType, double x, double y) {
-        super(1,1,x, y);
+        super(1, 1, x, y);
         this.solidType = solidType;
     }
 
@@ -15,23 +22,15 @@ public class Solid extends Block {
 
     @Override
     boolean Pushed(Direction D) {
-        if(D == Direction.Down)
-        {
-            if(solidType == SolidType.Coins && used < 5){
-                Manager.getInstance().CurrentSection().Add(new Coin(X, Y+1));
+        if (D == Direction.Down) {
+            if (solidType == SolidType.Coins && used < 5) {
+                Manager.getInstance().CurrentSection().Add(new Coin(X, Y + 1));
                 used++;
-            }
-            else if(solidType == SolidType.Prize) {
+            } else if (solidType == SolidType.Prize) {
                 // TODO: show prize
                 solidType = SolidType.Simple;
             }
         }
         return false;
     }
-}
-
-enum SolidType {
-    Simple,
-    Coins,
-    Prize
 }

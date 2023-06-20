@@ -45,12 +45,12 @@ public class Section {
     void Level0Section0(Section S) {
         S.W = 45;
         S.wholeTime = 100;
-        S.Add(new Spring(1,3));
-        S.Add(new Solid(SolidType.Prize,2, 5));
-        S.Add(new Solid(SolidType.Coins,3, 5));
-        S.Add(new Solid(SolidType.Simple,4, 5));
-        S.Add(new Soft(SoftType.Coin,3, 9));
-        S.Add(new Soft(SoftType.Simple,4, 9));
+        S.Add(new Spring(1, 3));
+        S.Add(new Solid(SolidType.Prize, 2, 5));
+        S.Add(new Solid(SolidType.Coins, 3, 5));
+        S.Add(new Solid(SolidType.Simple, 4, 5));
+        S.Add(new Soft(SoftType.Coin, 3, 9));
+        S.Add(new Soft(SoftType.Simple, 4, 9));
 
         S.Add(new Brick(9, 2, 0, 0));
         S.Add(new Brick(28, 2, 17, 0));

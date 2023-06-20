@@ -63,6 +63,14 @@ public class Game {
             EndGame();
         else
             timer.start();
+    }
+
+    void EndGame() {
+        if (manager.CurrentUser().maxRating < score)
+            manager.CurrentUser().maxRating = score;
+        manager.CurrentUser().game[manager.CurrentUser().currentGameIndex] = null;
+        gameFrame.setVisible(false);
+        new MainMenu();
     }    public transient Timer timer = new Timer(delayMS, e -> {
         manager.CurrentGame().dieASAP = manager.CurrentGame().nextASAP = false;
         manager.CurrentSection().UpdateBlocks();
@@ -77,14 +85,6 @@ public class Game {
         else if (manager.CurrentGame().nextASAP)
             manager.CurrentGame().NextSection();
     });
-
-    void EndGame() {
-        if (manager.CurrentUser().maxRating < score)
-            manager.CurrentUser().maxRating = score;
-        manager.CurrentUser().game[manager.CurrentUser().currentGameIndex] = null;
-        gameFrame.setVisible(false);
-        new MainMenu();
-    }
 
     void EndSection() {
         timer.stop();
@@ -107,12 +107,18 @@ public class Game {
     }
 
     void Die() {
-        EndSection();
-        mario.heart--;
-        if (mario.heart == 0)
-            EndGame();
-        else
-            timer.start();
+        switch (mario.state) {
+            case mini -> {
+                EndSection();
+                mario.heart--;
+                if (mario.heart == 0)
+                    EndGame();
+                else
+                    timer.start();
+            }
+            case mega -> mario.state = MarioState.mini;
+            case giga -> mario.state = MarioState.mega;
+        }
     }
 
     String State() {
