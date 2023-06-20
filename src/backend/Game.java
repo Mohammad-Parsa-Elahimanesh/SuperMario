@@ -5,12 +5,11 @@ import frontend.MainMenu;
 import frontend.SetGameSettings;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Game {
     final static int delayMS = 30;
     final static double delay = 0.0001 * delayMS;
+    final transient Manager manager = Manager.getInstance();
     public Level[] levels;
     public Mario mario;
     public int levelNumber;
@@ -46,24 +45,24 @@ public class Game {
 
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
-    }    public transient Timer timer = new Timer(delayMS, e -> {
-        Manager.getInstance().CurrentGame().dieASAP = Manager.getInstance().CurrentGame().nextASAP = false;
-        for (Block block : Manager.getInstance().CurrentSection().blocks)
-            block.Update();
-        Manager.getInstance().CurrentGame().mario.CheckGetCoins();
-        Manager.getInstance().CurrentGame().mario.CheckGameState();
-        Manager.getInstance().CurrentSection().spentTimeMS += delayMS;
-        gameFrame.repaint();
-        if (Manager.getInstance().CurrentGame().dieASAP)
-            Manager.getInstance().CurrentGame().Die();
-        else if (Manager.getInstance().CurrentGame().nextASAP)
-            Manager.getInstance().CurrentGame().NextSection();
-    });
+    }
 
     void Start() {
         mario.reset();
         timer.start();
-    }
+    }    public transient Timer timer = new Timer(delayMS, e -> {
+        manager.CurrentGame().dieASAP = manager.CurrentGame().nextASAP = false;
+        for (Block block : manager.CurrentSection().blocks)
+            block.Update();
+        manager.CurrentGame().mario.CheckGetCoins();
+        manager.CurrentGame().mario.CheckGameState();
+        manager.CurrentSection().spentTimeMS += delayMS;
+        gameFrame.repaint();
+        if (manager.CurrentGame().dieASAP)
+            manager.CurrentGame().Die();
+        else if (manager.CurrentGame().nextASAP)
+            manager.CurrentGame().NextSection();
+    });
 
     void NextSection() {
         EndSection();
@@ -79,21 +78,21 @@ public class Game {
     }
 
     void EndGame() {
-        if (Manager.getInstance().CurrentUser().maxRating < score)
-            Manager.getInstance().CurrentUser().maxRating = score;
-        Manager.getInstance().CurrentUser().game[Manager.getInstance().CurrentUser().currentGameIndex] = null;
+        if (manager.CurrentUser().maxRating < score)
+            manager.CurrentUser().maxRating = score;
+        manager.CurrentUser().game[manager.CurrentUser().currentGameIndex] = null;
         gameFrame.setVisible(false);
         new MainMenu();
     }
 
     void EndSection() {
         timer.stop();
-        score += (Manager.getInstance().CurrentSection().wholeTime - Manager.getInstance().CurrentSection().spentTimeMS / 1000) * (mario.power + 1);
+        score += (manager.CurrentSection().wholeTime - manager.CurrentSection().spentTimeMS / 1000) * (mario.power + 1);
         score += mario.heart * 20 * (mario.power + 1);
         mario.reset();
-        Manager.getInstance().CurrentUser().coin += coins;
+        manager.CurrentUser().coin += coins;
         coins = 0;
-        Manager.getInstance().CurrentSection().spentTimeMS = 0;
+        manager.CurrentSection().spentTimeMS = 0;
     }
 
     public void Stop() {
@@ -119,119 +118,11 @@ public class Game {
         return "Level: " + (levelNumber + 1) + " Section: " + (sectionNumber + 1);
     }
 
-    void Level0Section0(Level.Section S) {
-        S.W = 45;
-        S.wholeTime = 100;
-        MakeSection.AddBrick(S, 9, 2, 0, 0);
-        MakeSection.AddBrick(S, 28, 2, 17, 0);
-
-        MakeSection.AddBrick(S, 2, 1, 2, 2);
-        MakeSection.AddBrick(S, 2, 1, 4, 4);
-        MakeSection.AddBrick(S, 2, 1, 6, 6);
-        MakeSection.AddBrick(S, 1, 8, 10, 0);
-        MakeSection.AddBrick(S, 1, 10, 13, 0);
-        MakeSection.AddBrick(S, 1, 12, 17, 0);
-
-        Coin[] coinsWaterfall = new Coin[6];
-        for (int i = 0; i < coinsWaterfall.length; i++) coinsWaterfall[i] = new Coin();
-        coinsWaterfall[0].setShape(1, 1, 20, 15);
-        coinsWaterfall[1].setShape(1, 1, 21, 13);
-        coinsWaterfall[2].setShape(1, 1, 22, 11);
-        coinsWaterfall[3].setShape(1, 1, 23, 9);
-        coinsWaterfall[4].setShape(1, 1, 24, 7);
-        coinsWaterfall[5].setShape(1, 1, 25, 5);
-
-        Coin[] coinInLine = new Coin[7];
-        for (int i = 0; i < coinInLine.length; i++) {
-            coinInLine[i] = new Coin();
-            coinInLine[i].setShape(1, 1, 28 + i, 8);
-        }
-        MakeSection.AddBrick(S, 7, 1, 28, 6);
-
-        for (Coin coin : coinsWaterfall) S.Add(coin);
-        for (Coin coin : coinInLine) S.Add(coin);
-        S.Add(mario);
-    }
-
-    void Level0Section1(Level.Section S) {
-        S.W = 60;
-        S.wholeTime = 100;
-        MakeSection.AddBrick(S, 10, 2, 0, 0);
-        MakeSection.AddBrick(S, 9, 2, 11, 0);
-        MakeSection.AddBrick(S, 8, 2, 22, 0);
-        MakeSection.AddBrick(S, 7, 2, 33, 0);
-        MakeSection.AddBrick(S, 6, 2, 44, 0);
-        MakeSection.AddBrick(S, 5, 2, 55, 0);
-        Coin[] coins = new Coin[25];
-        for (int i = 0; i < coins.length; i++) {
-            coins[i] = new Coin();
-            coins[i].setShape(1, 1, i * 2 + 2, 4 + (int) (Math.random() * 4));
-            S.Add(coins[i]);
-        }
-
-        S.Add(mario);
-    }
-
-    void Level0Section2(Level.Section S) {
-        S.W = 75;
-        S.wholeTime = 100;
-        MakeSection.AddPipe(S, 0, 1);
-        MakeSection.AddPipe(S, 4, 2);
-        MakeSection.AddPipeWithKillerPlant(S, 8, 3);
-        MakeSection.AddPipe(S, 12, 4);
-        MakeSection.AddPipeWithKillerPlant(S, 16, 5);
-        MakeSection.AddPipe(S, 20, 6);
-
-        for (int i = 25; i < 45; i += 3)
-            MakeSection.AddBrick(S, 1, 1, i, (int) (Math.random() * 7));
-
-        for (int i = 0; i < 6; i++)
-            MakeSection.AddPipeWithKillerPlant(S, 46 + 4 * i, i + 1, 10 - i);
-
-        MakeSection.AddBrick(S, 2, 2, 73, 0);
-
-        S.Add(mario);
-    }
-
     public enum Difficulty {
         Easy,
         Medium,
         Hard
     }
-
-    public class Level {
-        public Section[] sections;
-
-        Level(int level) {
-            if (level == 0)
-                sections = new Section[]{new Section(0, 0), new Section(0, 1), new Section(0, 2)};
-        }
-
-        public class Section {
-            public List<Block> blocks = new ArrayList<>();
-            public int W;
-            public int wholeTime;
-            public int spentTimeMS = 0;
-
-            Section(int level, int section) {
-                MakeSection.AddBrick(this, 1, 30, -1, 0);
-                if (level == 0) {
-                    if (section == 0) Level0Section0(this);
-                    else if (section == 1) Level0Section1(this);
-                    else Level0Section2(this);
-                }
-            }
-
-            void Add(Block B) {
-                blocks.add(B);
-            }
-
-            void Del(Block B) {
-                blocks.remove(B);
-            }
-        }
-    }
-
 
 
 

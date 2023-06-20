@@ -20,7 +20,7 @@ public class Manager {
         return CurrentUser().game[CurrentUser().currentGameIndex];
     }
 
-    public Game.Level.Section CurrentSection() {
+    public Section CurrentSection() {
         return CurrentGame().levels[CurrentGame().levelNumber].sections[CurrentGame().sectionNumber];
     }
 
