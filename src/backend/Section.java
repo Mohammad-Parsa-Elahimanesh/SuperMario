@@ -82,10 +82,9 @@ public class Section {
         S.Add(new Brick(7, 2, 33, 0));
         S.Add(new Brick(6, 2, 44, 0));
         S.Add(new Brick(5, 2, 55, 0));
-        Coin[] coins = new Coin[25];
-        for (int i = 0; i < coins.length; i++) {
-            coins[i] = new Coin(i * 2 + 2, 4 + (int) (Math.random() * 4));
-            S.Add(coins[i]);
+
+        for (int i = 0; i < 20; i++) {
+            S.Add(new Solid(SolidType.Prize,i * 3 + 2, 3 + (int) (Math.random() * 4)));
         }
     }
 

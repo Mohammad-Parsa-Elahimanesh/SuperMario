@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public class Game {
     final static int delayMS = 30;
-    final static double delay = 0.0001 * delayMS;
+    final static double delay = 0.001 * delayMS;
     public Level[] levels;
     public Mario mario;
     public int levelNumber;

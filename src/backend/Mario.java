@@ -33,8 +33,8 @@ public abstract class Mario extends Block implements Saleable {
         this.heart = heart;
     }
 
-    public int getSpeed() {
-        return 75;
+    int getSpeed() {
+        return 8;
     }
 
     int getCoinRange() {
@@ -46,7 +46,7 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     int getJumpSpeed() {
-        return 105;
+        return 20;
     }
 
     @Override
@@ -87,8 +87,13 @@ public abstract class Mario extends Block implements Saleable {
     void Intersect(Block block) {
         if (block instanceof KillerPlant)
             manager.CurrentGame().dieASAP = true;
-        if (block instanceof Flower) {
+        else if (block instanceof Flower) {
             manager.CurrentGame().score += 20;
+            Upgrade();
+            manager.CurrentSection().Del(block);
+        }
+        else if(block instanceof Mushroom) {
+            manager.CurrentGame().score += 30;
             Upgrade();
             manager.CurrentSection().Del(block);
         }
