@@ -28,10 +28,9 @@ public class Solid extends Block {
                 Manager.getInstance().CurrentSection().Add(new Coin(X, Y + 1));
                 used++;
             } else if (solidType == SolidType.Prize) {
-                Manager.getInstance().CurrentSection().Add(Item.RandomItem(X, Y+1));
+                Manager.getInstance().CurrentSection().Add(Item.RandomItem(X, Y + 1));
                 solidType = SolidType.Simple;
-            }
-            else
+            } else
                 Manager.getInstance().CurrentGame().score -= 1;
         }
         return false;

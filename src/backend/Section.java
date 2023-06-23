@@ -84,7 +84,7 @@ public class Section {
         S.Add(new Brick(5, 2, 55, 0));
 
         for (int i = 0; i < 20; i++) {
-            S.Add(new Solid(SolidType.Prize,i * 3 + 2, 3 + (int) (Math.random() * 4)));
+            S.Add(new Solid(SolidType.Prize, i * 3 + 2, 3 + (int) (Math.random() * 4)));
         }
     }
 

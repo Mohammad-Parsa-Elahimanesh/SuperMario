@@ -17,20 +17,11 @@ public abstract class Mario extends Block implements Saleable {
     public int heart;
     public Map<Direction, Boolean> task = new HashMap<>();
     int upAndDownBoth = 0;
-    int jump;
-    int power;
     MarioState state = MarioState.mini;
 
     Mario() {
         super(1, 1, 0, 2);
         reset();
-    }
-
-    // TODO power
-    void Set(int jump, int power, int heart) {
-        this.jump = jump;
-        this.power = power;
-        this.heart = heart;
     }
 
     int getSpeed() {
@@ -54,12 +45,28 @@ public abstract class Mario extends Block implements Saleable {
         return true;
     }
 
-    private boolean isDirection(Direction d) {return task.get(d) && !task.get(d.Opposite());}
+    private boolean isDirection(Direction d) {
+        return task.get(d) && !task.get(d.Opposite());
+    }
+
+    int getPowerLevel() {
+        switch (state) {
+            case mini -> {
+                return 1;
+            }
+            case mega -> {
+                return 2;
+            }
+            case giga -> {
+                return 3;
+            }
+        }
+        return 0;
+    }
 
     void reset() {
         for (Direction direction : Direction.values())
             task.put(direction, false);
-        jump = power = 0;
         vx = vy = 0;
         upAndDownBoth = 0;
         W = 1;
@@ -91,8 +98,7 @@ public abstract class Mario extends Block implements Saleable {
             manager.CurrentGame().score += 20;
             Upgrade();
             manager.CurrentSection().Del(block);
-        }
-        else if(block instanceof Mushroom) {
+        } else if (block instanceof Mushroom) {
             manager.CurrentGame().score += 30;
             Upgrade();
             manager.CurrentSection().Del(block);
@@ -119,7 +125,7 @@ public abstract class Mario extends Block implements Saleable {
     void Update() {
         switch (state) {
             case mini -> H = 1;
-            case mega, giga -> H = isDirection(Direction.Down)?1:2;
+            case mega, giga -> H = isDirection(Direction.Down) ? 1 : 2;
         }
         UpdateSpeed();
         super.Update();
@@ -151,7 +157,7 @@ public abstract class Mario extends Block implements Saleable {
         for (Block coin : mustBeEaten)
             manager.CurrentSection().Del(coin);
         manager.CurrentGame().coins += mustBeEaten.size();
-        manager.CurrentGame().score += mustBeEaten.size() * 10 * (power + 1);
+        manager.CurrentGame().score += mustBeEaten.size() * 10;
     }
 
     // TODO for score calculation

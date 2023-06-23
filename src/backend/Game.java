@@ -6,6 +6,8 @@ import frontend.SetGameSettings;
 
 import javax.swing.*;
 
+import static backend.MarioState.mini;
+
 public class Game {
     final static int delayMS = 30;
     final static double delay = 0.001 * delayMS;
@@ -35,7 +37,7 @@ public class Game {
         levelNumber = sectionNumber = 0;
         levels = new Level[]{new Level(0)};
         gameFrame.setVisible(true);
-        mario.Set(0, 0, 3);
+        mario.heart = 3;
         Start();
     }
 
@@ -75,8 +77,8 @@ public class Game {
 
     void EndSection() {
         timer.stop();
-        score += (manager.CurrentSection().wholeTime - manager.CurrentSection().spentTimeMS / 1000) * (mario.power + 1);
-        score += mario.heart * 20 * (mario.power + 1);
+        score += (manager.CurrentSection().wholeTime - manager.CurrentSection().spentTimeMS / 1000) * mario.getPowerLevel();
+        score += mario.heart * 20 * mario.getPowerLevel();
         mario.reset();
         manager.CurrentUser().coin += coins;
         coins = 0;
@@ -86,6 +88,11 @@ public class Game {
     public void Stop() {
         timer.stop();
         gameFrame.setVisible(false);
+    }
+
+    public void Resume() {
+        gameFrame.setVisible(true);
+        timer.start();
     }    public transient Timer timer = new Timer(delayMS, e -> {
         manager.CurrentGame().dieASAP = manager.CurrentGame().nextASAP = false;
         manager.CurrentSection().UpdateBlocks();
@@ -101,12 +108,9 @@ public class Game {
             manager.CurrentGame().NextSection();
     });
 
-    public void Resume() {
-        gameFrame.setVisible(true);
-        timer.start();
-    }
-
     void Die() {
+        if (mario.Y < 0)
+            mario.state = mini;
         switch (mario.state) {
             case mini -> {
                 EndSection();
@@ -117,10 +121,10 @@ public class Game {
                     timer.start();
                 return;
             }
-            case mega -> mario.state = MarioState.mini;
+            case mega -> mario.state = mini;
             case giga -> mario.state = MarioState.mega;
         }
-        mario.vy = mario.getJumpSpeed()*1.5;
+        mario.vy = mario.getJumpSpeed() * 1.5;
         mario.Y += 2;
     }
 
