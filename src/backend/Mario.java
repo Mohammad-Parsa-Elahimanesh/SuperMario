@@ -54,6 +54,8 @@ public abstract class Mario extends Block implements Saleable {
         return true;
     }
 
+    private boolean isDirection(Direction d) {return task.get(d) && !task.get(d.Opposite());}
+
     void reset() {
         for (Direction direction : Direction.values())
             task.put(direction, false);
@@ -100,19 +102,19 @@ public abstract class Mario extends Block implements Saleable {
         else
             upAndDownBoth = 0;
 
-        if (task.get(Direction.Left) && !task.get(Direction.Right))
+        if (isDirection(Direction.Left))
             vx = (vx - getSpeed()) / 2;
-        else if (task.get(Direction.Right) && !task.get(Direction.Left))
+        else if (isDirection(Direction.Right))
             vx = (vx + getSpeed()) / 2;
 
-        if (task.get(Direction.Up) && !task.get(Direction.Down) && Push(Direction.Down) == 0)
+        if (isDirection(Direction.Up) && Push(Direction.Down) == 0)
             vy = getJumpSpeed();
     }
 
     void Update() {
         switch (state) {
             case mini -> H = 1;
-            case mega, giga -> H = 2;
+            case mega, giga -> H = isDirection(Direction.Down)?1:2;
         }
         UpdateSpeed();
         super.Update();

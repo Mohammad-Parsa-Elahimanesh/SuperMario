@@ -49,7 +49,6 @@ public class Game {
 
     void Start() {
         mario.reset();
-        //mario.manager
         timer.start();
     }
 
