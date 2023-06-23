@@ -12,7 +12,7 @@ public class Spring extends Block {
 
     @Override
     boolean Pushed(Direction D) {
-        if (D == Direction.Up)
+        if (Neighbor(Manager.getInstance().CurrentGame().mario, Direction.Up))
             Manager.getInstance().CurrentGame().mario.vy = Manager.getInstance().CurrentGame().mario.getJumpSpeed() * 1.2;
         return false;
     }

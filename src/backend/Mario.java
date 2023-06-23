@@ -1,9 +1,8 @@
 package backend;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 enum MarioState {
     mini,
@@ -18,6 +17,7 @@ public abstract class Mario extends Block implements Saleable {
     public Map<Direction, Boolean> task = new HashMap<>();
     int upAndDownBoth = 0;
     MarioState state = MarioState.mini;
+    transient double dieBye = 0.0;
 
     Mario() {
         super(1, 1, 0, 2);
@@ -92,17 +92,25 @@ public abstract class Mario extends Block implements Saleable {
 
     @Override
     void Intersect(Block block) {
-        if (block instanceof KillerPlant)
-            manager.CurrentGame().dieASAP = true;
-        else if (block instanceof Flower) {
-            manager.CurrentGame().score += 20;
-            Upgrade();
-            manager.CurrentSection().Del(block);
-        } else if (block instanceof Mushroom) {
-            manager.CurrentGame().score += 30;
-            Upgrade();
-            manager.CurrentSection().Del(block);
+        if (block instanceof Enemy) {
+            if(dieBye > 0)
+                manager.CurrentSection().Del(block);
+            else
+                manager.CurrentGame().dieASAP = true;
         }
+        else if (block instanceof Item && !(block instanceof Coin)) {
+            Upgrade();
+            manager.CurrentSection().Del(block);
+            if(block instanceof Flower)
+                manager.CurrentGame().score += 20;
+            else if (block instanceof Mushroom)
+                manager.CurrentGame().score += 30;
+            else if(block instanceof Star) {
+                manager.CurrentGame().score += 40;
+                dieBye = 15;
+            }
+        }
+
     }
 
     void UpdateSpeed() {
@@ -117,12 +125,12 @@ public abstract class Mario extends Block implements Saleable {
             vx = (vx - getSpeed()) / 2;
         else if (isDirection(Direction.Right))
             vx = (vx + getSpeed()) / 2;
-
         if (isDirection(Direction.Up) && Push(Direction.Down) == 0)
             vy = getJumpSpeed();
     }
 
     void Update() {
+        dieBye = Math.max(0, dieBye-Game.delay);
         switch (state) {
             case mini -> H = 1;
             case mega, giga -> H = isDirection(Direction.Down) ? 1 : 2;
@@ -160,6 +168,12 @@ public abstract class Mario extends Block implements Saleable {
         manager.CurrentGame().score += mustBeEaten.size() * 10;
     }
 
+    @Override
+    public void Draw(Graphics g, int cameraLeftLine) {
+        super.Draw(g, cameraLeftLine);
+        if(dieBye > 0)
+            new FireRing(this).Draw(g, cameraLeftLine);
+    }
     // TODO for score calculation
     // Kill enemy 15*(power+1)
     // extra power constant score

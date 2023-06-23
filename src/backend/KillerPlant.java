@@ -1,6 +1,6 @@
 package backend;
 
-public class KillerPlant extends Block {
+public class KillerPlant extends Enemy {
     static int[] Height = {0, 1, 2, 3, 2, 1, 0};
     Pipe home;
 

@@ -6,9 +6,10 @@ abstract public class Item extends Block {
     }
 
     static Item RandomItem(double x, double y) {
-        if (Math.random() < 0.5) return new Coin(x, y);
-        else if (Math.random() < 0.7) return new Mushroom(x, y);
-        else return new Flower(x, y);
+        if (Math.random() < 0.4) return new Coin(x, y);
+        else if (Math.random() < 0.5) return new Mushroom(x, y);
+        else if (Math.random() < 0.6)return new Flower(x, y);
+        else return new Star(x, y);
     }
 
     @Override
