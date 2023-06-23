@@ -21,6 +21,7 @@ public class Soft extends Block {
     @Override
     boolean Pushed(Direction D) {
         if (D == Direction.Down) {
+            Manager.getInstance().CurrentGame().score++;
             if (softType == SoftType.Coin) {
                 Manager.getInstance().CurrentSection().Add(new Coin(X, Y + 1));
                 softType = SoftType.Simple;

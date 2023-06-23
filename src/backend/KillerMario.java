@@ -3,7 +3,7 @@ package backend;
 public class KillerMario extends Mario {
 
     @Override
-    int getShotSpeed() {
+    double getShotSpeed() {
         return 4;
     }
 

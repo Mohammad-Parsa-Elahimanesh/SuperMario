@@ -115,10 +115,13 @@ public class Game {
                     EndGame();
                 else
                     timer.start();
+                return;
             }
             case mega -> mario.state = MarioState.mini;
             case giga -> mario.state = MarioState.mega;
         }
+        mario.vy = mario.getJumpSpeed()*1.5;
+        mario.Y += 2;
     }
 
     String State() {

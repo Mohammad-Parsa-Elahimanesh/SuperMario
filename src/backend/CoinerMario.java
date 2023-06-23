@@ -2,7 +2,7 @@ package backend;
 
 public class CoinerMario extends Mario {
     @Override
-    int getCoinRange() {
+    double getCoinRange() {
         return 3;
     }
 

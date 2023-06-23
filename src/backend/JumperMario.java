@@ -2,7 +2,7 @@ package backend;
 
 public class JumperMario extends Mario {
     @Override
-    int getJumpSpeed() {
+    double getJumpSpeed() {
         return super.getJumpSpeed() * 5 / 4;
     }
 

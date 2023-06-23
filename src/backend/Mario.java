@@ -37,15 +37,15 @@ public abstract class Mario extends Block implements Saleable {
         return 8;
     }
 
-    int getCoinRange() {
+    double getCoinRange() {
         return 0;
     }
 
-    int getShotSpeed() {
+    double getShotSpeed() {
         return 3;
     }
 
-    int getJumpSpeed() {
+    double getJumpSpeed() {
         return 20;
     }
 
@@ -79,7 +79,7 @@ public abstract class Mario extends Block implements Saleable {
 
     @Override
     boolean Pushed(Direction D) {
-        return false;
+        return true;
     }
 
 

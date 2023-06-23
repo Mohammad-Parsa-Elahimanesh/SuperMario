@@ -9,7 +9,7 @@ import java.util.Map;
 
 public abstract class Block {
     final static double G = 35;
-    final static double MAX_MOVE = 3;
+    final static double MAX_MOVE = 2;
     final static double eps = 0.1;
     static Map<String, Image> images = new HashMap<String, Image>();
     public double X, W, H, Y;
