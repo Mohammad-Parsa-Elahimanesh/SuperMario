@@ -1,5 +1,5 @@
 import backend.Manager;
-import frontend.EnterPage;
+import frontend.login.EnterPage;
 
 import java.io.IOException;
 

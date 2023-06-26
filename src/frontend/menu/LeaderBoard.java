@@ -1,4 +1,4 @@
-package frontend;
+package frontend.menu;
 
 import backend.Manager;
 import backend.User;

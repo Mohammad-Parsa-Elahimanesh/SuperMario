@@ -1,4 +1,4 @@
-package frontend;
+package frontend.menu.game;
 
 import backend.Game;
 import backend.Manager;

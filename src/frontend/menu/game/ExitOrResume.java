@@ -1,6 +1,7 @@
-package frontend;
+package frontend.menu.game;
 
 import backend.Manager;
+import frontend.menu.MainMenu;
 
 import javax.swing.*;
 import java.awt.*;

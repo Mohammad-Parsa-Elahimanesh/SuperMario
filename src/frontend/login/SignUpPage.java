@@ -1,17 +1,20 @@
-package frontend;
+package frontend.login;
 
 import backend.Manager;
 import backend.User;
+import frontend.Massage;
+import frontend.tile.TileButton;
+import frontend.tile.TileTextField;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class SignInPage extends JFrame {
+public class SignUpPage extends JFrame {
     TileTextField userName = UserNameField(), password = PasswordField();
     TileButton enter = Enter(), back = Back();
 
-    SignInPage() {
+    SignUpPage() {
         super();
         JPanel panel = new JPanel(null);
         setUndecorated(true);
@@ -22,11 +25,6 @@ public class SignInPage extends JFrame {
         panel.add(back);
         add(panel);
         setVisible(true);
-    }
-
-    static void SignIn(User user) {
-        Manager.getInstance().superMario.currentUser = user;
-        new MainMenu();
     }
 
     TileTextField UserNameField() {
@@ -52,16 +50,14 @@ public class SignInPage extends JFrame {
         enter.setTileSize(4, 1);
         enter.addActionListener(e -> {
             for (User user : Manager.getInstance().superMario.users)
-                if (user.name.equals(userName.getText()))
-                    if (user.password.equals(password.getText())) {
-                        SignIn(user);
-                        dispose();
-                        return;
-                    } else {
-                        new Massage("Password is Wrong !");
-                        return;
-                    }
-            new Massage("User not Found !");
+                if (user.name.equals(userName.getText())) {
+                    new Massage("user already exists");
+                    return;
+                }
+            User user = new User(userName.getText(), password.getText());
+            Manager.getInstance().superMario.users.add(user);
+            SignInPage.SignIn(user);
+            dispose();
         });
         return enter;
     }
@@ -74,8 +70,8 @@ public class SignInPage extends JFrame {
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
                 new EnterPage();
+                dispose();
             }
         });
         return back;

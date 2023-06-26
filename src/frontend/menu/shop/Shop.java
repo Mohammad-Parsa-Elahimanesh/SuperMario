@@ -1,6 +1,9 @@
-package frontend;
+package frontend.menu.shop;
 
 import backend.*;
+import frontend.menu.MainMenu;
+import frontend.tile.TileButton;
+import frontend.tile.TileLabel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +12,7 @@ public class Shop extends JFrame {
     final static int row = 2, column = 3;
     final private transient Manager manager = Manager.getInstance();
 
-    Shop() {
+    public Shop() {
         super();
         JPanel panel = new JPanel(new GridLayout(row, column));
         setUndecorated(true);

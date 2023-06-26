@@ -5,7 +5,7 @@ import backend.Manager;
 import javax.swing.*;
 
 public class Massage extends JFrame {
-    Massage(String s) {
+    public Massage(String s) {
         super();
         setSize(300, 100);
         setLocation((Manager.getInstance().W - getWidth()) / 2, (Manager.getInstance().H - getHeight()) / 2);

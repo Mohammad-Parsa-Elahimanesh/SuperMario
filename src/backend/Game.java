@@ -1,8 +1,8 @@
 package backend;
 
-import frontend.GameFrame;
-import frontend.MainMenu;
-import frontend.SetGameSettings;
+import frontend.menu.game.GameFrame;
+import frontend.menu.MainMenu;
+import frontend.menu.game.SetGameSettings;
 
 import javax.swing.*;
 
@@ -115,7 +115,7 @@ public class Game {
             case mini -> {
                 EndSection();
                 mario.heart--;
-                if (mario.heart == 0)
+                if (mario.heart <= 0)
                     EndGame();
                 else
                     timer.start();

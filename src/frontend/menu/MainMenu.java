@@ -1,6 +1,10 @@
-package frontend;
+package frontend.menu;
 
 import backend.Manager;
+import frontend.login.EnterPage;
+import frontend.menu.game.PlayMenu;
+import frontend.menu.shop.Shop;
+import frontend.tile.TileButton;
 
 import javax.swing.*;
 

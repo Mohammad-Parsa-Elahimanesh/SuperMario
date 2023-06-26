@@ -1,7 +1,9 @@
-package frontend;
+package frontend.menu;
 
 import backend.Game;
 import backend.Manager;
+import frontend.menu.game.PlayMenu;
+import frontend.tile.TileButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +12,7 @@ public class LoadGamePanel extends JPanel {
     final int indexGame;
     final PlayMenu playMenu;
 
-    LoadGamePanel(int indexGameInit, PlayMenu playMenuInit) {
+    public LoadGamePanel(int indexGameInit, PlayMenu playMenuInit) {
         super();
         indexGame = indexGameInit;
         playMenu = playMenuInit;
