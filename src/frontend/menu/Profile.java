@@ -1,7 +1,7 @@
 package frontend.menu;
 
 import backend.Manager;
-import backend.Mario;
+import backend.block.mario.Mario;
 
 import javax.swing.*;
 import java.awt.*;

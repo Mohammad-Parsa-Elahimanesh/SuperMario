@@ -1,4 +1,7 @@
-package backend;
+package backend.block;
+
+import backend.Manager;
+import backend.gamePlay.Game;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -13,13 +16,13 @@ public abstract class Block {
     final static double eps = 0.1;
     static Map<String, Image> images = new HashMap<String, Image>();
     public double X, W, H, Y;
-    double vx = 0, vy = 0;
+    protected double vx = 0, vy = 0;
 
-    Block(double w, double h, double x, double y) {
+    protected Block(double w, double h, double x, double y) {
         setShape(w, h, x, y);
     }
 
-    boolean Neighbor(Block other) {
+    protected boolean Neighbor(Block other) {
         double x = DistanceHorizontal(other);
         double y = DistanceVertical(other);
         return Math.min(x, y) < 0 && Math.max(x, y) == 0;
@@ -36,7 +39,7 @@ public abstract class Block {
                     ((side == Direction.Down && other.Y + other.H <= Y) || (side == Direction.Up && Y + H <= other.Y));
     }
 
-    boolean Neighbor(Block other, Direction direction) {
+    protected boolean Neighbor(Block other, Direction direction) {
         return Neighbor(other) && Side(other, direction);
     }
 
@@ -48,7 +51,7 @@ public abstract class Block {
         return Math.max(0, DistanceHorizontal(other)) + Math.max(0, DistanceVertical(other));
     }
 
-    double Distance(Block other) {
+    protected double Distance(Block other) {
         return Math.sqrt(Math.pow(Math.max(0, DistanceHorizontal(other)), 2)
                 + Math.pow(Math.max(0, DistanceVertical(other)), 2));
     }
@@ -68,7 +71,7 @@ public abstract class Block {
         Y = y;
     }
 
-    abstract String getImageName();
+    protected abstract String getImageName();
 
     public Image getImage() {
         if (!images.containsKey(getImageName())) {
@@ -81,7 +84,7 @@ public abstract class Block {
         return images.get(getImageName());
     }
 
-    double Push(Direction direction) {
+    protected double Push(Direction direction) {
         double canMove = MAX_MOVE;
         for (Block block : Manager.getInstance().CurrentSection().blocks)
             if (Neighbor(block, direction)) {
@@ -92,13 +95,13 @@ public abstract class Block {
         return canMove;
     }
 
-    abstract boolean Pushed(Direction D);
+    protected abstract boolean Pushed(Direction D);
 
-    boolean doesGravityAffects() {
+    protected boolean doesGravityAffects() {
         return false;
     }
 
-    void Intersect(Block block) {
+    protected void Intersect(Block block) {
     }
 
     public void Draw(Graphics g, int cameraLeftLine) {
@@ -107,7 +110,7 @@ public abstract class Block {
         }
     }
 
-    void Update() {
+    public void Update() {
         if (Math.abs(vx) < eps)
             vx = 0;
         if (Math.abs(vy) < eps)

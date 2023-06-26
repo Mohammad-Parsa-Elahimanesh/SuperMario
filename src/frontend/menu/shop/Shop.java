@@ -1,6 +1,10 @@
 package frontend.menu.shop;
 
-import backend.*;
+import backend.Manager;
+import backend.block.mario.CoinerMario;
+import backend.block.mario.FasterMario;
+import backend.block.mario.JumperMario;
+import backend.block.mario.KillerMario;
 import frontend.menu.MainMenu;
 import frontend.tile.TileButton;
 import frontend.tile.TileLabel;

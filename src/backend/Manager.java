@@ -1,5 +1,8 @@
 package backend;
 
+import backend.gamePlay.Game;
+import backend.gamePlay.Section;
+
 public class Manager {
     static private final Manager singleton = new Manager();
     public SuperMario superMario;

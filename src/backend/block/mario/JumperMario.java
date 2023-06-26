@@ -1,8 +1,8 @@
-package backend;
+package backend.block.mario;
 
 public class JumperMario extends Mario {
     @Override
-    double getJumpSpeed() {
+    public double getJumpSpeed() {
         return super.getJumpSpeed() * 5 / 4;
     }
 

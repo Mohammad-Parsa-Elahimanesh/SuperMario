@@ -1,4 +1,4 @@
-package backend;
+package backend.block;
 
 public class Pipe extends Block {
     public Pipe(double x, double h) {
@@ -6,12 +6,12 @@ public class Pipe extends Block {
     }
 
     @Override
-    String getImageName() {
+    protected String getImageName() {
         return "Pipe.png";
     }
 
     @Override
-    boolean Pushed(Direction D) {
+    protected boolean Pushed(Direction D) {
         return false;
     }
 }

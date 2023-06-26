@@ -1,4 +1,4 @@
-package backend;
+package backend.block.mario;
 
 public class KillerMario extends Mario {
 

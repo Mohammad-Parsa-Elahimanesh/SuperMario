@@ -1,4 +1,6 @@
-package backend;
+package backend.block.mario;
+
+import backend.block.Block;
 
 public class SimpleMario extends Mario {
 
@@ -16,7 +18,7 @@ public class SimpleMario extends Mario {
 
     @Override
     public String getImageName() {
-        return (task.get(Direction.Down) && !task.get(Direction.Up) && state != MarioState.mini ? "Seating" : "") +
+        return (task.get(Block.Direction.Down) && !task.get(Block.Direction.Up) && state != MarioState.mini ? "Seating" : "") +
                 (state == MarioState.giga ? "Giga" : "") +
                 "SimpleMario.png";
     }

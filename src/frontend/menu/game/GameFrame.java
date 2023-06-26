@@ -1,7 +1,7 @@
 package frontend.menu.game;
 
-import backend.Block;
 import backend.Manager;
+import backend.block.Block;
 
 import javax.swing.*;
 import java.awt.*;

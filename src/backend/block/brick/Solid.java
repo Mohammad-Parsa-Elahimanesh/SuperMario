@@ -1,27 +1,26 @@
-package backend;
+package backend.block.brick;
 
-enum SolidType {
-    Simple,
-    Coins,
-    Prize
-}
+import backend.Manager;
+import backend.block.Block;
+import backend.block.item.Coin;
+import backend.block.item.Item;
 
 public class Solid extends Block {
     SolidType solidType;
     transient int used = 0;
 
-    Solid(SolidType solidType, double x, double y) {
+    public Solid(SolidType solidType, double x, double y) {
         super(1, 1, x, y);
         this.solidType = solidType;
     }
 
     @Override
-    String getImageName() {
+    protected String getImageName() {
         return solidType == SolidType.Prize ? "prize.png" : "solid.png";
     }
 
     @Override
-    boolean Pushed(Direction D) {
+    protected boolean Pushed(Direction D) {
         if (D == Direction.Down) {
             Manager.getInstance().CurrentGame().score += 1;
             if (solidType == SolidType.Coins && used < 5) {

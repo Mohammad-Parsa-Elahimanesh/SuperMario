@@ -1,5 +1,8 @@
 package backend;
 
+import backend.block.Saleable;
+import backend.block.mario.*;
+
 import java.util.ArrayList;
 import java.util.List;
 

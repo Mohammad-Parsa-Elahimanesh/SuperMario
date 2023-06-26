@@ -1,4 +1,4 @@
-package backend;
+package backend.block.item;
 
 public class Coin extends Item {
     public Coin(double x, double y) {
@@ -6,7 +6,7 @@ public class Coin extends Item {
     }
 
     @Override
-    String getImageName() {
+    protected String getImageName() {
         return "Coin.png";
     }
 }

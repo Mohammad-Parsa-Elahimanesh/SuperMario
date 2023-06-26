@@ -1,7 +1,7 @@
 package frontend.menu.game;
 
-import backend.Game;
 import backend.Manager;
+import backend.gamePlay.Game;
 
 import javax.swing.*;
 

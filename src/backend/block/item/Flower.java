@@ -1,4 +1,4 @@
-package backend;
+package backend.block.item;
 
 public class Flower extends Item {
     Flower(double x, double y) {
@@ -6,7 +6,7 @@ public class Flower extends Item {
     }
 
     @Override
-    String getImageName() {
+    protected String getImageName() {
         return "flower.png";
     }
 }

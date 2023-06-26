@@ -1,5 +1,10 @@
 package backend;
 
+import backend.block.Saleable;
+import backend.block.mario.Mario;
+import backend.block.mario.SimpleMario;
+import backend.gamePlay.Game;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +15,7 @@ public class User {
     public int coin = 0;
     public int maxRating = -1;
     public List<String> bought = new ArrayList<>();
-    int currentGameIndex = -1;
+    public int currentGameIndex = -1;
 
     public User(String name, String password) {
         this.name = name;

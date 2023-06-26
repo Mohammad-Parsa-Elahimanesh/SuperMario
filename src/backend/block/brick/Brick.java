@@ -1,4 +1,6 @@
-package backend;
+package backend.block.brick;
+
+import backend.block.Block;
 
 import java.awt.*;
 
@@ -9,12 +11,12 @@ public class Brick extends Block {
     }
 
     @Override
-    boolean Pushed(Direction D) {
+    protected boolean Pushed(Direction D) {
         return false;
     }
 
     @Override
-    String getImageName() {
+    protected String getImageName() {
         return "Brick.png";
     }
 

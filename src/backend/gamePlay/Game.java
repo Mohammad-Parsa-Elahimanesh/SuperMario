@@ -1,28 +1,31 @@
-package backend;
+package backend.gamePlay;
 
-import frontend.menu.game.GameFrame;
+import backend.Manager;
+import backend.block.Block;
+import backend.block.mario.Mario;
+import backend.block.mario.MarioState;
 import frontend.menu.MainMenu;
+import frontend.menu.game.GameFrame;
 import frontend.menu.game.SetGameSettings;
 
 import javax.swing.*;
 
-import static backend.MarioState.mini;
-
 public class Game {
     final static int delayMS = 30;
-    final static double delay = 0.001 * delayMS;
+    public final static double delay = 0.001 * delayMS;
     public Level[] levels;
     public Mario mario;
     public int levelNumber;
     public int sectionNumber;
     public int score = 0;
     public int coins = 0;
+    public boolean dieASAP;
+    public boolean nextASAP;
     transient Manager manager = Manager.getInstance();
     transient GameFrame gameFrame = new GameFrame();
     Difficulty difficulty;
-    boolean dieASAP, nextASAP;
 
-    Game() {
+    public Game() {
         new SetGameSettings();
     }
 
@@ -93,6 +96,35 @@ public class Game {
     public void Resume() {
         gameFrame.setVisible(true);
         timer.start();
+    }
+
+    void Die() {
+        if (mario.Y < 0)
+            mario.state = MarioState.mini;
+        switch (mario.state) {
+            case mini -> {
+                EndSection();
+                mario.heart--;
+                if (mario.heart <= 0)
+                    EndGame();
+                else
+                    timer.start();
+                return;
+            }
+            case mega -> mario.state = MarioState.mini;
+            case giga -> mario.state = MarioState.mega;
+        }
+        mario.BeAlive();
+    }
+
+    String State() {
+        return "Level: " + (levelNumber + 1) + " Section: " + (sectionNumber + 1);
+    }
+
+    public enum Difficulty {
+        Easy,
+        Medium,
+        Hard
     }    public transient Timer timer = new Timer(delayMS, e -> {
         manager.CurrentGame().dieASAP = manager.CurrentGame().nextASAP = false;
         manager.CurrentSection().UpdateBlocks();
@@ -107,36 +139,6 @@ public class Game {
         else if (manager.CurrentGame().nextASAP)
             manager.CurrentGame().NextSection();
     });
-
-    void Die() {
-        if (mario.Y < 0)
-            mario.state = mini;
-        switch (mario.state) {
-            case mini -> {
-                EndSection();
-                mario.heart--;
-                if (mario.heart <= 0)
-                    EndGame();
-                else
-                    timer.start();
-                return;
-            }
-            case mega -> mario.state = mini;
-            case giga -> mario.state = MarioState.mega;
-        }
-        mario.vy = mario.getJumpSpeed() * 1.5;
-        mario.Y += 2;
-    }
-
-    String State() {
-        return "Level: " + (levelNumber + 1) + " Section: " + (sectionNumber + 1);
-    }
-
-    public enum Difficulty {
-        Easy,
-        Medium,
-        Hard
-    }
 
 
 

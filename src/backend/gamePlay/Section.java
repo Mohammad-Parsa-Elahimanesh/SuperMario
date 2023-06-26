@@ -1,4 +1,11 @@
-package backend;
+package backend.gamePlay;
+
+import backend.Manager;
+import backend.block.Block;
+import backend.block.KillerPlant;
+import backend.block.Pipe;
+import backend.block.brick.*;
+import backend.block.item.Coin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +34,11 @@ public class Section {
         S.Add(new KillerPlant(pipe));
     }
 
-    void Add(Block B) {
+    public void Add(Block B) {
         mustBeAdded.add(B);
     }
 
-    void Del(Block B) {
+    public void Del(Block B) {
         mustBeRemoved.add(B);
     }
 

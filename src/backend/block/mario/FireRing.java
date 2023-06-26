@@ -1,17 +1,19 @@
-package backend;
+package backend.block.mario;
 
-public class FireRing extends Block{
+import backend.block.Block;
+
+public class FireRing extends Block {
     FireRing(Block block) {
         super(block.W, block.H, block.X, block.Y);
     }
 
     @Override
-    String getImageName() {
+    protected String getImageName() {
         return "FireRing.png";
     }
 
     @Override
-    boolean Pushed(Direction D) {
+    protected boolean Pushed(Direction D) {
         return false;
     }
 }

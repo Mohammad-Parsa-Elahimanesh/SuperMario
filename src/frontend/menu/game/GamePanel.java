@@ -1,8 +1,8 @@
 package frontend.menu.game;
 
-import backend.Block;
-import backend.Game;
 import backend.Manager;
+import backend.block.Block;
+import backend.gamePlay.Game;
 
 import javax.swing.*;
 import java.awt.*;

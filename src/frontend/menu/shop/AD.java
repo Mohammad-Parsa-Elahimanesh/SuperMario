@@ -1,8 +1,8 @@
 package frontend.menu.shop;
 
 import backend.Manager;
-import backend.Saleable;
 import backend.User;
+import backend.block.Saleable;
 import frontend.Massage;
 import frontend.tile.TileButton;
 
