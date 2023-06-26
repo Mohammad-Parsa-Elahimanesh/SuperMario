@@ -4,7 +4,8 @@ public class Level {
     public Section[] sections;
 
     Level(int level) {
-        if (level == 0)
-            sections = new Section[]{new Section(0, 0), new Section(0, 1), new Section(0, 2)};
+        sections = new Section[4];
+        for(int i = 0; i < 4; i++)
+            sections[i] = new Section(level, i);
     }
 }

@@ -2,7 +2,7 @@ package backend.block.mario;
 
 import backend.Manager;
 import backend.block.Block;
-import backend.block.Enemy;
+import backend.block.enemy.Enemy;
 import backend.block.Saleable;
 import backend.block.brick.Spring;
 import backend.block.item.*;

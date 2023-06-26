@@ -1,6 +1,8 @@
-package backend.block;
+package backend.block.enemy;
 
 import backend.Manager;
+import backend.block.Block;
+import backend.block.Pipe;
 
 public class KillerPlant extends Enemy {
     static int[] Height = {0, 1, 2, 3, 2, 1, 0};
@@ -17,7 +19,7 @@ public class KillerPlant extends Enemy {
     }
 
     @Override
-    protected boolean Pushed(Direction D) {
+    protected boolean Pushed(Block.Direction D) {
         return true;
     }
 
