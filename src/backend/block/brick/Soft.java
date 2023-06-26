@@ -20,7 +20,7 @@ public class Soft extends Block {
 
     @Override
     protected boolean Pushed(Direction D) {
-        if (D == Direction.Down && Neighbor(Manager.getInstance().CurrentGame().mario)) {
+        if (Neighbor(Manager.getInstance().CurrentGame().mario, Direction.Down)) {
             Manager.getInstance().CurrentGame().score++;
             if (softType == SoftType.Coin) {
                 Manager.getInstance().CurrentSection().Add(new Coin(X, Y + 1));

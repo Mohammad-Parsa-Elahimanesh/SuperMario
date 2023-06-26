@@ -189,3 +189,5 @@ public abstract class Mario extends Block implements Saleable {
             new FireRing(this).Draw(g, cameraLeftLine);
     }
 }
+
+// TODO: 3 coins when kill enemy!

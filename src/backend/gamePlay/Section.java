@@ -2,6 +2,7 @@ package backend.gamePlay;
 
 import backend.Manager;
 import backend.block.Block;
+import backend.block.enemy.Goomba;
 import backend.block.enemy.KillerPlant;
 import backend.block.Pipe;
 import backend.block.brick.*;
@@ -56,6 +57,10 @@ public class Section {
         wholeTime = 100;
         Add(new Brick(60, 1, 0, 0));
         Add(new Brick(40, 1, 10, 1));
+        Add(new Goomba(20,2));
+        Add(new Goomba(30,2));
+        Add(new Goomba(40,2));
+
     }
     void Level0Section1() {
         W = 45;

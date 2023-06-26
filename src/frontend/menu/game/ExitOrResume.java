@@ -24,6 +24,7 @@ public class ExitOrResume extends JFrame {
         exitGame.addActionListener(e -> {
             setVisible(false);
             new MainMenu();
+            dispose();
         });
         exitGame.setToolTipText("Your progress will be saved !");
         return exitGame;
@@ -33,6 +34,7 @@ public class ExitOrResume extends JFrame {
         JButton resumeGame = new JButton("Continue ...");
         resumeGame.addActionListener(e -> {
             Manager.getInstance().CurrentGame().Resume();
+            dispose();
         });
         return resumeGame;
     }
