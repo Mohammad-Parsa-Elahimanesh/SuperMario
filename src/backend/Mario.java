@@ -69,6 +69,7 @@ public abstract class Mario extends Block implements Saleable {
             task.put(direction, false);
         vx = vy = 0;
         upAndDownBoth = 0;
+        dieBye = 0;
         W = 1;
         H = 1;
         X = 0;
