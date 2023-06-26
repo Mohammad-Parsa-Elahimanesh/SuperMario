@@ -15,14 +15,14 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Mario extends Block implements Saleable {
-    final static double FRICTION = 0.8;
+    final static double FRICTION = 0.7;
     final transient Manager manager = Manager.getInstance();
     public int heart;
     public Map<Direction, Boolean> task = new HashMap<>();
     public MarioState state = MarioState.mini;
     int upAndDownBoth = 0;
     transient double dieBye = 0.0;
-
+    transient boolean dieASAP = false;
     Mario() {
         super(1, 1, 0, 2);
         reset();
@@ -48,7 +48,7 @@ public abstract class Mario extends Block implements Saleable {
     protected boolean doesGravityAffects() {
         return true;
     }
-
+    public boolean mustBeDied(){return dieASAP;}
     private boolean isDirection(Direction d) {
         return task.get(d) && !task.get(d.Opposite());
     }
@@ -101,7 +101,7 @@ public abstract class Mario extends Block implements Saleable {
             if (dieBye > 0)
                 manager.CurrentSection().Del(block);
             else
-                manager.CurrentGame().dieASAP = true;
+                dieASAP = true;
         } else if (block instanceof Item && !(block instanceof Coin)) {
             Upgrade();
             manager.CurrentSection().Del(block);
@@ -114,7 +114,7 @@ public abstract class Mario extends Block implements Saleable {
                 dieBye = 15;
             }
         } else if (block instanceof Spring) {
-            vy = getJumpSpeed() * 1.2;
+            vy = getJumpSpeed() * 1.3;
         }
 
     }
@@ -136,6 +136,7 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     public void Update() {
+        dieASAP = false;
         dieBye = Math.max(0, dieBye - Game.delay);
         switch (state) {
             case mini -> H = 1;
@@ -144,6 +145,8 @@ public abstract class Mario extends Block implements Saleable {
         UpdateSpeed();
         super.Update();
         CheckIntersection();
+        CheckGetCoins();
+        CheckGameState();
     }
 
     public void BeAlive() {
@@ -157,16 +160,16 @@ public abstract class Mario extends Block implements Saleable {
                 Intersect(block);
     }
 
-    public void CheckGameState() {
+    void CheckGameState() {
         if (manager.CurrentSection().W < X + W)
             manager.CurrentGame().nextASAP = true;
         else if (Y + H < 0)
-            manager.CurrentGame().dieASAP = true;
-        else if (manager.CurrentSection().wholeTime <= manager.CurrentSection().spentTimeMS / 1000)
-            manager.CurrentGame().dieASAP = true;
+            dieASAP = true;
+        else if (manager.CurrentSection().wholeTime <= manager.CurrentSection().spentTime)
+            dieASAP = true;
     }
 
-    public void CheckGetCoins() {
+    void CheckGetCoins() {
         List<Block> mustBeEaten = new ArrayList<>();
         for (Block coin : manager.CurrentSection().blocks)
             if (coin instanceof Coin)
@@ -185,13 +188,4 @@ public abstract class Mario extends Block implements Saleable {
         if (dieBye > 0)
             new FireRing(this).Draw(g, cameraLeftLine);
     }
-    // TODO for score calculation
-    // Kill enemy 15*(power+1)
-    // extra power constant score
-
-    // TODO power Up
-    // first power: moqavem
-    // second: shot ready
-    // more : just score
-    // when die power will loses to 0
 }

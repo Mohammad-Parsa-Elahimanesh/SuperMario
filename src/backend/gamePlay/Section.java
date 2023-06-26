@@ -16,7 +16,7 @@ public class Section {
     public List<Block> blocks = new ArrayList<>();
     public int W;
     public int wholeTime;
-    public int spentTimeMS = 0;
+    public double spentTime = 0;
 
     Section(int level, int section) {
         Add(new Brick(1, 30, -1, 0));

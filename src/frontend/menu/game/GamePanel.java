@@ -18,7 +18,7 @@ public class GamePanel extends JPanel {
     public void PaintInfo(Graphics g) {
         g.setFont(new Font("Arial", Font.ITALIC, 40));
         g.setColor(Color.GREEN);
-        g.drawString("Time : " + (Integer) (manager.CurrentSection().wholeTime - manager.CurrentSection().spentTimeMS / 1000), 0, 40);
+        g.drawString("Time : " + (int) (manager.CurrentSection().wholeTime - manager.CurrentSection().spentTime), 0, 40);
         g.setColor(Color.RED);
         g.drawString("Heart: " + manager.CurrentGame().mario.heart, 300, 40);
         g.setColor(Color.BLUE);

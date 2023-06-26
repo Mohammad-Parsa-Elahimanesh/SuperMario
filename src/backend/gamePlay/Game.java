@@ -19,7 +19,6 @@ public class Game {
     public int sectionNumber;
     public int score = 0;
     public int coins = 0;
-    public boolean dieASAP;
     public boolean nextASAP;
     transient Manager manager = Manager.getInstance();
     transient GameFrame gameFrame = new GameFrame();
@@ -80,12 +79,12 @@ public class Game {
 
     void EndSection() {
         timer.stop();
-        score += (manager.CurrentSection().wholeTime - manager.CurrentSection().spentTimeMS / 1000) * mario.getPowerLevel();
+        score += (manager.CurrentSection().wholeTime - manager.CurrentSection().spentTime) * mario.getPowerLevel();
         score += mario.heart * 20 * mario.getPowerLevel();
         mario.reset();
         manager.CurrentUser().coin += coins;
         coins = 0;
-        manager.CurrentSection().spentTimeMS = 0;
+        manager.CurrentSection().spentTime = 0;
     }
 
     public void Stop() {
@@ -126,18 +125,17 @@ public class Game {
         Medium,
         Hard
     }    public transient Timer timer = new Timer(delayMS, e -> {
-        manager.CurrentGame().dieASAP = manager.CurrentGame().nextASAP = false;
         manager.CurrentSection().UpdateBlocks();
         for (Block block : manager.CurrentSection().blocks)
             block.Update();
-        manager.CurrentGame().mario.CheckGetCoins();
-        manager.CurrentGame().mario.CheckGameState();
-        manager.CurrentSection().spentTimeMS += delayMS;
+        manager.CurrentSection().spentTime += delay;
         gameFrame.repaint();
-        if (manager.CurrentGame().dieASAP)
-            manager.CurrentGame().Die();
-        else if (manager.CurrentGame().nextASAP)
-            manager.CurrentGame().NextSection();
+        if (mario.mustBeDied())
+            Die();
+        else if (nextASAP) {
+            nextASAP = false;
+            NextSection();
+        }
     });
 
 
