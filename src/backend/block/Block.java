@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.lang.Math.min;
+
 public abstract class Block {
     final static double G = 35;
     final static double MAX_MOVE = 0.8;
@@ -25,10 +27,10 @@ public abstract class Block {
     protected boolean Neighbor(Block other) {
         double x = DistanceHorizontal(other);
         double y = DistanceVertical(other);
-        return Math.min(x, y) < 0 && Math.max(x, y) == 0;
+        return min(x, y) < 0 && Math.max(x, y) == 0;
     }
 
-    Boolean Side(Block other, Direction side) {
+    protected Boolean Side(Block other, Direction side) {
         if (isIntersect(other))
             return false;
         if (side.isHorizontal())
@@ -57,11 +59,11 @@ public abstract class Block {
     }
 
     double DistanceVertical(Block other) {
-        return Math.max(-eps, Math.max(Y, other.Y) - Math.min(Y + H, other.Y + other.H));
+        return Math.max(-eps, Math.max(Y, other.Y) - min(Y + H, other.Y + other.H));
     }
 
     double DistanceHorizontal(Block other) {
-        return Math.max(-eps, Math.max(X, other.X) - Math.min(X + W, other.X + other.W));
+        return Math.max(-eps, Math.max(X, other.X) - min(X + W, other.X + other.W));
     }
 
     public void setShape(double w, double h, double x, double y) {
@@ -91,7 +93,7 @@ public abstract class Block {
                 if (!block.Pushed(direction.Opposite()))
                     canMove = 0;
             } else if (Side(block, direction))
-                canMove = Math.min(canMove, ManhattanDistance(block));
+                canMove = min(canMove, ManhattanDistance(block));
         return canMove;
     }
 
@@ -123,14 +125,51 @@ public abstract class Block {
         }
         if (vy > 0 && Push(Direction.Up) == 0)
             vy = 0;
-        if (vx < 0)
-            X -= Math.min(-vx * Game.delay, Push(Direction.Left));
-        if (vx > 0)
-            X += Math.min(vx * Game.delay, Push(Direction.Right));
-        if (vy < 0)
-            Y -= Math.min(-vy * Game.delay, Push(Direction.Down));
-        if (vy > 0)
-            Y += Math.min(vy * Game.delay, Push(Direction.Up));
+
+        if(vx < 0)
+        {
+            double maxMove = -vx*Game.delay;
+            double canMove = maxMove;
+            while (canMove > 0)
+            {
+                canMove = min(maxMove, Push(Direction.Left));
+                X -= canMove;
+                maxMove -= canMove;
+            }
+        }
+        if(vx > 0)
+        {
+            double maxMove = vx*Game.delay;
+            double canMove = maxMove;
+            while (canMove > 0)
+            {
+                canMove = min(maxMove, Push(Direction.Right));
+                X += canMove;
+                maxMove -= canMove;
+            }
+        }
+        if(vy < 0)
+        {
+            double maxMove = -vy*Game.delay;
+            double canMove = maxMove;
+            while (canMove > 0)
+            {
+                canMove = min(maxMove, Push(Direction.Down));
+                Y -= canMove;
+                maxMove -= canMove;
+            }
+        }
+        if(vy > 0)
+        {
+            double maxMove = vy*Game.delay;
+            double canMove = maxMove;
+            while (canMove > 0)
+            {
+                canMove = min(maxMove, Push(Direction.Up));
+                Y += canMove;
+                maxMove -= canMove;
+            }
+        }
     }
 
     @Override
