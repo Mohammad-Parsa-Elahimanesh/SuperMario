@@ -150,7 +150,7 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     public void BeAlive() {
-        vy = getJumpSpeed() * 1.5;
+        vy = getJumpSpeed() * 1.2;
         Y += 2;
     }
 

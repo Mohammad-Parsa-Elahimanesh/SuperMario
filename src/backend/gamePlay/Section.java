@@ -6,6 +6,7 @@ import backend.block.enemy.Goomba;
 import backend.block.enemy.KillerPlant;
 import backend.block.Pipe;
 import backend.block.brick.*;
+import backend.block.enemy.Koopa;
 import backend.block.item.Coin;
 
 import java.util.ArrayList;
@@ -60,6 +61,9 @@ public class Section {
         Add(new Goomba(20,2));
         Add(new Goomba(30,2));
         Add(new Goomba(40,2));
+        Add(new Koopa(25, 2));
+        Add(new Koopa(35, 2));
+
 
     }
     void Level0Section1() {
