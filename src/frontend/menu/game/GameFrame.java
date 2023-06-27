@@ -23,6 +23,8 @@ public class GameFrame extends JFrame {
     KeyListener keyListener() {
         return new KeyListener() {
             public void keyTyped(KeyEvent e) {
+                if (e.getKeyChar() == KeyEvent.VK_SPACE)
+                    manager.CurrentGame().mario.Shot();
                 if (manager.CurrentGame().timer.isRunning() && e.getKeyChar() == KeyEvent.VK_ESCAPE) {
                     manager.CurrentGame().Stop();
                     new ExitOrResume();

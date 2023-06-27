@@ -13,7 +13,9 @@ public class Spiny extends Enemy {
     }
 
     @Override
-    int scoreWhenBeKilled() {return 3;}
+    int scoreWhenBeKilled() {
+        return 3;
+    }
 
     @Override
     public void Update() {
@@ -31,7 +33,7 @@ public class Spiny extends Enemy {
             else
                 vx = Math.abs(vx);
         } else {
-            vx = (vx * 9 + (vx < 0 ? -1 : 1) * getNormalSpeed()) / 10.0;
+            vx = (vx * 4 + (vx < 0 ? -1 : 1) * getNormalSpeed()) / 5;
         }
     }
 

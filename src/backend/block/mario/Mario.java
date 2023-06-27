@@ -9,9 +9,7 @@ import backend.block.item.*;
 import backend.gamePlay.Game;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public abstract class Mario extends Block implements Saleable {
@@ -23,6 +21,7 @@ public abstract class Mario extends Block implements Saleable {
     int upAndDownBoth = 0;
     transient double dieBye = 0.0;
     transient boolean dieASAP = false;
+    transient double shotCooldown = 0.0;
 
     Mario() {
         super(1, 1, 0, 2);
@@ -38,11 +37,15 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     double getShotSpeed() {
-        return 3;
+        return getSpeed();
     }
 
     public double getJumpSpeed() {
         return 20;
+    }
+
+    protected int getVxDirectionNumber() {
+        return vx < 0 ? -1 : 1;
     }
 
     @Override
@@ -93,6 +96,12 @@ public abstract class Mario extends Block implements Saleable {
         }
     }
 
+    public void Shot() {
+        if (state == MarioState.giga && shotCooldown == 0 && Push(Direction.Down) == 0) {
+            manager.CurrentSection().Add(new Fire(this));
+            shotCooldown = 3;
+        }
+    }
 
     @Override
     protected boolean Pushed(Direction D) {
@@ -104,12 +113,12 @@ public abstract class Mario extends Block implements Saleable {
     protected void Intersect(Block block) {
         if (block instanceof Enemy) {
             if (dieBye > 0)
-                manager.CurrentSection().Del(block);
+                ((Enemy) block).Die();
             else
                 dieASAP = true;
         } else if (block instanceof Item && !(block instanceof Coin)) {
             Upgrade();
-            manager.CurrentSection().Del(block);
+            block.Delete();
             if (block instanceof Flower)
                 manager.CurrentGame().score += 20;
             else if (block instanceof Mushroom)
@@ -143,6 +152,7 @@ public abstract class Mario extends Block implements Saleable {
     public void Update() {
         dieASAP = false;
         dieBye = Math.max(0, dieBye - Game.delay);
+        shotCooldown = Math.max(0, shotCooldown - Game.delay);
         switch (state) {
             case mini -> H = 1;
             case mega, giga -> H = isDirection(Direction.Down) ? 1 : 2;
@@ -155,7 +165,7 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     public void BeAlive() {
-        vy = getJumpSpeed() * 1.2;
+        vy = getJumpSpeed() * 0.7;
         Y += 5;
     }
 
@@ -175,16 +185,13 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     void CheckGetCoins() {
-        List<Block> mustBeEaten = new ArrayList<>();
         for (Block coin : manager.CurrentSection().blocks)
             if (coin instanceof Coin)
                 if (Distance(coin) <= getCoinRange()) {
-                    mustBeEaten.add(coin);
+                    coin.Delete();
+                    manager.CurrentGame().coins += 1;
+                    manager.CurrentGame().score += 10;
                 }
-        for (Block coin : mustBeEaten)
-            manager.CurrentSection().Del(coin);
-        manager.CurrentGame().coins += mustBeEaten.size();
-        manager.CurrentGame().score += mustBeEaten.size() * 10;
     }
 
     @Override
@@ -193,6 +200,7 @@ public abstract class Mario extends Block implements Saleable {
         if (dieBye > 0)
             new FireRing(this).Draw(g, cameraLeftLine);
     }
+
 }
 
 // TODO: 3 coins when kill enemy!

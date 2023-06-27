@@ -1,7 +1,6 @@
 package backend.block.brick;
 
 import backend.Manager;
-import backend.block.Block;
 import backend.block.item.Coin;
 import backend.block.mario.MarioState;
 
@@ -26,7 +25,7 @@ public class Soft extends Brick {
                 Manager.getInstance().CurrentSection().Add(new Coin(X, Y + 1));
                 softType = SoftType.Simple;
             } else if (Manager.getInstance().CurrentGame().mario.state != MarioState.mini)
-                Manager.getInstance().CurrentSection().Del(this);
+                Delete();
         }
         return false;
     }

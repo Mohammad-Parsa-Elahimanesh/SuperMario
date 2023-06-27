@@ -30,6 +30,10 @@ public abstract class Block {
         return min(x, y) < 0 && Math.max(x, y) == 0;
     }
 
+    public void Delete() {
+        Manager.getInstance().CurrentSection().Del(this);
+    }
+
     protected Boolean Side(Block other, Direction side) {
         if (isIntersect(other))
             return false;
@@ -46,7 +50,7 @@ public abstract class Block {
     }
 
     public boolean isIntersect(Block other) {
-        return DistanceHorizontal(other) < 0 && DistanceVertical(other) < 0;
+        return DistanceHorizontal(other) < 0 && DistanceVertical(other) < 0 && other != this;
     }
 
     double ManhattanDistance(Block other) {

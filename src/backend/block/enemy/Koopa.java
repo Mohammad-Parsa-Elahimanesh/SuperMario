@@ -18,7 +18,11 @@ public class Koopa extends Enemy {
     private static double getNormalSpeed() {
         return new SimpleMario().getSpeed() * 0.4;
     }
-    int scoreWhenBeKilled(){return 2;}
+
+    int scoreWhenBeKilled() {
+        return 2;
+    }
+
     @Override
     public void Update() {
         super.Update();

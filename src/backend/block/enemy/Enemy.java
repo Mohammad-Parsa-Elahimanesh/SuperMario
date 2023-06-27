@@ -12,9 +12,11 @@ public abstract class Enemy extends Block {
     protected boolean doesGravityAffects() {
         return true;
     }
+
     abstract int scoreWhenBeKilled();
-    void Die() {
+
+    public void Die() {
         Manager.getInstance().CurrentGame().score += scoreWhenBeKilled();
-        Manager.getInstance().CurrentSection().Del(this);
+        Delete();
     }
 }

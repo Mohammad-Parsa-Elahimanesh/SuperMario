@@ -1,7 +1,6 @@
 package backend.block.brick;
 
 import backend.Manager;
-import backend.block.Block;
 
 public class Spring extends Brick {
     public Spring(double x, double y) {

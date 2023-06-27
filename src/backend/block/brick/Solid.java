@@ -1,7 +1,6 @@
 package backend.block.brick;
 
 import backend.Manager;
-import backend.block.Block;
 import backend.block.item.Coin;
 import backend.block.item.Item;
 

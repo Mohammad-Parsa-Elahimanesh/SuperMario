@@ -20,7 +20,9 @@ public class Goomba extends Enemy {
             vx *= -1;
     }
 
-    int scoreWhenBeKilled() {return 1;}
+    int scoreWhenBeKilled() {
+        return 1;
+    }
 
     @Override
     protected String getImageName() {

@@ -4,7 +4,7 @@ public class KillerMario extends Mario {
 
     @Override
     double getShotSpeed() {
-        return 4;
+        return super.getShotSpeed() * 2;
     }
 
     public int getCost() {

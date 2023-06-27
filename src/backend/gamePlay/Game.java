@@ -44,7 +44,11 @@ public class Game {
     }
 
     public void setMario(Mario mario) {
-        this.mario = mario;
+        try {
+            this.mario = mario.getClass().getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setDifficulty(Difficulty difficulty) {
