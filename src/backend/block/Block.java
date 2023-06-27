@@ -126,45 +126,37 @@ public abstract class Block {
         if (vy > 0 && Push(Direction.Up) == 0)
             vy = 0;
 
-        if(vx < 0)
-        {
-            double maxMove = -vx*Game.delay;
+        if (vx < 0) {
+            double maxMove = -vx * Game.delay;
             double canMove = maxMove;
-            while (canMove > 0)
-            {
+            while (canMove > 0) {
                 canMove = min(maxMove, Push(Direction.Left));
                 X -= canMove;
                 maxMove -= canMove;
             }
         }
-        if(vx > 0)
-        {
-            double maxMove = vx*Game.delay;
+        if (vx > 0) {
+            double maxMove = vx * Game.delay;
             double canMove = maxMove;
-            while (canMove > 0)
-            {
+            while (canMove > 0) {
                 canMove = min(maxMove, Push(Direction.Right));
                 X += canMove;
                 maxMove -= canMove;
             }
         }
-        if(vy < 0)
-        {
-            double maxMove = -vy*Game.delay;
+        if (vy < 0) {
+            double maxMove = -vy * Game.delay;
             double canMove = maxMove;
-            while (canMove > 0)
-            {
+            while (canMove > 0) {
                 canMove = min(maxMove, Push(Direction.Down));
                 Y -= canMove;
                 maxMove -= canMove;
             }
         }
-        if(vy > 0)
-        {
-            double maxMove = vy*Game.delay;
+        if (vy > 0) {
+            double maxMove = vy * Game.delay;
             double canMove = maxMove;
-            while (canMove > 0)
-            {
+            while (canMove > 0) {
                 canMove = min(maxMove, Push(Direction.Up));
                 Y += canMove;
                 maxMove -= canMove;

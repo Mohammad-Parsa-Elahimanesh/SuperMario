@@ -1,5 +1,6 @@
 package backend.block.enemy;
 
+import backend.Manager;
 import backend.block.Block;
 
 public abstract class Enemy extends Block {
@@ -10,5 +11,10 @@ public abstract class Enemy extends Block {
     @Override
     protected boolean doesGravityAffects() {
         return true;
+    }
+    abstract int scoreWhenBeKilled();
+    void Die() {
+        Manager.getInstance().CurrentGame().score += scoreWhenBeKilled();
+        Manager.getInstance().CurrentSection().Del(this);
     }
 }

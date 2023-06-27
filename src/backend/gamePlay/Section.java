@@ -2,10 +2,10 @@ package backend.gamePlay;
 
 import backend.Manager;
 import backend.block.Block;
-import backend.block.enemy.Goomba;
-import backend.block.enemy.KillerPlant;
 import backend.block.Pipe;
 import backend.block.brick.*;
+import backend.block.enemy.Goomba;
+import backend.block.enemy.KillerPlant;
 import backend.block.enemy.Koopa;
 import backend.block.enemy.Spiny;
 import backend.block.item.Coin;
@@ -54,19 +54,28 @@ public class Section {
         blocks.removeAll(mustBeRemoved);
         mustBeRemoved.clear();
     }
+
     void Level0Section0() {
         W = 60;
         wholeTime = 100;
         Add(new Brick(60, 1, 0, 0));
         Add(new Brick(40, 1, 10, 1));
-        Add(new Goomba(20,2));
-        Add(new Spiny(30,2));
-        Add(new Goomba(40,2));
+        Add(new Goomba(20, 2));
+        Add(new Spiny(30, 2));
+        Add(new Goomba(40, 2));
         Add(new Koopa(25, 2));
         Add(new Koopa(35, 2));
 
+        for (int i = 20; i < 40; i++) {
+            if (Math.random() < 0.5) Add(new Soft(SoftType.Coin, i, 5));
+            else Add(new Solid(SolidType.Prize, i, 5));
+        }
+        for (int i = 20; i < 40; i += 5)
+            Add(new Goomba(i, 6));
+
 
     }
+
     void Level0Section1() {
         W = 45;
         wholeTime = 100;

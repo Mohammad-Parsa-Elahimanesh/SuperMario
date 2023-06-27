@@ -5,7 +5,7 @@ import backend.block.Block;
 import backend.block.item.Coin;
 import backend.block.mario.MarioState;
 
-public class Soft extends Block {
+public class Soft extends Brick {
     SoftType softType;
 
     public Soft(SoftType softType, int x, int y) {

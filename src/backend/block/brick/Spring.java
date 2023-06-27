@@ -3,7 +3,7 @@ package backend.block.brick;
 import backend.Manager;
 import backend.block.Block;
 
-public class Spring extends Block {
+public class Spring extends Brick {
     public Spring(double x, double y) {
         super(1, 1, x, y);
     }

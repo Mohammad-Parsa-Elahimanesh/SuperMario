@@ -124,7 +124,9 @@ public class Game {
         Easy,
         Medium,
         Hard
-    }    public transient Timer timer = new Timer(delayMS, e -> {
+    }
+
+    public transient Timer timer = new Timer(delayMS, e -> {
         manager.CurrentSection().UpdateBlocks();
         for (Block block : manager.CurrentSection().blocks)
             block.Update();
@@ -137,8 +139,6 @@ public class Game {
             NextSection();
         }
     });
-
-
 
 
 }

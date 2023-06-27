@@ -2,9 +2,9 @@ package backend.block.mario;
 
 import backend.Manager;
 import backend.block.Block;
-import backend.block.enemy.Enemy;
 import backend.block.Saleable;
 import backend.block.brick.Spring;
+import backend.block.enemy.Enemy;
 import backend.block.item.*;
 import backend.gamePlay.Game;
 
@@ -23,6 +23,7 @@ public abstract class Mario extends Block implements Saleable {
     int upAndDownBoth = 0;
     transient double dieBye = 0.0;
     transient boolean dieASAP = false;
+
     Mario() {
         super(1, 1, 0, 2);
         reset();
@@ -48,7 +49,11 @@ public abstract class Mario extends Block implements Saleable {
     protected boolean doesGravityAffects() {
         return true;
     }
-    public boolean mustBeDied(){return dieASAP;}
+
+    public boolean mustBeDied() {
+        return dieASAP;
+    }
+
     private boolean isDirection(Direction d) {
         return task.get(d) && !task.get(d.Opposite());
     }
@@ -151,7 +156,7 @@ public abstract class Mario extends Block implements Saleable {
 
     public void BeAlive() {
         vy = getJumpSpeed() * 1.2;
-        Y += 2;
+        Y += 5;
     }
 
     void CheckIntersection() {

@@ -5,7 +5,7 @@ import backend.block.Block;
 import backend.block.item.Coin;
 import backend.block.item.Item;
 
-public class Solid extends Block {
+public class Solid extends Brick {
     SolidType solidType;
     transient int used = 0;
 

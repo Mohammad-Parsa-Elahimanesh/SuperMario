@@ -8,8 +8,8 @@ abstract public class Item extends Block {
     }
 
     public static Item RandomItem(double x, double y) {
-        if (Math.random() < 0.4) return new Coin(x, y);
-        else if (Math.random() < 0.5) return new Mushroom(x, y);
+        if (Math.random() < 0.8) return new Coin(x, y);
+        else if (Math.random() < 0.6) return new Mushroom(x, y);
         else if (Math.random() < 0.6) return new Flower(x, y);
         else return new Star(x, y);
     }

@@ -14,6 +14,9 @@ public class KillerPlant extends Enemy {
     }
 
     @Override
+    int scoreWhenBeKilled() {return 1;}
+
+    @Override
     protected String getImageName() {
         return "KillerPlant.png";
     }
@@ -25,7 +28,7 @@ public class KillerPlant extends Enemy {
 
     @Override
     public void Update() {
-        int H = ((int)Manager.getInstance().CurrentSection().spentTime) % Height.length;
+        int H = ((int) Manager.getInstance().CurrentSection().spentTime) % Height.length;
         setShape(home.W, Height[H], home.X, home.Y + home.H);
         super.Update();
     }
