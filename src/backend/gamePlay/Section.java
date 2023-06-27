@@ -7,6 +7,7 @@ import backend.block.enemy.KillerPlant;
 import backend.block.Pipe;
 import backend.block.brick.*;
 import backend.block.enemy.Koopa;
+import backend.block.enemy.Spiny;
 import backend.block.item.Coin;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class Section {
         Add(new Brick(60, 1, 0, 0));
         Add(new Brick(40, 1, 10, 1));
         Add(new Goomba(20,2));
-        Add(new Goomba(30,2));
+        Add(new Spiny(30,2));
         Add(new Goomba(40,2));
         Add(new Koopa(25, 2));
         Add(new Koopa(35, 2));

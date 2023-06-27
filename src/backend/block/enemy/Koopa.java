@@ -3,7 +3,6 @@ package backend.block.enemy;
 import backend.Manager;
 import backend.block.mario.SimpleMario;
 import backend.gamePlay.Game;
-import frontend.menu.game.GamePanel;
 
 import static java.lang.Math.max;
 
@@ -12,7 +11,7 @@ public class Koopa extends Enemy{
     transient double freeze = 0.0;
 
     public Koopa(double x, double y) {
-        super(1.5, 1, x, y);
+        super(1.8, 1, x, y);
         vx = getNormalSpeed();
     }
 
