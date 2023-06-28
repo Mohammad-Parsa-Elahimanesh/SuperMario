@@ -11,8 +11,7 @@ import frontend.menu.game.SetGameSettings;
 import javax.swing.*;
 
 public class Game {
-    final static int delayMS = 30;
-    public final static double delay = 0.001 * delayMS;
+    public static final double delay = 0.03;
     public Level[] levels;
     public Mario mario;
     public int levelNumber;
@@ -61,7 +60,7 @@ public class Game {
     }
 
     void NextSection() {
-        EndSection();
+        EndSection(true);
         sectionNumber++;
         if (levels[levelNumber].sections.length == sectionNumber) {
             levelNumber++;
@@ -81,10 +80,12 @@ public class Game {
         new MainMenu();
     }
 
-    void EndSection() {
+    void EndSection(boolean goNextLevel) {
         timer.stop();
-        score += (manager.CurrentSection().wholeTime - manager.CurrentSection().spentTime) * mario.getPowerLevel();
-        score += mario.heart * 20 * mario.getPowerLevel();
+        if(goNextLevel)
+            score += (manager.CurrentSection().wholeTime - manager.CurrentSection().spentTime) * mario.getPowerLevel();
+        if(goNextLevel)
+            score += mario.heart * 20 * mario.getPowerLevel();
         mario.reset();
         manager.CurrentUser().coin += coins;
         coins = 0;
@@ -106,7 +107,7 @@ public class Game {
             mario.state = MarioState.mini;
         switch (mario.state) {
             case mini -> {
-                EndSection();
+                EndSection(false);
                 mario.heart--;
                 if (mario.heart <= 0)
                     EndGame();
@@ -130,7 +131,7 @@ public class Game {
         Hard
     }
 
-    public transient Timer timer = new Timer(delayMS, e -> {
+    public transient Timer timer = new Timer((int)(delay*1000), e -> {
         manager.CurrentSection().UpdateBlocks();
         for (Block block : manager.CurrentSection().blocks)
             block.Update();

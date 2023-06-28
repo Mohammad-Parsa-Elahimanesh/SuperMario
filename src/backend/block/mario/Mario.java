@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Mario extends Block implements Saleable {
-    final static double FRICTION = 0.7;
+    static final double FRICTION = 0.7;
     final transient Manager manager = Manager.getInstance();
     public int heart;
     public Map<Direction, Boolean> task = new HashMap<>();
@@ -121,8 +121,10 @@ public abstract class Mario extends Block implements Saleable {
         if (block instanceof Enemy) {
             if (dieBye > 0)
                 ((Enemy) block).Die();
-            else
+            else {
                 dieASAP = true;
+                manager.CurrentGame().score = Math.max(manager.CurrentGame().score-20, 0);
+            }
         } else if (block instanceof Item && !(block instanceof Coin)) {
             Upgrade();
             block.Delete();
@@ -189,8 +191,11 @@ public abstract class Mario extends Block implements Saleable {
     void CheckGameState() {
         if (manager.CurrentSection().W < X + W)
             manager.CurrentGame().nextASAP = true;
-        else if (Y + H < 0)
+        else if (Y + H < 0) {
             dieASAP = true;
+            if(state == MarioState.mini)
+                manager.CurrentGame().score = Math.max(manager.CurrentGame().score-30, 0);
+        }
         else if (manager.CurrentSection().wholeTime <= manager.CurrentSection().spentTime)
             dieASAP = true;
     }
