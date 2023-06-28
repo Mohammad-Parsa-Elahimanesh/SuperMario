@@ -24,7 +24,7 @@ public class GameFrame extends JFrame {
         return new KeyListener() {
             public void keyTyped(KeyEvent e) {
                 if (e.getKeyChar() == KeyEvent.VK_SPACE)
-                    manager.CurrentGame().mario.Shot();
+                    manager.CurrentMario().Shot();
                 if (manager.CurrentGame().timer.isRunning() && e.getKeyChar() == KeyEvent.VK_ESCAPE) {
                     manager.CurrentGame().Stop();
                     new ExitOrResume();
@@ -33,19 +33,19 @@ public class GameFrame extends JFrame {
 
             public void keyPressed(KeyEvent e) {
                 switch (e.getExtendedKeyCode()) {
-                    case KeyEvent.VK_LEFT -> manager.CurrentGame().mario.task.put(Block.Direction.Left, true);
-                    case KeyEvent.VK_UP -> manager.CurrentGame().mario.task.put(Block.Direction.Up, true);
-                    case KeyEvent.VK_RIGHT -> manager.CurrentGame().mario.task.put(Block.Direction.Right, true);
-                    case KeyEvent.VK_DOWN -> manager.CurrentGame().mario.task.put(Block.Direction.Down, true);
+                    case KeyEvent.VK_LEFT -> manager.CurrentMario().task.put(Block.Direction.Left, true);
+                    case KeyEvent.VK_UP -> manager.CurrentMario().task.put(Block.Direction.Up, true);
+                    case KeyEvent.VK_RIGHT -> manager.CurrentMario().task.put(Block.Direction.Right, true);
+                    case KeyEvent.VK_DOWN -> manager.CurrentMario().task.put(Block.Direction.Down, true);
                 }
             }
 
             public void keyReleased(KeyEvent e) {
                 switch (e.getExtendedKeyCode()) {
-                    case KeyEvent.VK_LEFT -> manager.CurrentGame().mario.task.put(Block.Direction.Left, false);
-                    case KeyEvent.VK_UP -> manager.CurrentGame().mario.task.put(Block.Direction.Up, false);
-                    case KeyEvent.VK_RIGHT -> manager.CurrentGame().mario.task.put(Block.Direction.Right, false);
-                    case KeyEvent.VK_DOWN -> manager.CurrentGame().mario.task.put(Block.Direction.Down, false);
+                    case KeyEvent.VK_LEFT -> manager.CurrentMario().task.put(Block.Direction.Left, false);
+                    case KeyEvent.VK_UP -> manager.CurrentMario().task.put(Block.Direction.Up, false);
+                    case KeyEvent.VK_RIGHT -> manager.CurrentMario().task.put(Block.Direction.Right, false);
+                    case KeyEvent.VK_DOWN -> manager.CurrentMario().task.put(Block.Direction.Down, false);
                 }
             }
         };

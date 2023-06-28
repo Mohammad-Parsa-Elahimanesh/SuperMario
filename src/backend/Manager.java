@@ -1,5 +1,6 @@
 package backend;
 
+import backend.block.mario.Mario;
 import backend.gamePlay.Game;
 import backend.gamePlay.Section;
 
@@ -30,10 +31,14 @@ public class Manager {
         return CurrentGame().levels[CurrentGame().levelNumber].sections[CurrentGame().sectionNumber];
     }
 
-    final public int W = 1536, column = 24, w = W / column;
+    public Mario CurrentMario() {
+        return CurrentSection().getMario();
+    }
+
+    public final int W = 1536, column = 24, w = W / column;
 
 
-    final public int H = 864, row = 16, h = H / row;
+    public final int H = 864, row = 16, h = H / row;
 
 
 }

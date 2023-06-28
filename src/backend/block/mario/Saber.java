@@ -10,10 +10,10 @@ public class Saber extends Block {
     double alive = 0.5;
 
     protected Saber(Mario mario) {
-        super(2, 0.3, (mario.getVxDirectionNumber() == 1? mario.X+mario.W+0.2 : mario.X-2.3), mario.Y + 0.8);
+        super(2, 0.3, (mario.getVxDirectionNumber() == 1 ? mario.X + mario.W + 0.2 : mario.X - 2.3), mario.Y + 0.8);
         vx = 8.0 * mario.getVxDirectionNumber();
     }
-    
+
 
     @Override
     public void Update() {

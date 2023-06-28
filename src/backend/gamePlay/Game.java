@@ -13,7 +13,6 @@ import javax.swing.*;
 public class Game {
     public static final double delay = 0.03;
     public Level[] levels;
-    public Mario mario;
     public int levelNumber;
     public int sectionNumber;
     public int score = 0;
@@ -33,20 +32,11 @@ public class Game {
             return game.State();
     }
 
-    public void constructor() {
+    public void constructor(Mario mario) {
         levelNumber = sectionNumber = 0;
-        levels = new Level[]{new Level(0)};
+        levels = new Level[]{new Level(0, mario)};
         gameFrame.setVisible(true);
-        mario.heart = 3;
         Start();
-    }
-
-    public void setMario(Mario mario) {
-        try {
-            this.mario = mario.getClass().getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void setDifficulty(Difficulty difficulty) {
@@ -54,16 +44,14 @@ public class Game {
     }
 
     void Start() {
-        mario.reset();
         timer.start();
     }
 
     void NextSection() {
         timer.stop();
-        score += (manager.CurrentSection().wholeTime - manager.CurrentSection().spentTime) * mario.getPowerLevel();
-        score += mario.heart * 20 * mario.getPowerLevel();
+        score += manager.CurrentSection().getScore();
         manager.CurrentUser().coin += manager.CurrentSection().coins;
-        mario.reset();
+        MarioState lastStateOfMario = manager.CurrentMario().state;
         sectionNumber++;
         if (levels[levelNumber].sections.length == sectionNumber) {
             levelNumber++;
@@ -71,15 +59,17 @@ public class Game {
         }
         if (levels.length == levelNumber)
             EndGame();
-        else
+        else {
+            manager.CurrentMario().state = lastStateOfMario;
             timer.start();
+        }
     }
 
     void EndGame() {
         if (manager.CurrentUser().maxRating < score)
             manager.CurrentUser().maxRating = score;
         manager.CurrentUser().game[manager.CurrentUser().currentGameIndex] = null;
-        gameFrame.setVisible(false);
+        gameFrame.dispose();
         new MainMenu();
     }
 
@@ -94,24 +84,24 @@ public class Game {
     }
 
     void Die() {
-        if (mario.Y < 0)
-            mario.state = MarioState.mini;
-        switch (mario.state) {
+        if (manager.CurrentMario().Y < 0)
+            manager.CurrentMario().state = MarioState.mini;
+        switch (manager.CurrentMario().state) {
             case mini -> {
                 timer.stop();
                 manager.CurrentSection().spentTime = 0;
-                mario.reset();
-                mario.heart--;
-                if (mario.heart <= 0)
+                manager.CurrentMario().reset();
+                manager.CurrentMario().heart--;
+                if (manager.CurrentMario().heart <= 0)
                     EndGame();
                 else
                     timer.start();
                 return;
             }
-            case mega -> mario.state = MarioState.mini;
-            case giga -> mario.state = MarioState.mega;
+            case mega -> manager.CurrentMario().state = MarioState.mini;
+            case giga -> manager.CurrentMario().state = MarioState.mega;
         }
-        mario.BeAlive();
+        manager.CurrentMario().BeAlive();
     }
 
     String State() {
@@ -124,13 +114,13 @@ public class Game {
         Hard
     }
 
-    public transient Timer timer = new Timer((int)(delay*1000), e -> {
+    public transient Timer timer = new Timer((int) (delay * 1000), e -> {
         manager.CurrentSection().UpdateBlocks();
         for (Block block : manager.CurrentSection().blocks)
             block.Update();
         manager.CurrentSection().spentTime += delay;
         gameFrame.repaint();
-        if (mario.mustBeDied())
+        if (manager.CurrentMario().mustBeDied())
             Die();
         else if (nextASAP) {
             nextASAP = false;

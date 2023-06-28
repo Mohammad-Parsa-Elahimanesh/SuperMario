@@ -20,7 +20,7 @@ public class Solid extends Brick {
 
     @Override
     protected boolean Pushed(Direction D) {
-        if (Neighbor(Manager.getInstance().CurrentGame().mario, Direction.Down)) {
+        if (Neighbor(Manager.getInstance().CurrentMario(), Direction.Down)) {
             Manager.getInstance().CurrentGame().score += 1;
             if (solidType == SolidType.Coins && used < 5) {
                 Manager.getInstance().CurrentSection().Add(new Coin(X, Y + 1));

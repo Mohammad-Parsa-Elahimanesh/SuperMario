@@ -31,10 +31,10 @@ public class Goomba extends Enemy {
 
     @Override
     protected boolean Pushed(Direction D) {
-        if (Neighbor(Manager.getInstance().CurrentGame().mario, Direction.Up)) {
+        if (Neighbor(Manager.getInstance().CurrentMario(), Direction.Up)) {
             Die();
         } else if ((vx < 0 && D == Direction.Left) || (vx > 0 && D == Direction.Right))
             vx *= -1;
-        return Neighbor(Manager.getInstance().CurrentGame().mario, D) && D != Direction.Up;
+        return Neighbor(Manager.getInstance().CurrentMario(), D) && D != Direction.Up;
     }
 }

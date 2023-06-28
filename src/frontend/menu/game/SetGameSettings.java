@@ -19,9 +19,8 @@ public class SetGameSettings extends JFrame {
         JButton Start = new JButton("Let's Start");
         Start.addActionListener(e -> {
             manager.CurrentGame().setDifficulty(Game.Difficulty.values()[selectDifficulty.getSelectedIndex()]);
-            manager.CurrentGame().setMario(manager.CurrentUser().Marios().get(selectMario.getSelectedIndex()));
             setVisible(false);
-            manager.CurrentGame().constructor();
+            manager.CurrentGame().constructor(manager.CurrentUser().Marios().get(selectMario.getSelectedIndex()));
         });
         panel.add(selectDifficulty);
         panel.add(selectMario);

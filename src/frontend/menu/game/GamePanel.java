@@ -20,7 +20,7 @@ public class GamePanel extends JPanel {
         g.setColor(Color.GREEN);
         g.drawString("Time : " + (int) (manager.CurrentSection().wholeTime - manager.CurrentSection().spentTime), 0, 40);
         g.setColor(Color.RED);
-        g.drawString("Heart: " + manager.CurrentGame().mario.heart, 300, 40);
+        g.drawString("Heart: " + manager.CurrentMario().heart, 300, 40);
         g.setColor(Color.BLUE);
         g.drawString(Game.State(manager.CurrentGame()), 600, 40);
         g.setColor(Color.DARK_GRAY);
@@ -33,7 +33,7 @@ public class GamePanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         final int cameraBeforeMario = 10;
-        int cameraLeftLine = (int) (manager.w * Math.min(Math.max(0, manager.CurrentGame().mario.X - cameraBeforeMario), manager.CurrentSection().W - manager.column));
+        int cameraLeftLine = (int) (manager.w * Math.min(Math.max(0, manager.CurrentMario().X - cameraBeforeMario), manager.CurrentSection().W - manager.column));
         PaintInfo(g);
         for (Block block : manager.CurrentSection().blocks)
             block.Draw(g, cameraLeftLine);

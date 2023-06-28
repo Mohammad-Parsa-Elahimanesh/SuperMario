@@ -1,6 +1,5 @@
 package backend.gamePlay;
 
-import backend.Manager;
 import backend.block.Block;
 import backend.block.Pipe;
 import backend.block.brick.*;
@@ -9,6 +8,7 @@ import backend.block.enemy.KillerPlant;
 import backend.block.enemy.Koopa;
 import backend.block.enemy.Spiny;
 import backend.block.item.Coin;
+import backend.block.mario.Mario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +20,10 @@ public class Section {
     public int W;
     public int wholeTime;
     public double spentTime = 0;
-    int checkPoints = 0;
     public int coins = 0;
+    int checkPoints = 0;
 
-    Section(int level, int section) {
+    Section(int level, int section, Mario mario) {
         Add(new Brick(1, 30, -1, 0));
         if (level == 0) {
             switch (section) {
@@ -33,7 +33,12 @@ public class Section {
                 case 3 -> Level0Section3();
             }
         }
-        Add(Manager.getInstance().CurrentGame().mario);
+        try {
+            Add(mario.getClass().getDeclaredConstructor().newInstance());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        UpdateBlocks();
     }
 
     void AddPipeWithKillerPlant(int X, int H) {
@@ -139,6 +144,17 @@ public class Section {
             AddPipeWithKillerPlant(46 + 4 * i, i + 1);
 
         Add(new Brick(2, 2, 73, 0));
+    }
+
+    public Mario getMario() {
+        for (Block block : blocks)
+            if (block instanceof Mario mario)
+                return mario;
+        return null;
+    }
+
+    int getScore() {
+        return (int) (wholeTime - spentTime) * getMario().getPowerLevel() + getMario().heart * 20 * getMario().getPowerLevel();
     }
 
 }

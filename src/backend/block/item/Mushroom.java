@@ -26,7 +26,7 @@ public class Mushroom extends Item {
 
     @Override
     protected boolean Pushed(Block.Direction D) {
-        return Neighbor(Manager.getInstance().CurrentGame().mario);
+        return Neighbor(Manager.getInstance().CurrentMario());
     }
 
     @Override

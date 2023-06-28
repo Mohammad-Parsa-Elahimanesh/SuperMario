@@ -1,7 +1,7 @@
 package backend.block;
 
 
-public class Checkpoint extends Block{
+public class Checkpoint extends Block {
     boolean active = true;
 
     protected Checkpoint(double x, double y) {
