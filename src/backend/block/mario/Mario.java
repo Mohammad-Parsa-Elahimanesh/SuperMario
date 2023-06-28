@@ -18,10 +18,9 @@ public abstract class Mario extends Block implements Saleable {
     public int heart;
     public Map<Direction, Boolean> task = new HashMap<>();
     public MarioState state = MarioState.mini;
-    int upAndDownBoth = 0;
     transient double dieBye = 0.0;
     transient boolean dieASAP = false;
-    transient double shotCooldown = 0.0;
+    transient double shotCooldown = 0.0, saberShotCooldown = 0.0, upAndDownBoth = 0.0;
 
     Mario() {
         super(1, 1, 0, 2);
@@ -80,7 +79,7 @@ public abstract class Mario extends Block implements Saleable {
         for (Direction direction : Direction.values())
             task.put(direction, false);
         vx = vy = 0;
-        upAndDownBoth = 0;
+        upAndDownBoth = saberShotCooldown = shotCooldown = 0;
         dieBye = 0;
         W = 1;
         H = 1;
@@ -100,6 +99,14 @@ public abstract class Mario extends Block implements Saleable {
         if (state == MarioState.giga && shotCooldown == 0 && Push(Direction.Down) == 0) {
             manager.CurrentSection().Add(new Fire(this));
             shotCooldown = 3;
+        }
+    }
+
+    private void saberShot() {
+        if (saberShotCooldown == 0 && manager.CurrentUser().coin >= 3) {
+            manager.CurrentSection().Add(new Saber(this));
+            manager.CurrentUser().coin -= 3;
+            saberShotCooldown = 5;
         }
     }
 
@@ -136,8 +143,11 @@ public abstract class Mario extends Block implements Saleable {
     void UpdateSpeed() {
         vx *= FRICTION;
 
-        if (task.get(Direction.Down) && task.get(Direction.Up))
-            upAndDownBoth++;
+        if (task.get(Direction.Down) && task.get(Direction.Up)) {
+            upAndDownBoth += Game.delay;
+            if(upAndDownBoth > 3)
+                saberShot();
+        }
         else
             upAndDownBoth = 0;
 
@@ -153,6 +163,7 @@ public abstract class Mario extends Block implements Saleable {
         dieASAP = false;
         dieBye = Math.max(0, dieBye - Game.delay);
         shotCooldown = Math.max(0, shotCooldown - Game.delay);
+        saberShotCooldown = Math.max(0, saberShotCooldown - Game.delay);
         switch (state) {
             case mini -> H = 1;
             case mega, giga -> H = isDirection(Direction.Down) ? 1 : 2;

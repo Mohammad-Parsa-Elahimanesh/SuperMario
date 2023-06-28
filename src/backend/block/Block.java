@@ -117,10 +117,9 @@ public abstract class Block {
     }
 
     public void Update() {
-        if (Math.abs(vx) < eps)
-            vx = 0;
-        if (Math.abs(vy) < eps)
-            vy = 0;
+        // if (Math.abs(vx) < eps)vx = 0;
+        // if (Math.abs(vy) < eps) vy = 0;
+
         if (doesGravityAffects()) {
             if (Push(Direction.Down) > 0)
                 vy -= Game.delay * G;
