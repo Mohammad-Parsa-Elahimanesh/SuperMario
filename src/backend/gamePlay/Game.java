@@ -17,7 +17,6 @@ public class Game {
     public int levelNumber;
     public int sectionNumber;
     public int score = 0;
-    public int coins = 0;
     public boolean nextASAP;
     transient Manager manager = Manager.getInstance();
     transient GameFrame gameFrame = new GameFrame();
@@ -60,7 +59,11 @@ public class Game {
     }
 
     void NextSection() {
-        EndSection(true);
+        timer.stop();
+        score += (manager.CurrentSection().wholeTime - manager.CurrentSection().spentTime) * mario.getPowerLevel();
+        score += mario.heart * 20 * mario.getPowerLevel();
+        manager.CurrentUser().coin += manager.CurrentSection().coins;
+        mario.reset();
         sectionNumber++;
         if (levels[levelNumber].sections.length == sectionNumber) {
             levelNumber++;
@@ -80,18 +83,6 @@ public class Game {
         new MainMenu();
     }
 
-    void EndSection(boolean goNextLevel) {
-        timer.stop();
-        if(goNextLevel)
-            score += (manager.CurrentSection().wholeTime - manager.CurrentSection().spentTime) * mario.getPowerLevel();
-        if(goNextLevel)
-            score += mario.heart * 20 * mario.getPowerLevel();
-        mario.reset();
-        manager.CurrentUser().coin += coins;
-        coins = 0;
-        manager.CurrentSection().spentTime = 0;
-    }
-
     public void Stop() {
         timer.stop();
         gameFrame.setVisible(false);
@@ -107,7 +98,9 @@ public class Game {
             mario.state = MarioState.mini;
         switch (mario.state) {
             case mini -> {
-                EndSection(false);
+                timer.stop();
+                manager.CurrentSection().spentTime = 0;
+                mario.reset();
                 mario.heart--;
                 if (mario.heart <= 0)
                     EndGame();

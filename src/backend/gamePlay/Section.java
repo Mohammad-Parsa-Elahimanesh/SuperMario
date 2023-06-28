@@ -20,6 +20,8 @@ public class Section {
     public int W;
     public int wholeTime;
     public double spentTime = 0;
+    int checkPoints = 0;
+    public int coins = 0;
 
     Section(int level, int section) {
         Add(new Brick(1, 30, -1, 0));

@@ -18,9 +18,10 @@ public abstract class Mario extends Block implements Saleable {
     public int heart;
     public Map<Direction, Boolean> task = new HashMap<>();
     public MarioState state = MarioState.mini;
-    transient double dieBye = 0.0;
-    transient boolean dieASAP = false;
-    transient double shotCooldown = 0.0, saberShotCooldown = 0.0, upAndDownBoth = 0.0;
+    public int progressRate = 0;
+    double dieBye = 0.0;
+    boolean dieASAP = false;
+    double shotCooldown = 0.0, saberShotCooldown = 0.0, upAndDownBoth = 0.0;
 
     Mario() {
         super(1, 1, 0, 2);
@@ -162,6 +163,7 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     public void Update() {
+        progressRate = (int)Math.max(progressRate, X);
         dieASAP = false;
         dieBye = Math.max(0, dieBye - Game.delay);
         shotCooldown = Math.max(0, shotCooldown - Game.delay);
@@ -202,12 +204,11 @@ public abstract class Mario extends Block implements Saleable {
 
     void CheckGetCoins() {
         for (Block coin : manager.CurrentSection().blocks)
-            if (coin instanceof Coin)
-                if (Distance(coin) <= getCoinRange()) {
-                    coin.Delete();
-                    manager.CurrentGame().coins += 1;
-                    manager.CurrentGame().score += 10;
-                }
+            if (coin instanceof Coin && Distance(coin) <= getCoinRange()) {
+                coin.Delete();
+                manager.CurrentSection().coins += 1;
+                manager.CurrentGame().score += 10;
+            }
     }
 
     @Override

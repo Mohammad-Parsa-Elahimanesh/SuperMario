@@ -26,7 +26,7 @@ public class GamePanel extends JPanel {
         g.setColor(Color.DARK_GRAY);
         g.drawString("Score: " + manager.CurrentGame().score, 1030, 40);
         g.setColor(Color.YELLOW);
-        g.drawString("Coins: " + manager.CurrentGame().coins, 1300, 40);
+        g.drawString("Coins: " + manager.CurrentSection().coins, 1300, 40);
 
     }
 
