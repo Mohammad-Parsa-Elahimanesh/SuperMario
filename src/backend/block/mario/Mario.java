@@ -54,6 +54,7 @@ public abstract class Mario extends Block implements Saleable {
     public double getJumpSpeed() {
         return 20;
     }
+
     @Override
     protected boolean doesGravityAffects() {
         return true;
@@ -81,7 +82,7 @@ public abstract class Mario extends Block implements Saleable {
     public void reset() {
         for (Direction direction : Direction.values())
             task.put(direction, false);
-        vx = vy  = upAndDownBoth = 0;
+        vx = vy = upAndDownBoth = 0;
     }
 
     void Upgrade() {
@@ -109,7 +110,7 @@ public abstract class Mario extends Block implements Saleable {
 
     @Override
     protected boolean Pushed(Direction D) {
-        if(D == Direction.Up && vy > 0)
+        if (D == Direction.Up && vy > 0)
             vy = 0;
         return true;
     }

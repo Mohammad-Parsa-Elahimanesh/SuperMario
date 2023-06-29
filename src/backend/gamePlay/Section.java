@@ -18,10 +18,10 @@ import java.util.List;
 
 public class Section {
     public final Mario mario;
+    public final ArrayList<Checkpoint> savedCheckpoints = new ArrayList<>();
     final transient private List<Block> mustBeAdded = new ArrayList<Block>();
     final transient private List<Block> mustBeRemoved = new ArrayList<Block>();
     final private transient Manager manager = Manager.getInstance();
-    public final ArrayList<Checkpoint> savedCheckpoints = new ArrayList<>();
     public List<Block> blocks = new ArrayList<>();
     public int W;
     public int wholeTime;
@@ -73,7 +73,7 @@ public class Section {
         Add(new Goomba(40, 2));
         Add(new Koopa(25, 2));
         Add(new Koopa(35, 2));
-        Add(new Checkpoint(30,6));
+        Add(new Checkpoint(30, 6));
         for (int i = 20; i < 40; i++) {
             if (Math.random() < 0.5) Add(new Soft(SoftType.Coin, i, 5));
             else Add(new Solid(SolidType.Prize, i, 5));
@@ -161,7 +161,7 @@ public class Section {
                 spentTime = 0;
                 coins -= ((savedCheckpoints.size() + 1) * coins + ProgressRisk()) / (savedCheckpoints.size() + 4);
                 mario.reset();
-                if(savedCheckpoints.isEmpty()) {
+                if (savedCheckpoints.isEmpty()) {
                     mario.X = 0;
                     mario.Y = 2;
                     spentTime = 0;

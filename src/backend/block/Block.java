@@ -100,6 +100,7 @@ public abstract class Block {
                 canMove = min(canMove, ManhattanDistance(block));
         return canMove;
     }
+
     public int getDirection() {
         return vx < 0 ? -1 : 1;
     }
@@ -128,8 +129,8 @@ public abstract class Block {
                 vy = 0;
         }
 
-        if (Math.abs(vx) < eps && vx != 0)vx = eps* getDirection();
-        if (Math.abs(vy) < eps && vy != 0) vy = eps*(vy < 0? -1:1);
+        if (Math.abs(vx) < eps && vx != 0) vx = eps * getDirection();
+        if (Math.abs(vy) < eps && vy != 0) vy = eps * (vy < 0 ? -1 : 1);
 
         if (vx < 0) {
             double maxMove = -vx * Game.delay;
@@ -139,7 +140,7 @@ public abstract class Block {
                 X -= canMove;
                 maxMove -= canMove;
             }
-            if(maxMove > 0)
+            if (maxMove > 0)
                 Pushed(Direction.Left);
         }
         if (vx > 0) {
@@ -150,7 +151,7 @@ public abstract class Block {
                 X += canMove;
                 maxMove -= canMove;
             }
-            if(maxMove > 0)
+            if (maxMove > 0)
                 Pushed(Direction.Right);
         }
 
@@ -162,7 +163,7 @@ public abstract class Block {
                 Y -= canMove;
                 maxMove -= canMove;
             }
-            if(maxMove > 0)
+            if (maxMove > 0)
                 Pushed(Direction.Down);
         }
         if (vy > 0) {
@@ -173,7 +174,7 @@ public abstract class Block {
                 Y += canMove;
                 maxMove -= canMove;
             }
-            if(maxMove > 0)
+            if (maxMove > 0)
                 Pushed(Direction.Up);
         }
     }

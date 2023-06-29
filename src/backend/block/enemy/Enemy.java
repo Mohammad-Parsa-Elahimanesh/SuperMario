@@ -16,6 +16,7 @@ public abstract class Enemy extends Block {
     abstract int scoreWhenBeKilled();
 
     public void Die() {
+        Manager.getInstance().CurrentSection().coins += 3;
         Manager.getInstance().CurrentGame().score += scoreWhenBeKilled();
         Delete();
     }

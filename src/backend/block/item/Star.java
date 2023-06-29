@@ -31,7 +31,7 @@ public class Star extends Item {
     protected boolean Pushed(Block.Direction D) {
         if ((vx < 0 && D == Direction.Left) || (vx > 0 && D == Direction.Right))
             vx *= -1;
-        else if(D == Direction.Up && vy > 0)
+        else if (D == Direction.Up && vy > 0)
             vy = 0;
         return Neighbor(Manager.getInstance().CurrentMario());
     }

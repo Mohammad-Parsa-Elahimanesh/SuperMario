@@ -9,6 +9,7 @@ import java.awt.*;
 public class CheckpointMenu extends JFrame {
     final Checkpoint checkpoint;
     final int progressRisk;
+
     public CheckpointMenu(Checkpoint checkpoint) {
         this.checkpoint = checkpoint;
         progressRisk = Manager.getInstance().CurrentSection().ProgressRisk();
@@ -27,12 +28,12 @@ public class CheckpointMenu extends JFrame {
     JButton Save() {
         JButton save = new JButton("Save");
         save.addActionListener(e -> {
-            if(Manager.getInstance().CurrentSection().coins < progressRisk)
+            if (Manager.getInstance().CurrentSection().coins < progressRisk)
                 return;
             checkpoint.Save();
             dispose();
         });
-        save.setToolTipText("Your progress and time will be saved and you must pay "+progressRisk+" coins.");
+        save.setToolTipText("Your progress and time will be saved and you must pay " + progressRisk + " coins.");
         return save;
     }
 
@@ -52,7 +53,7 @@ public class CheckpointMenu extends JFrame {
             checkpoint.Destroy();
             dispose();
         });
-        destroy.setToolTipText("Checkpoint will be destroyed and you gain "+progressRisk/4+" coins.");
+        destroy.setToolTipText("Checkpoint will be destroyed and you gain " + progressRisk / 4 + " coins.");
         return destroy;
     }
 }
