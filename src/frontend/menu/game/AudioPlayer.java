@@ -1,8 +1,6 @@
 package frontend.menu.game;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -10,7 +8,6 @@ import javax.sound.sampled.Clip;
 public class AudioPlayer {
     private static final long serialVersionUID = 1L;
     private static final AudioPlayer instance = new AudioPlayer();
-    Map<String, Clip> sounds = new HashMap<>();
     Clip background = getClip("background");
     private boolean silence = true;
 
@@ -41,9 +38,8 @@ public class AudioPlayer {
     }
 
     public void Play(String name) {
-        sounds.computeIfAbsent(name, this::getClip);
         if(!silence)
-            sounds.get(name).start();
+            getClip(name).start();
     }
 
 }

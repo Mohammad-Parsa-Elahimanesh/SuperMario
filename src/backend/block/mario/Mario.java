@@ -7,6 +7,7 @@ import backend.block.brick.Spring;
 import backend.block.enemy.Enemy;
 import backend.block.item.*;
 import backend.gamePlay.Game;
+import frontend.menu.game.AudioPlayer;
 
 import java.awt.*;
 import java.util.EnumMap;
@@ -137,6 +138,7 @@ public abstract class Mario extends Block implements Saleable {
             else if (block instanceof Star) {
                 manager.CurrentGame().score += 40;
                 shield = 15;
+                AudioPlayer.getInstance().Play("shield");
             }
         } else if (block instanceof Spring) {
             vy = getJumpSpeed() * 1.3;
@@ -213,4 +215,3 @@ public abstract class Mario extends Block implements Saleable {
 
 }
 
-// TODO: 3 coins when kill enemy!

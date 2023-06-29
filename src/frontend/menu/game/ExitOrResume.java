@@ -8,6 +8,7 @@ import java.awt.*;
 
 public class ExitOrResume extends JFrame {
     ExitOrResume() {
+        Manager.getInstance().CurrentMario().reset();
         setSize(200, 100);
         setLocation((Manager.getInstance().W - getWidth()) / 2, (Manager.getInstance().H - getHeight()) / 2);
         JPanel panel = new JPanel();

@@ -12,6 +12,7 @@ import backend.block.flag.Flag;
 import backend.block.item.Coin;
 import backend.block.mario.Mario;
 import backend.block.mario.MarioState;
+import frontend.menu.game.AudioPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,6 +139,7 @@ public class Section {
             mario.state = MarioState.mini;
         switch (mario.state) {
             case mini -> {
+                AudioPlayer.getInstance().Play("marioDeath");
                 spentTime = 0;
                 coins -= ((savedCheckpoints.size() + 1) * coins + ProgressRisk()) / (savedCheckpoints.size() + 4);
                 mario.reset();
@@ -177,6 +179,7 @@ public class Section {
             MarioDie();
         else if (mario.goNext())
             manager.CurrentGame().NextSection();
+
         spentTime += Game.delay;
     }
 }
