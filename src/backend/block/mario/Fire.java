@@ -11,7 +11,7 @@ public class Fire extends Block {
 
     protected Fire(Mario mario) {
         super(0.3, 0.3, mario.X, mario.Y + mario.H - 0.75);
-        vx = mario.getShotSpeed() * mario.getVxDirectionNumber();
+        vx = mario.getShotSpeed() * mario.getDirection();
     }
 
     @Override

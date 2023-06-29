@@ -54,11 +54,6 @@ public abstract class Mario extends Block implements Saleable {
     public double getJumpSpeed() {
         return 20;
     }
-
-    protected int getVxDirectionNumber() {
-        return vx < 0 ? -1 : 1;
-    }
-
     @Override
     protected boolean doesGravityAffects() {
         return true;

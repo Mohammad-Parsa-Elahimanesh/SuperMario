@@ -11,13 +11,16 @@ public class Goomba extends Enemy {
 
     @Override
     public void Update() {
+        double lastX = X;
         super.Update();
         if (vx < 0 && Push(Direction.Left) == 0)
             vx *= -1;
         if (vx > 0 && Push(Direction.Right) == 0)
             vx *= -1;
-        if (Push(Direction.Down) > 0)
+        if (Push(Direction.Down) > 0) {
             vx *= -1;
+            X = lastX;
+        }
     }
 
     int scoreWhenBeKilled() {

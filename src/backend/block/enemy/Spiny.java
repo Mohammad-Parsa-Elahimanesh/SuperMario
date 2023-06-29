@@ -19,13 +19,16 @@ public class Spiny extends Enemy {
 
     @Override
     public void Update() {
+        double lastX = X;
         super.Update();
         if (vx < 0 && Push(Direction.Left) == 0)
             vx *= -1;
         if (vx > 0 && Push(Direction.Right) == 0)
             vx *= -1;
-        if (Push(Direction.Down) > 0)
+        if (Push(Direction.Down) > 0) {
             vx *= -1;
+            X = lastX;
+        }
         if (Manager.getInstance().CurrentMario().Y == Y && Distance(Manager.getInstance().CurrentMario()) < 4) {
             vx += (vx < 0 ? -1 : 1) * getNormalSpeed() * 0.1;
             if (Side(Manager.getInstance().CurrentMario(), Direction.Left))

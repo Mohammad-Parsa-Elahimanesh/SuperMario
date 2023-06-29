@@ -15,7 +15,7 @@ import static java.lang.Math.min;
 public abstract class Block {
     final static double G = 35;
     final static double MAX_MOVE = 0.8;
-    final static double eps = 0.1;
+    final static double eps = 0.01;
     static Map<String, Image> images = new HashMap<String, Image>();
     public double X, W, H, Y;
     protected double vx = 0, vy = 0;
@@ -100,6 +100,9 @@ public abstract class Block {
                 canMove = min(canMove, ManhattanDistance(block));
         return canMove;
     }
+    public int getDirection() {
+        return vx < 0 ? -1 : 1;
+    }
 
     protected abstract boolean Pushed(Direction D);
 
@@ -117,17 +120,8 @@ public abstract class Block {
     }
 
     public void Update() {
-        // if (Math.abs(vx) < eps)vx = 0;
-        // if (Math.abs(vy) < eps) vy = 0;
-
-        if (doesGravityAffects()) {
-            if (Push(Direction.Down) > 0)
-                vy -= Game.delay * G;
-            else if (vy < 0)
-                vy = 0;
-        }
-        if (vy > 0 && Push(Direction.Up) == 0)
-            vy = 0;
+        if (Math.abs(vx) < eps && vx != 0)vx = eps* getDirection();
+        if (Math.abs(vy) < eps && vy != 0) vy = eps*(vy < 0? -1:1);
 
         if (vx < 0) {
             double maxMove = -vx * Game.delay;
@@ -156,6 +150,16 @@ public abstract class Block {
                 maxMove -= canMove;
             }
         }
+
+        if (doesGravityAffects()) {
+            if (Push(Direction.Down) > 0)
+                vy -= Game.delay * G;
+            else if (vy < 0)
+                vy = 0;
+        }
+        if (vy > 0 && Push(Direction.Up) == 0)
+            vy = 0;
+
         if (vy > 0) {
             double maxMove = vy * Game.delay;
             double canMove = maxMove;

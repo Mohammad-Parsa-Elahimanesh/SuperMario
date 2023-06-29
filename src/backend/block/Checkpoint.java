@@ -41,6 +41,12 @@ public class Checkpoint extends Block {
             Manager.getInstance().CurrentGame().timer.stop();
             new CheckpointMenu(this);
         }
+        super.Update();
+    }
+
+    @Override
+    protected boolean doesGravityAffects() {
+        return true;
     }
 
     @Override
