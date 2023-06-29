@@ -20,12 +20,20 @@ public abstract class Mario extends Block implements Saleable {
     public MarioState state = MarioState.mini;
     public double travelleDistance = 0;
     double dieBye = 0.0;
-    boolean dieASAP = false;
     double shotCooldown = 0.0, saberShotCooldown = 0.0, upAndDownBoth = 0.0;
+    private boolean dieASAP, nextASAP;
 
     Mario() {
         super(1, 1, 0, 2);
         reset();
+    }
+
+    public boolean goNext() {
+        return nextASAP;
+    }
+
+    public boolean Died() {
+        return dieASAP;
     }
 
     public int getSpeed() {
@@ -51,10 +59,6 @@ public abstract class Mario extends Block implements Saleable {
     @Override
     protected boolean doesGravityAffects() {
         return true;
-    }
-
-    public boolean mustBeDied() {
-        return dieASAP;
     }
 
     private boolean isDirection(Direction d) {
@@ -124,7 +128,7 @@ public abstract class Mario extends Block implements Saleable {
                 ((Enemy) block).Die();
             else {
                 dieASAP = true;
-                if(state == MarioState.mini)
+                if (state == MarioState.mini)
                     manager.CurrentGame().score = Math.max(manager.CurrentGame().score - 20, 0);
             }
         } else if (block instanceof Item && !(block instanceof Coin)) {
@@ -164,11 +168,11 @@ public abstract class Mario extends Block implements Saleable {
 
     public void Update() {
         travelleDistance = (int) Math.max(travelleDistance, X);
-        dieASAP = false;
+        dieASAP = nextASAP = false;
         dieBye = Math.max(0, dieBye - Game.delay);
         shotCooldown = Math.max(0, shotCooldown - Game.delay);
         saberShotCooldown = Math.max(0, saberShotCooldown - Game.delay);
-        H = state == MarioState.mini || isDirection(Direction.Down)?1:2;
+        H = state == MarioState.mini || isDirection(Direction.Down) ? 1 : 2;
         UpdateSpeed();
         super.Update();
         CheckIntersection();
@@ -189,7 +193,7 @@ public abstract class Mario extends Block implements Saleable {
 
     void CheckGameState() {
         if (manager.CurrentSection().W < X + W)
-            manager.CurrentGame().nextASAP = true;
+            nextASAP = true;
         else if (Y + H < 0) {
             dieASAP = true;
             manager.CurrentGame().score = Math.max(manager.CurrentGame().score - 30, 0);

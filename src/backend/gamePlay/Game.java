@@ -1,7 +1,6 @@
 package backend.gamePlay;
 
 import backend.Manager;
-import backend.block.Block;
 import backend.block.mario.Mario;
 import backend.block.mario.MarioState;
 import frontend.menu.MainMenu;
@@ -16,7 +15,6 @@ public class Game {
     public int levelNumber;
     public int sectionNumber;
     public int score = 0;
-    public boolean nextASAP;
     transient Manager manager = Manager.getInstance();
     transient GameFrame gameFrame = new GameFrame();
     Difficulty difficulty;
@@ -93,14 +91,6 @@ public class Game {
     public transient Timer timer = new Timer((int) (delay * 1000), e -> {
         manager.CurrentSection().Update();
         gameFrame.repaint();
-        // todo: Update Section
-        // todo: timer is for Section
-        if (manager.CurrentMario().mustBeDied())
-            manager.CurrentSection().MarioDie();
-        else if (nextASAP) {
-            nextASAP = false;
-            NextSection();
-        }
     });
 
 
