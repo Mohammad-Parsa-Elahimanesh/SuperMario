@@ -171,7 +171,7 @@ public class Section {
         mario.BeAlive();
     }
     double ProgressRate() {return mario.travelleDistance/W;}
-    int ProgressRisk() {return (int)ProgressRate()*coins;}
+    int ProgressRisk() {return (int)(ProgressRate()*coins);}
     void Update() {
         UpdateBlocks();
         for (Block block : blocks)
