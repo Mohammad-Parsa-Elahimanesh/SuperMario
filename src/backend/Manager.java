@@ -32,7 +32,7 @@ public class Manager {
     }
 
     public Mario CurrentMario() {
-        return CurrentSection().getMario();
+        return CurrentSection().mario;
     }
 
     public final int W = 1536, column = 24, w = W / column;

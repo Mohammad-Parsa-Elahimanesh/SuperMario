@@ -1,6 +1,8 @@
 package backend.gamePlay;
 
+import backend.Manager;
 import backend.block.Block;
+import backend.block.Checkpoint;
 import backend.block.Pipe;
 import backend.block.brick.*;
 import backend.block.enemy.Goomba;
@@ -9,8 +11,11 @@ import backend.block.enemy.Koopa;
 import backend.block.enemy.Spiny;
 import backend.block.item.Coin;
 import backend.block.mario.Mario;
+import backend.block.mario.MarioState;
 
+import java.rmi.server.ExportException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Section {
@@ -21,10 +26,11 @@ public class Section {
     public int wholeTime;
     public double spentTime = 0;
     public int coins = 0;
-    int checkPoints = 0;
-
-    Section(int level, int section, Mario mario) {
+    public final Mario mario;
+    private final ArrayList<Checkpoint> savedCheckpoints = new ArrayList<>();
+    Section(int level, int section, Mario mario) throws Exception {
         Add(new Brick(1, 30, -1, 0));
+        this.mario = mario.getClass().getDeclaredConstructor().newInstance();
         if (level == 0) {
             switch (section) {
                 case 0 -> Level0Section0();
@@ -33,12 +39,7 @@ public class Section {
                 case 3 -> Level0Section3();
             }
         }
-        try {
-            Add(mario.getClass().getDeclaredConstructor().newInstance());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        UpdateBlocks();
+        Add(this.mario);
     }
 
     void AddPipeWithKillerPlant(int X, int H) {
@@ -146,15 +147,35 @@ public class Section {
         Add(new Brick(2, 2, 73, 0));
     }
 
-    public Mario getMario() {
+    void SectionReward() {
+        Manager.getInstance().CurrentGame().score += (wholeTime - spentTime) * mario.getPowerLevel();
+        Manager.getInstance().CurrentGame().score += mario.heart * 20 * mario.getPowerLevel();
+        Manager.getInstance().CurrentUser().coin += coins;
+    }
+    void MarioDie() {
+        if (mario.Y < 0)
+            mario.state = MarioState.mini;
+        switch (mario.state) {
+            case mini -> {
+                spentTime = 0;
+                coins -= ((savedCheckpoints.size()+1)*coins+ProgressRisk())/(savedCheckpoints.size()+4);
+                mario.reset();
+                mario.heart--;
+                if (mario.heart <= 0)
+                    Manager.getInstance().CurrentGame().EndGame();
+                return;
+            }
+            case mega -> mario.state = MarioState.mini;
+            case giga -> mario.state = MarioState.mega;
+        }
+        mario.BeAlive();
+    }
+    double ProgressRate() {return mario.travelleDistance/W;}
+    int ProgressRisk() {return (int)ProgressRate()*coins;}
+    void Update() {
+        UpdateBlocks();
         for (Block block : blocks)
-            if (block instanceof Mario mario)
-                return mario;
-        return null;
+            block.Update();
+        spentTime += Game.delay;
     }
-
-    int getScore() {
-        return (int) (wholeTime - spentTime) * getMario().getPowerLevel() + getMario().heart * 20 * getMario().getPowerLevel();
-    }
-
 }

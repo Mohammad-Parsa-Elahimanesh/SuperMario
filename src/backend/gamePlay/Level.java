@@ -7,7 +7,12 @@ public class Level {
 
     Level(int level, Mario mario) {
         sections = new Section[4];
-        for (int i = 0; i < 4; i++)
-            sections[i] = new Section(level, i, mario);
+        for (int i = 0; i < 4; i++) {
+            try {
+                sections[i] = new Section(level, i, mario);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

@@ -18,7 +18,7 @@ public abstract class Mario extends Block implements Saleable {
     public int heart = 3;
     public Map<Direction, Boolean> task = new HashMap<>();
     public MarioState state = MarioState.mini;
-    public int progressRate = 0;
+    public double travelleDistance = 0;
     double dieBye = 0.0;
     boolean dieASAP = false;
     double shotCooldown = 0.0, saberShotCooldown = 0.0, upAndDownBoth = 0.0;
@@ -124,7 +124,8 @@ public abstract class Mario extends Block implements Saleable {
                 ((Enemy) block).Die();
             else {
                 dieASAP = true;
-                manager.CurrentGame().score = Math.max(manager.CurrentGame().score - 20, 0);
+                if(state == MarioState.mini)
+                    manager.CurrentGame().score = Math.max(manager.CurrentGame().score - 20, 0);
             }
         } else if (block instanceof Item && !(block instanceof Coin)) {
             Upgrade();
@@ -162,15 +163,12 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     public void Update() {
-        progressRate = (int) Math.max(progressRate, X);
+        travelleDistance = (int) Math.max(travelleDistance, X);
         dieASAP = false;
         dieBye = Math.max(0, dieBye - Game.delay);
         shotCooldown = Math.max(0, shotCooldown - Game.delay);
         saberShotCooldown = Math.max(0, saberShotCooldown - Game.delay);
-        switch (state) {
-            case mini -> H = 1;
-            case mega, giga -> H = isDirection(Direction.Down) ? 1 : 2;
-        }
+        H = state == MarioState.mini || isDirection(Direction.Down)?1:2;
         UpdateSpeed();
         super.Update();
         CheckIntersection();
@@ -194,8 +192,7 @@ public abstract class Mario extends Block implements Saleable {
             manager.CurrentGame().nextASAP = true;
         else if (Y + H < 0) {
             dieASAP = true;
-            if (state == MarioState.mini)
-                manager.CurrentGame().score = Math.max(manager.CurrentGame().score - 30, 0);
+            manager.CurrentGame().score = Math.max(manager.CurrentGame().score - 30, 0);
         } else if (manager.CurrentSection().wholeTime <= manager.CurrentSection().spentTime)
             dieASAP = true;
     }

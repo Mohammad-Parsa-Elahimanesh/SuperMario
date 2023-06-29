@@ -32,15 +32,12 @@ public class Game {
             return game.State();
     }
 
-    public void constructor(Mario mario) {
+    public void constructor(Mario mario, Difficulty difficulty) {
+        this.difficulty = difficulty;
         levelNumber = sectionNumber = 0;
         levels = new Level[]{new Level(0, mario)};
         gameFrame.setVisible(true);
         Start();
-    }
-
-    public void setDifficulty(Difficulty difficulty) {
-        this.difficulty = difficulty;
     }
 
     void Start() {
@@ -49,8 +46,7 @@ public class Game {
 
     void NextSection() {
         timer.stop();
-        score += manager.CurrentSection().getScore();
-        manager.CurrentUser().coin += manager.CurrentSection().coins;
+        manager.CurrentSection().SectionReward();
         MarioState lastStateOfMario = manager.CurrentMario().state;
         sectionNumber++;
         if (levels[levelNumber].sections.length == sectionNumber) {
@@ -66,6 +62,7 @@ public class Game {
     }
 
     void EndGame() {
+        timer.stop();
         if (manager.CurrentUser().maxRating < score)
             manager.CurrentUser().maxRating = score;
         manager.CurrentUser().game[manager.CurrentUser().currentGameIndex] = null;
@@ -83,27 +80,6 @@ public class Game {
         timer.start();
     }
 
-    void Die() {
-        if (manager.CurrentMario().Y < 0)
-            manager.CurrentMario().state = MarioState.mini;
-        switch (manager.CurrentMario().state) {
-            case mini -> {
-                timer.stop();
-                manager.CurrentSection().spentTime = 0;
-                manager.CurrentMario().reset();
-                manager.CurrentMario().heart--;
-                if (manager.CurrentMario().heart <= 0)
-                    EndGame();
-                else
-                    timer.start();
-                return;
-            }
-            case mega -> manager.CurrentMario().state = MarioState.mini;
-            case giga -> manager.CurrentMario().state = MarioState.mega;
-        }
-        manager.CurrentMario().BeAlive();
-    }
-
     String State() {
         return "Level: " + (levelNumber + 1) + " Section: " + (sectionNumber + 1);
     }
@@ -115,13 +91,12 @@ public class Game {
     }
 
     public transient Timer timer = new Timer((int) (delay * 1000), e -> {
-        manager.CurrentSection().UpdateBlocks();
-        for (Block block : manager.CurrentSection().blocks)
-            block.Update();
-        manager.CurrentSection().spentTime += delay;
+        manager.CurrentSection().Update();
         gameFrame.repaint();
+        // todo: Update Section
+        // todo: timer is for Section
         if (manager.CurrentMario().mustBeDied())
-            Die();
+            manager.CurrentSection().MarioDie();
         else if (nextASAP) {
             nextASAP = false;
             NextSection();
