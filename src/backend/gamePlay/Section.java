@@ -21,7 +21,7 @@ public class Section {
     final transient private List<Block> mustBeAdded = new ArrayList<Block>();
     final transient private List<Block> mustBeRemoved = new ArrayList<Block>();
     final private transient Manager manager = Manager.getInstance();
-    private final ArrayList<Checkpoint> savedCheckpoints = new ArrayList<>();
+    public final ArrayList<Checkpoint> savedCheckpoints = new ArrayList<>();
     public List<Block> blocks = new ArrayList<>();
     public int W;
     public int wholeTime;
@@ -73,7 +73,7 @@ public class Section {
         Add(new Goomba(40, 2));
         Add(new Koopa(25, 2));
         Add(new Koopa(35, 2));
-
+        Add(new Checkpoint(30,6));
         for (int i = 20; i < 40; i++) {
             if (Math.random() < 0.5) Add(new Soft(SoftType.Coin, i, 5));
             else Add(new Solid(SolidType.Prize, i, 5));
@@ -150,7 +150,7 @@ public class Section {
     void SectionReward() {
         manager.CurrentGame().score += (wholeTime - spentTime) * mario.getPowerLevel();
         manager.CurrentGame().score += mario.heart * 20 * mario.getPowerLevel();
-        manager.CurrentUser().coin += coins;
+        manager.CurrentUser().coins += coins;
     }
 
     void MarioDie() {
@@ -161,6 +161,15 @@ public class Section {
                 spentTime = 0;
                 coins -= ((savedCheckpoints.size() + 1) * coins + ProgressRisk()) / (savedCheckpoints.size() + 4);
                 mario.reset();
+                if(savedCheckpoints.isEmpty()) {
+                    mario.X = 0;
+                    mario.Y = 2;
+                    spentTime = 0;
+                } else {
+                    mario.X = savedCheckpoints.get(savedCheckpoints.size() - 1).X;
+                    mario.Y = savedCheckpoints.get(savedCheckpoints.size() - 1).Y;
+                    spentTime = savedCheckpoints.get(savedCheckpoints.size() - 1).spendTime;
+                }
                 mario.heart--;
                 if (mario.heart <= 0)
                     manager.CurrentGame().EndGame();
@@ -176,7 +185,7 @@ public class Section {
         return mario.travelleDistance / W;
     }
 
-    int ProgressRisk() {
+    public int ProgressRisk() {
         return (int) (ProgressRate() * coins);
     }
 

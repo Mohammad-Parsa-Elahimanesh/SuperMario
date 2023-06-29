@@ -40,10 +40,10 @@ public class Shop extends JFrame {
     TileLabel ShowCoin() {
         TileLabel showCoin = new TileLabel();
         showCoin.setTileSize(manager.column / column, manager.row / row);
-        showCoin.setText("Coins: " + manager.CurrentUser().coin);
+        showCoin.setText("Coins: " + manager.CurrentUser().coins);
 
         Timer t = new Timer(3000, e -> {
-            showCoin.setText("Coins: " + manager.CurrentUser().coin);
+            showCoin.setText("Coins: " + manager.CurrentUser().coins);
         });
         t.start();
         showCoin.setFont(new Font("Arial", Font.PLAIN, 50));

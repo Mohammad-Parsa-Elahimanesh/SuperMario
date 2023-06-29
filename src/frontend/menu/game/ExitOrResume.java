@@ -22,7 +22,6 @@ public class ExitOrResume extends JFrame {
     JButton ExitGame() {
         JButton exitGame = new JButton("Exit Game");
         exitGame.addActionListener(e -> {
-            setVisible(false);
             new MainMenu();
             dispose();
         });

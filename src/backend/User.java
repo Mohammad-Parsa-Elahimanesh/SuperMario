@@ -12,7 +12,7 @@ public class User {
     public final Game[] game = new Game[3];
     public final String name;
     public final String password;
-    public int coin = 0;
+    public int coins = 0;
     public int maxRating = -1;
     public List<String> bought = new ArrayList<>();
     public int currentGameIndex = -1;

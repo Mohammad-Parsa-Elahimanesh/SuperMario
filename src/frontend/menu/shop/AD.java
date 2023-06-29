@@ -23,12 +23,12 @@ public class AD extends TileButton {
         addActionListener(e -> {
             if (sold)
                 new Massage("you have this since before !");
-            else if (manager.CurrentUser().coin < sales.getCost())
+            else if (manager.CurrentUser().coins < sales.getCost())
                 new Massage("you don't have enough coins :/");
             else {
                 sold = true;
                 manager.CurrentUser().buy(sales);
-                manager.CurrentUser().coin -= sales.getCost();
+                manager.CurrentUser().coins -= sales.getCost();
                 new Massage("you buy this successfully !");
             }
         });

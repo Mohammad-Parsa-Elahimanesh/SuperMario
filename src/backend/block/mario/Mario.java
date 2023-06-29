@@ -25,6 +25,9 @@ public abstract class Mario extends Block implements Saleable {
 
     Mario() {
         super(1, 1, 0, 2);
+        W = H = 1;
+        X = 0;
+        Y = 2;
         reset();
     }
 
@@ -83,13 +86,7 @@ public abstract class Mario extends Block implements Saleable {
     public void reset() {
         for (Direction direction : Direction.values())
             task.put(direction, false);
-        vx = vy = 0;
-        upAndDownBoth = saberShotCooldown = shotCooldown = 0;
-        dieBye = 0;
-        W = 1;
-        H = 1;
-        X = 0;
-        Y = 2;
+        vx = vy  = upAndDownBoth = 0;
     }
 
     void Upgrade() {
@@ -108,9 +105,9 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     private void saberShot() {
-        if (saberShotCooldown == 0 && manager.CurrentUser().coin >= 3) {
+        if (saberShotCooldown == 0 && manager.CurrentUser().coins >= 3) {
             manager.CurrentSection().Add(new Saber(this));
-            manager.CurrentUser().coin -= 3;
+            manager.CurrentUser().coins -= 3;
             saberShotCooldown = 5;
         }
     }
