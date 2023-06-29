@@ -3,6 +3,7 @@ package backend;
 import backend.block.mario.Mario;
 import backend.gamePlay.Game;
 import backend.gamePlay.Section;
+import frontend.menu.game.AudioPlayer;
 
 public class Manager {
     static private final Manager singleton = new Manager();

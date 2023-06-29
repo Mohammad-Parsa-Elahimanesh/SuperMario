@@ -4,6 +4,7 @@ import backend.Manager;
 import backend.block.mario.Mario;
 import backend.block.mario.MarioState;
 import frontend.menu.MainMenu;
+import frontend.menu.game.AudioPlayer;
 import frontend.menu.game.GameFrame;
 import frontend.menu.game.SetGameSettings;
 
@@ -91,7 +92,19 @@ public class Game {
     public transient Timer timer = new Timer((int) (delay * 1000), e -> {
         manager.CurrentSection().Update();
         gameFrame.repaint();
-    });
+    }) {
+        @Override
+        public void start() {
+            super.start();
+            AudioPlayer.getInstance().setSilence(false);
+        }
+
+        @Override
+        public void stop() {
+            super.stop();
+            AudioPlayer.getInstance().setSilence(true);
+        }
+    };
 
 
 }

@@ -10,7 +10,6 @@ import backend.gamePlay.Game;
 
 import java.awt.*;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Mario extends Block implements Saleable {
