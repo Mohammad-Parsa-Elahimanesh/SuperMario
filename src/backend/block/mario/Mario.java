@@ -109,6 +109,8 @@ public abstract class Mario extends Block implements Saleable {
 
     @Override
     protected boolean Pushed(Direction D) {
+        if(D == Direction.Up && vy > 0)
+            vy = 0;
         return true;
     }
 

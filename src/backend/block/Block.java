@@ -120,6 +120,14 @@ public abstract class Block {
     }
 
     public void Update() {
+
+        if (doesGravityAffects()) {
+            if (Push(Direction.Down) > 0)
+                vy -= Game.delay * G;
+            else if (vy < 0)
+                vy = 0;
+        }
+
         if (Math.abs(vx) < eps && vx != 0)vx = eps* getDirection();
         if (Math.abs(vy) < eps && vy != 0) vy = eps*(vy < 0? -1:1);
 
@@ -131,6 +139,8 @@ public abstract class Block {
                 X -= canMove;
                 maxMove -= canMove;
             }
+            if(maxMove > 0)
+                Pushed(Direction.Left);
         }
         if (vx > 0) {
             double maxMove = vx * Game.delay;
@@ -140,7 +150,10 @@ public abstract class Block {
                 X += canMove;
                 maxMove -= canMove;
             }
+            if(maxMove > 0)
+                Pushed(Direction.Right);
         }
+
         if (vy < 0) {
             double maxMove = -vy * Game.delay;
             double canMove = maxMove;
@@ -149,17 +162,9 @@ public abstract class Block {
                 Y -= canMove;
                 maxMove -= canMove;
             }
+            if(maxMove > 0)
+                Pushed(Direction.Down);
         }
-
-        if (doesGravityAffects()) {
-            if (Push(Direction.Down) > 0)
-                vy -= Game.delay * G;
-            else if (vy < 0)
-                vy = 0;
-        }
-        if (vy > 0 && Push(Direction.Up) == 0)
-            vy = 0;
-
         if (vy > 0) {
             double maxMove = vy * Game.delay;
             double canMove = maxMove;
@@ -168,6 +173,8 @@ public abstract class Block {
                 Y += canMove;
                 maxMove -= canMove;
             }
+            if(maxMove > 0)
+                Pushed(Direction.Up);
         }
     }
 

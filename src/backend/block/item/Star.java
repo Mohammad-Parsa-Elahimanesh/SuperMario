@@ -23,13 +23,16 @@ public class Star extends Item {
             if (old >= 3)
                 vx = new SimpleMario().getSpeed() / 2.0;
         }
-        if ((vx > 0 && Push(Block.Direction.Right) == 0) || (vx < 0 && Push(Block.Direction.Left) == 0))
-            vx = -vx;
+
         super.Update();
     }
 
     @Override
     protected boolean Pushed(Block.Direction D) {
+        if ((vx < 0 && D == Direction.Left) || (vx > 0 && D == Direction.Right))
+            vx *= -1;
+        else if(D == Direction.Up && vy > 0)
+            vy = 0;
         return Neighbor(Manager.getInstance().CurrentMario());
     }
 
