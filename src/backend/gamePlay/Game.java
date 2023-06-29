@@ -15,8 +15,8 @@ public class Game {
     public int levelNumber;
     public int sectionNumber;
     public int score = 0;
-    transient Manager manager = Manager.getInstance();
     transient public GameFrame gameFrame = new GameFrame();
+    transient Manager manager = Manager.getInstance();
     Difficulty difficulty;
 
     public Game() {

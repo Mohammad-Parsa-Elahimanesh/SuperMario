@@ -80,7 +80,7 @@ public abstract class Block {
 
     protected abstract String getImageName();
 
-    public BufferedImage getMirroredImage(BufferedImage originalImage) {
+    private BufferedImage getMirroredImage(BufferedImage originalImage) {
         int width = originalImage.getWidth();
         int height = originalImage.getHeight();
         BufferedImage mirrorImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -94,17 +94,17 @@ public abstract class Block {
     }
 
     public Image getImage() {
-        if(!images.containsKey(getImageName())) {
+        if (!images.containsKey(getImageName())) {
             try {
                 images.put(getImageName(), ImageIO.read(new File("Images\\" + getImageName())));
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         }
-        if(vx < 0 && !images.containsKey("mirrored"+getImageName())) {
-            images.put("mirrored"+getImageName(), getMirroredImage(images.get(getImageName())));
+        if (vx < 0 && !images.containsKey("mirrored" + getImageName())) {
+            images.put("mirrored" + getImageName(), getMirroredImage(images.get(getImageName())));
         }
-        return images.get((vx < 0?"mirrored":"")+getImageName());
+        return images.get((vx < 0 ? "mirrored" : "") + getImageName());
     }
 
     protected double Push(Direction direction) {

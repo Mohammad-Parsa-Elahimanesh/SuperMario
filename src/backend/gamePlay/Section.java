@@ -6,7 +6,6 @@ import backend.block.Checkpoint;
 import backend.block.Pipe;
 import backend.block.brick.*;
 import backend.block.enemy.Goomba;
-import backend.block.enemy.KillerPlant;
 import backend.block.enemy.Koopa;
 import backend.block.enemy.Spiny;
 import backend.block.flag.Flag;
@@ -37,19 +36,12 @@ public class Section {
                 case 0 -> Level0Section0();
                 case 1 -> Level0Section1();
                 case 2 -> Level0Section2();
-                case 3 -> Level0Section3();
             }
         }
         Add(this.mario);
-        Add(new Brick(3, 2, W-3, 0));
+        Add(new Brick(3, 2, W - 3, 0));
         Add(new Brick(1, 30, W, 0));
-        new Flag(W-3, 2, this);
-    }
-
-    void AddPipeWithKillerPlant(int X, int H) {
-        Pipe pipe = new Pipe(X, H);
-        Add(pipe);
-        Add(new KillerPlant(pipe));
+        new Flag(W - 3, 2, this);
     }
 
     public void Add(Block B) {
@@ -84,8 +76,9 @@ public class Section {
         }
         for (int i = 20; i < 40; i += 5)
             Add(new Goomba(i, 6));
-
-
+        Pipe pipe1 = new Pipe(3,3,false, this);
+        Pipe pipe2 = new Pipe(55,3,false, this);
+        pipe1.destination = pipe2;
     }
 
     void Level0Section1() {
@@ -132,23 +125,6 @@ public class Section {
         for (int i = 0; i < 16; i++) {
             Add(new Solid(SolidType.Prize, i * 3 + 2, 4 + (int) (Math.random() * 3)));
         }
-    }
-
-    void Level0Section3() {
-        W = 75;
-        wholeTime = 100;
-        Add(new Pipe(0, 1));
-        Add(new Pipe(4, 2));
-        AddPipeWithKillerPlant(8, 3);
-        Add(new Pipe(12, 4));
-        AddPipeWithKillerPlant(16, 5);
-        Add(new Pipe(20, 6));
-        for (int i = 25; i < 45; i += 3)
-            Add(new Brick(1, 1, i, (int) (Math.random() * 7)));
-        for (int i = 0; i < 6; i++)
-            AddPipeWithKillerPlant(46 + 4 * i, i + 1);
-
-        Add(new Brick(2, 2, 73, 0));
     }
 
     void SectionReward() {

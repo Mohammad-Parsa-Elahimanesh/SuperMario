@@ -19,10 +19,10 @@ public abstract class Mario extends Block implements Saleable {
     public Map<Direction, Boolean> task = new HashMap<>();
     public MarioState state = MarioState.mini;
     public double travelleDistance = 0;
+    public boolean nextASAP;
     double dieBye = 0.0;
     double shotCooldown = 0.0, saberShotCooldown = 0.0, upAndDownBoth = 0.0;
     private boolean dieASAP;
-    public boolean nextASAP;
 
     Mario() {
         super(1, 1, 0, 2);
@@ -61,7 +61,7 @@ public abstract class Mario extends Block implements Saleable {
         return true;
     }
 
-    private boolean isDirection(Direction d) {
+    public boolean isDirection(Direction d) {
         return task.get(d) && !task.get(d.Opposite());
     }
 

@@ -42,7 +42,7 @@ public class Koopa extends Enemy {
 
     @Override
     protected String getImageName() {
-        return freeze>0?"koopaShell.png":"koopa.png";
+        return freeze > 0 ? "koopaShell.png" : "koopa.png";
     }
 
     @Override
