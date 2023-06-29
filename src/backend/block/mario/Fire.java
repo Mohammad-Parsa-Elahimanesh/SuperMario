@@ -2,6 +2,7 @@ package backend.block.mario;
 
 import backend.Manager;
 import backend.block.Block;
+import backend.block.Checkpoint;
 import backend.block.enemy.Enemy;
 import backend.block.item.Item;
 import backend.gamePlay.Game;
@@ -21,7 +22,7 @@ public class Fire extends Block {
             Delete();
         for (Block block : Manager.getInstance().CurrentSection().blocks)
             if (isIntersect(block)) {
-                if (block instanceof Mario || block instanceof Item)
+                if (block instanceof Mario || block instanceof Item || block instanceof Checkpoint)
                     continue;
                 if (block instanceof Enemy)
                     ((Enemy) block).Die();

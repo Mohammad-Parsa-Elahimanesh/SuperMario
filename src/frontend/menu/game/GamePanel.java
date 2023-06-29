@@ -4,15 +4,26 @@ import backend.Manager;
 import backend.block.Block;
 import backend.gamePlay.Game;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class GamePanel extends JPanel {
     private final transient Manager manager = Manager.getInstance();
+    Image background;
+
+    {
+        try {
+            background = ImageIO.read(new File("Images\\background.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public GamePanel() {
         setLayout(null);
-        setBackground(Color.CYAN);
     }
 
     public void PaintInfo(Graphics g) {
@@ -32,6 +43,7 @@ public class GamePanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        g.drawImage(background,0,0, manager.W, manager.H, this);
         final int cameraBeforeMario = 10;
         int cameraLeftLine = (int) (manager.w * Math.min(Math.max(0, manager.CurrentMario().X - cameraBeforeMario), manager.CurrentSection().W - manager.column));
         PaintInfo(g);
