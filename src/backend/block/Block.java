@@ -5,6 +5,7 @@ import backend.gamePlay.Game;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ public abstract class Block {
     final static double G = 35;
     final static double MAX_MOVE = 0.8;
     final static double eps = 0.01;
-    static Map<String, Image> images = new HashMap<String, Image>();
+    static Map<String, BufferedImage> images = new HashMap<>();
     public double X, W, H, Y;
     protected double vx = 0, vy = 0;
 
@@ -79,15 +80,31 @@ public abstract class Block {
 
     protected abstract String getImageName();
 
+    public BufferedImage getMirroredImage(BufferedImage originalImage) {
+        int width = originalImage.getWidth();
+        int height = originalImage.getHeight();
+        BufferedImage mirrorImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        for (int y = 0; y < height; y++) {
+            for (int lx = 0, rx = width - 1; lx < width; lx++, rx--) {
+                int p = originalImage.getRGB(lx, y);
+                mirrorImage.setRGB(rx, y, p);
+            }
+        }
+        return mirrorImage;
+    }
+
     public Image getImage() {
-        if (!images.containsKey(getImageName())) {
+        if(!images.containsKey(getImageName())) {
             try {
                 images.put(getImageName(), ImageIO.read(new File("Images\\" + getImageName())));
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         }
-        return images.get(getImageName());
+        if(vx < 0 && !images.containsKey("mirrored"+getImageName())) {
+            images.put("mirrored"+getImageName(), getMirroredImage(images.get(getImageName())));
+        }
+        return images.get((vx < 0?"mirrored":"")+getImageName());
     }
 
     protected double Push(Direction direction) {
