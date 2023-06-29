@@ -10,11 +10,11 @@ public class AudioPlayer {
     private static final AudioPlayer instance = new AudioPlayer();
     Clip background = getClip("background");
     private boolean silence = true;
-
+    public boolean silenceForever = false;
     private AudioPlayer() {}
     public static AudioPlayer getInstance() {return instance;}
     public void setSilence(boolean silence) {
-        if(silence == this.silence)
+        if(silence == this.silence || silenceForever)
             return;
         if(silence)
             background.stop();
@@ -38,7 +38,7 @@ public class AudioPlayer {
     }
 
     public void Play(String name) {
-        if(!silence)
+        if(!silence && !silenceForever)
             getClip(name).start();
     }
 
