@@ -9,6 +9,7 @@ import backend.block.item.*;
 import backend.gamePlay.Game;
 
 import java.awt.*;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,11 +17,11 @@ public abstract class Mario extends Block implements Saleable {
     static final double FRICTION = 0.7;
     final transient Manager manager = Manager.getInstance();
     public int heart = 3;
-    public Map<Direction, Boolean> task = new HashMap<>();
+    public Map<Direction, Boolean> task = new EnumMap<>(Direction.class);
     public MarioState state = MarioState.mini;
-    public double travelleDistance = 0;
+    public double travelledDistance = 0;
     public boolean nextASAP;
-    double dieBye = 0.0;
+    double shield = 0.0;
     double shotCooldown = 0.0, saberShotCooldown = 0.0, upAndDownBoth = 0.0;
     private boolean dieASAP;
 
@@ -120,7 +121,7 @@ public abstract class Mario extends Block implements Saleable {
     @Override
     protected void Intersect(Block block) {
         if (block instanceof Enemy) {
-            if (dieBye > 0)
+            if (shield > 0)
                 ((Enemy) block).Die();
             else {
                 dieASAP = true;
@@ -136,7 +137,7 @@ public abstract class Mario extends Block implements Saleable {
                 manager.CurrentGame().score += 30;
             else if (block instanceof Star) {
                 manager.CurrentGame().score += 40;
-                dieBye = 15;
+                shield = 15;
             }
         } else if (block instanceof Spring) {
             vy = getJumpSpeed() * 1.3;
@@ -163,9 +164,9 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     public void Update() {
-        travelleDistance = (int) Math.max(travelleDistance, X);
+        travelledDistance = (int) Math.max(travelledDistance, X);
         dieASAP = nextASAP = false;
-        dieBye = Math.max(0, dieBye - Game.delay);
+        shield = Math.max(0, shield - Game.delay);
         shotCooldown = Math.max(0, shotCooldown - Game.delay);
         saberShotCooldown = Math.max(0, saberShotCooldown - Game.delay);
         H = state == MarioState.mini || isDirection(Direction.Down) ? 1 : 2;
@@ -207,7 +208,7 @@ public abstract class Mario extends Block implements Saleable {
     @Override
     public void Draw(Graphics g, int cameraLeftLine) {
         super.Draw(g, cameraLeftLine);
-        if (dieBye > 0)
+        if (shield > 0)
             new FireRing(this).Draw(g, cameraLeftLine);
     }
 

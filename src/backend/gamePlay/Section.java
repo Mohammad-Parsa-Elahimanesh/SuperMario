@@ -76,8 +76,8 @@ public class Section {
         }
         for (int i = 20; i < 40; i += 5)
             Add(new Goomba(i, 6));
-        Pipe pipe1 = new Pipe(3,3,false, this);
-        Pipe pipe2 = new Pipe(55,3,false, this);
+        Pipe pipe1 = new Pipe(3, 3, false, this);
+        Pipe pipe2 = new Pipe(55, 3, false, this);
         pipe1.destination = pipe2;
     }
 
@@ -162,7 +162,7 @@ public class Section {
     }
 
     double ProgressRate() {
-        return mario.travelleDistance / W;
+        return mario.travelledDistance / W;
     }
 
     public int ProgressRisk() {
