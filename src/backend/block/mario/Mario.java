@@ -21,7 +21,8 @@ public abstract class Mario extends Block implements Saleable {
     public double travelleDistance = 0;
     double dieBye = 0.0;
     double shotCooldown = 0.0, saberShotCooldown = 0.0, upAndDownBoth = 0.0;
-    private boolean dieASAP, nextASAP;
+    private boolean dieASAP;
+    public boolean nextASAP;
 
     Mario() {
         super(1, 1, 0, 2);
@@ -187,9 +188,7 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     void CheckGameState() {
-        if (manager.CurrentSection().W < X + W)
-            nextASAP = true;
-        else if (Y + H < 0) {
+        if (Y + H < 0) {
             dieASAP = true;
             manager.CurrentGame().score = Math.max(manager.CurrentGame().score - 30, 0);
         } else if (manager.CurrentSection().wholeTime <= manager.CurrentSection().spentTime)

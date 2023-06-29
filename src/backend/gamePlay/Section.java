@@ -9,6 +9,7 @@ import backend.block.enemy.Goomba;
 import backend.block.enemy.KillerPlant;
 import backend.block.enemy.Koopa;
 import backend.block.enemy.Spiny;
+import backend.block.flag.Flag;
 import backend.block.item.Coin;
 import backend.block.mario.Mario;
 import backend.block.mario.MarioState;
@@ -40,6 +41,9 @@ public class Section {
             }
         }
         Add(this.mario);
+        Add(new Brick(3, 2, W-3, 0));
+        Add(new Brick(1, 30, W, 0));
+        new Flag(W-3, 2, this);
     }
 
     void AddPipeWithKillerPlant(int X, int H) {
