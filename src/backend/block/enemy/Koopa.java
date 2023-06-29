@@ -10,6 +10,7 @@ public class Koopa extends Enemy {
 
     transient double freeze = 0.0;
 
+
     public Koopa(double x, double y) {
         super(1.8, 1, x, y);
         vx = getNormalSpeed();
@@ -41,7 +42,7 @@ public class Koopa extends Enemy {
 
     @Override
     protected String getImageName() {
-        return "koopa.png";
+        return freeze>0?"koopaShell.png":"koopa.png";
     }
 
     @Override
