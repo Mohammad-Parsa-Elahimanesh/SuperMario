@@ -138,7 +138,7 @@ public abstract class Mario extends Block implements Saleable {
             else if (block instanceof Star) {
                 manager.CurrentGame().score += 40;
                 shield = 15;
-                AudioPlayer.getInstance().Play("shield");
+                AudioPlayer.getInstance().playSound("shield");
             }
         } else if (block instanceof Spring) {
             vy = getJumpSpeed() * 1.3;

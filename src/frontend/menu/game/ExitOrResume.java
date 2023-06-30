@@ -14,14 +14,14 @@ public class ExitOrResume extends JFrame {
         JPanel panel = new JPanel();
         add(panel);
         panel.setLayout(new GridLayout(3, 1));
-        panel.add(ResumeGame());
-        panel.add(Sound());
-        panel.add(ExitGame());
+        panel.add(resumeGame());
+        panel.add(soundControl());
+        panel.add(exitGame());
         setUndecorated(true);
         setVisible(true);
     }
 
-    JButton ExitGame() {
+    JButton exitGame() {
         JButton exitGame = new JButton("Exit Game");
         exitGame.addActionListener(e -> {
             new MainMenu();
@@ -31,16 +31,16 @@ public class ExitOrResume extends JFrame {
         return exitGame;
     }
 
-    JButton Sound() {
-        JButton sound = new JButton(AudioPlayer.getInstance().silenceForever?"turn on sound":"turn off sound");
+    JButton soundControl() {
+        JButton sound = new JButton(AudioPlayer.getInstance().silenceForever ? "turn on sound" : "turn off sound");
         sound.addActionListener(e -> {
             AudioPlayer.getInstance().silenceForever = !AudioPlayer.getInstance().silenceForever;
-            sound.setText(AudioPlayer.getInstance().silenceForever?"turn on sound":"turn off sound");
+            sound.setText(AudioPlayer.getInstance().silenceForever ? "turn on sound" : "turn off sound");
         });
         return sound;
     }
 
-    JButton ResumeGame() {
+    JButton resumeGame() {
         JButton resumeGame = new JButton("Continue ...");
         resumeGame.addActionListener(e -> {
             Manager.getInstance().CurrentGame().Resume();

@@ -12,21 +12,18 @@ import java.io.IOException;
 
 public class GamePanel extends JPanel {
     private final transient Manager manager = Manager.getInstance();
-    Image background;
+    transient Image backgroundImage;
 
-    {
+    public GamePanel() {
+        setLayout(null);
         try {
-            background = ImageIO.read(new File("Images\\background.jpg"));
+            backgroundImage = ImageIO.read(new File("Images\\background.jpg"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public GamePanel() {
-        setLayout(null);
-    }
-
-    public void PaintInfo(Graphics g) {
+    public void paintInfo(Graphics g) {
         g.setFont(new Font("Arial", Font.ITALIC, 40));
         g.setColor(Color.GREEN);
         g.drawString("Time : " + (int) (manager.CurrentSection().wholeTime - manager.CurrentSection().spentTime), 0, 40);
@@ -43,10 +40,10 @@ public class GamePanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        g.drawImage(background, 0, 0, manager.W, manager.H, this);
+        g.drawImage(backgroundImage, 0, 0, manager.W, manager.H, this);
         final int cameraBeforeMario = 10;
-        int cameraLeftLine = (int) (manager.w * Math.min(Math.max(0, manager.CurrentMario().X - cameraBeforeMario), manager.CurrentSection().W - manager.column));
-        PaintInfo(g);
+        int cameraLeftLine = (int) (manager.w * Math.min(Math.max(0, manager.CurrentMario().X - cameraBeforeMario), (double) manager.CurrentSection().W - manager.column));
+        paintInfo(g);
         for (Block block : manager.CurrentSection().blocks)
             block.Draw(g, cameraLeftLine);
     }

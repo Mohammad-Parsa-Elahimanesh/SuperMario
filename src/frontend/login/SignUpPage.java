@@ -7,12 +7,10 @@ import frontend.tile.TileButton;
 import frontend.tile.TileTextField;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class SignUpPage extends JFrame {
-    TileTextField userName = UserNameField(), password = PasswordField();
-    TileButton enter = Enter(), back = Back();
+    TileTextField userName = userNameField();
+    TileTextField password = passwordField();
 
     SignUpPage() {
         super();
@@ -21,13 +19,13 @@ public class SignUpPage extends JFrame {
         setSize(Manager.getInstance().W, Manager.getInstance().H);
         panel.add(userName);
         panel.add(password);
-        panel.add(enter);
-        panel.add(back);
+        panel.add(enterButton());
+        panel.add(backButton());
         add(panel);
         setVisible(true);
     }
 
-    TileTextField UserNameField() {
+    TileTextField userNameField() {
         TileTextField userNameField = new TileTextField();
         userNameField.setTileLocation(10, 5);
         userNameField.setTileSize(4, 1);
@@ -35,7 +33,7 @@ public class SignUpPage extends JFrame {
         return userNameField;
     }
 
-    TileTextField PasswordField() {
+    TileTextField passwordField() {
         TileTextField passwordField = new TileTextField();
         passwordField.setTileLocation(10, 7);
         passwordField.setTileSize(4, 1);
@@ -43,12 +41,12 @@ public class SignUpPage extends JFrame {
         return passwordField;
     }
 
-    TileButton Enter() {
-        TileButton enter = new TileButton();
-        enter.setText("Enter");
-        enter.setTileLocation(10, 9);
-        enter.setTileSize(4, 1);
-        enter.addActionListener(e -> {
+    TileButton enterButton() {
+        TileButton enterButton = new TileButton();
+        enterButton.setText("enter");
+        enterButton.setTileLocation(10, 9);
+        enterButton.setTileSize(4, 1);
+        enterButton.addActionListener(e -> {
             for (User user : Manager.getInstance().superMario.users)
                 if (user.name.equals(userName.getText())) {
                     new Massage("user already exists");
@@ -56,24 +54,21 @@ public class SignUpPage extends JFrame {
                 }
             User user = new User(userName.getText(), password.getText());
             Manager.getInstance().superMario.users.add(user);
-            SignInPage.SignIn(user);
+            SignInPage.signIn(user);
             dispose();
         });
-        return enter;
+        return enterButton;
     }
 
-    TileButton Back() {
-        TileButton back = new TileButton();
-        back.setText("Back");
-        back.setTileLocation(10, 11);
-        back.setTileSize(4, 1);
-        back.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new EnterPage();
-                dispose();
-            }
+    TileButton backButton() {
+        TileButton backButton = new TileButton();
+        backButton.setText("Back");
+        backButton.setTileLocation(10, 11);
+        backButton.setTileSize(4, 1);
+        backButton.addActionListener(e -> {
+            new EnterPage();
+            dispose();
         });
-        return back;
+        return backButton;
     }
 }

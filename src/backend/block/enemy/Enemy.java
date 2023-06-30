@@ -17,7 +17,7 @@ public abstract class Enemy extends Block {
     abstract int scoreWhenBeKilled();
 
     public void Die() {
-        AudioPlayer.getInstance().Play("enemyDeath");
+        AudioPlayer.getInstance().playSound("enemyDeath");
         Manager.getInstance().CurrentSection().coins += 3;
         Manager.getInstance().CurrentGame().score += scoreWhenBeKilled();
         Delete();

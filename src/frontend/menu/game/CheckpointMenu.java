@@ -18,14 +18,14 @@ public class CheckpointMenu extends JFrame {
         JPanel panel = new JPanel();
         add(panel);
         panel.setLayout(new GridLayout(3, 1));
-        panel.add(Save());
-        panel.add(Ignore());
-        panel.add(Destroy());
+        panel.add(save());
+        panel.add(ignore());
+        panel.add(destroy());
         setUndecorated(true);
         setVisible(true);
     }
 
-    JButton Save() {
+    JButton save() {
         JButton save = new JButton("Save");
         save.addActionListener(e -> {
             if (Manager.getInstance().CurrentSection().coins < progressRisk)
@@ -37,7 +37,7 @@ public class CheckpointMenu extends JFrame {
         return save;
     }
 
-    JButton Ignore() {
+    JButton ignore() {
         JButton ignore = new JButton("Ignore");
         ignore.addActionListener(e -> {
             checkpoint.Continue();
@@ -47,7 +47,7 @@ public class CheckpointMenu extends JFrame {
         return ignore;
     }
 
-    JButton Destroy() {
+    JButton destroy() {
         JButton destroy = new JButton("Destroy");
         destroy.addActionListener(e -> {
             checkpoint.Destroy();

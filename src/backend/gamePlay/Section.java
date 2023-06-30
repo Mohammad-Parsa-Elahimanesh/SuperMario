@@ -139,7 +139,7 @@ public class Section {
             mario.state = MarioState.mini;
         switch (mario.state) {
             case mini -> {
-                AudioPlayer.getInstance().Play("marioDeath");
+                AudioPlayer.getInstance().playSound("marioDeath");
                 spentTime = 0;
                 coins -= ((savedCheckpoints.size() + 1) * coins + ProgressRisk()) / (savedCheckpoints.size() + 4);
                 mario.reset();
