@@ -4,6 +4,7 @@ import backend.Manager;
 import backend.block.Block;
 import backend.block.Checkpoint;
 import backend.block.brick.*;
+import backend.block.brick.Spring;
 import backend.block.enemy.Goomba;
 import backend.block.enemy.Koopa;
 import backend.block.enemy.Spiny;
@@ -13,10 +14,12 @@ import backend.block.mario.Mario;
 import backend.block.mario.MarioState;
 import frontend.menu.game.AudioPlayer;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Section {
+    final String name;
     public final Mario mario;
     public final List<Checkpoint> savedCheckpoints = new ArrayList<>();
     private final List<Block> mustBeAdded = new ArrayList<>();
@@ -25,6 +28,7 @@ public class Section {
     public final List<Block> blocks = new ArrayList<>();
     private int length;
     private int wholeTime;
+    private Section nextSection;
 
     public int getLength() {
         return length;
@@ -42,15 +46,23 @@ public class Section {
 
     private int coins = 0;
 
-    Section(int level, int section, Mario mario) throws Exception {
+    static Section makeSections(Mario mario) throws Exception {
+        Section section0 = new Section(0, mario, "learn");
+        Section section1 = new Section(1, mario, "explore");
+        Section section2 = new Section(2, mario, "fight");
+        section0.nextSection = section1;
+        section1.nextSection = section2;
+        return section0;
+    }
+
+    Section(int section, Mario mario, String name) throws Exception {
+        this.name = name;
         add(new Brick(1, 30, -1, 0));
         this.mario = mario.getClass().getDeclaredConstructor().newInstance();
-        if (level == 0) {
-            switch (section) {
-                case 0 -> level0Section0();
-                case 1 -> Level0Section1();
-                case 2 -> Level0Section2();
-            }
+        switch (section) {
+            case 0 -> level0Section0();
+            case 1 -> Level0Section1();
+            case 2 -> Level0Section2();
         }
         add(this.mario);
         add(new Brick(3, 2, length - 3.0, 0));
@@ -108,6 +120,10 @@ public class Section {
         add(new Koopa(65, 2));
         add(new Spiny(70, 2));
         add(new Koopa(75, 2));
+
+        // killer Plant and secret pipe!
+
+
     }
 
     void Level0Section1() {
@@ -156,20 +172,20 @@ public class Section {
         }
     }
 
-    void SectionReward() {
+    void sectionReward() {
         manager.currentGame().score += (wholeTime - spentTime) * mario.getPowerLevel();
         manager.currentGame().score += mario.heart * 20 * mario.getPowerLevel();
         manager.currentUser().coins += coins;
     }
 
-    void MarioDie() {
+    void marioDie() {
         if (mario.Y < 0)
             mario.state = MarioState.mini;
         switch (mario.state) {
             case mini -> {
                 AudioPlayer.getInstance().playSound("marioDeath");
                 spentTime = 0;
-                coins -= ((savedCheckpoints.size() + 1) * coins + ProgressRisk()) / (savedCheckpoints.size() + 4);
+                coins -= ((savedCheckpoints.size() + 1) * coins + progressRisk()) / (savedCheckpoints.size() + 4);
                 mario.reset();
                 if (savedCheckpoints.isEmpty()) {
                     mario.X = 0;
@@ -182,7 +198,7 @@ public class Section {
                 }
                 mario.heart--;
                 if (mario.heart <= 0)
-                    manager.currentGame().EndGame();
+                    manager.currentGame().endGame();
                 return;
             }
             case mega -> mario.state = MarioState.mini;
@@ -191,22 +207,58 @@ public class Section {
         mario.BeAlive();
     }
 
-    double ProgressRate() {
+    double progressRate() {
         return mario.travelledDistance / length;
     }
 
-    public int ProgressRisk() {
-        return (int) (ProgressRate() * coins);
+    public int progressRisk() {
+        return (int) (progressRate() * coins);
     }
 
-    void Update() {
+    void update() {
         updateBlocks();
         for (Block block : blocks)
             block.Update();
         if (mario.Died())
-            MarioDie();
+            marioDie();
         else if (mario.goNext())
-            manager.currentGame().NextSection();
+            nextSection();
         spentTime += Game.delay;
+    }
+    public void Start() {
+        timer.start();
+    }
+    void nextSection() {
+        timer.stop();
+        manager.currentSection().sectionReward();
+        MarioState lastStateOfMario = manager.currentMario().state;
+        manager.currentGame().currentSection = nextSection;
+        if(manager.currentSection() == null)
+            manager.currentGame().endGame();
+        else {
+            manager.currentMario().state = lastStateOfMario;
+            manager.currentSection().timer.start();
+        }
+    }
+    public Timer timer = new Timer((int) (Game.delay * 1000), e -> {
+        manager.currentSection().update();
+        manager.currentGame().gameFrame.repaint();
+    }) {
+        @Override
+        public void start() {
+            super.start();
+            AudioPlayer.getInstance().setSilence(false);
+        }
+
+        @Override
+        public void stop() {
+            super.stop();
+            AudioPlayer.getInstance().setSilence(true);
+        }
+    };
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

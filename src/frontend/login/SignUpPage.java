@@ -43,7 +43,7 @@ public class SignUpPage extends JFrame {
 
     TileButton enterButton() {
         TileButton enterButton = new TileButton();
-        enterButton.setText("enter");
+        enterButton.setText("Enter");
         enterButton.setTileLocation(10, 9);
         enterButton.setTileSize(4, 1);
         enterButton.addActionListener(e -> {

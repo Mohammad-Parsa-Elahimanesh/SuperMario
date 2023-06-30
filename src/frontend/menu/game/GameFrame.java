@@ -16,7 +16,7 @@ public class GameFrame extends JFrame {
         setContentPane(new GamePanel());
         setBackground(Color.cyan);
         setUndecorated(true);
-        setSize(manager.SCREEN_WIDTH, manager.SCREEN_HEIGHT);
+        setSize(Manager.SCREEN_WIDTH, Manager.SCREEN_HEIGHT);
         addKeyListener(keyListener());
     }
 
@@ -25,8 +25,8 @@ public class GameFrame extends JFrame {
             public void keyTyped(KeyEvent e) {
                 if (e.getKeyChar() == KeyEvent.VK_SPACE)
                     manager.currentMario().Shot();
-                if (manager.currentGame().timer.isRunning() && e.getKeyChar() == KeyEvent.VK_ESCAPE) {
-                    manager.currentGame().Stop();
+                if (manager.currentSection().timer.isRunning() && e.getKeyChar() == KeyEvent.VK_ESCAPE) {
+                    manager.currentSection().timer.stop();
                     new ExitOrResume();
                 }
             }

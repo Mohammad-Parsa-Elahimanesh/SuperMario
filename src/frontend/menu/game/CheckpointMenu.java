@@ -12,7 +12,7 @@ public class CheckpointMenu extends JFrame {
 
     public CheckpointMenu(Checkpoint checkpoint) {
         this.checkpoint = checkpoint;
-        progressRisk = Manager.getInstance().currentSection().ProgressRisk();
+        progressRisk = Manager.getInstance().currentSection().progressRisk();
         setSize(200, 100);
         setLocation((Manager.getInstance().SCREEN_WIDTH - getWidth()) / 2, (Manager.getInstance().SCREEN_HEIGHT - getHeight()) / 2);
         JPanel panel = new JPanel();

@@ -43,7 +43,7 @@ public class ExitOrResume extends JFrame {
     JButton resumeGame() {
         JButton resumeGame = new JButton("Continue ...");
         resumeGame.addActionListener(e -> {
-            Manager.getInstance().currentGame().Resume();
+            Manager.getInstance().currentSection().timer.start();
             dispose();
         });
         return resumeGame;

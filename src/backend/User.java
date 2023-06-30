@@ -36,11 +36,11 @@ public class User {
         bought.add(sold.getName());
     }
 
-    public void RunGame(int index) {
+    public void runGame(int index) {
         currentGameIndex = index;
         if (game[index] == null)
             game[index] = new Game();
         else
-            game[index].Resume();
+            game[index].currentSection.timer.start();
     }
 }

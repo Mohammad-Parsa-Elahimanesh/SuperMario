@@ -17,7 +17,11 @@ public class SetGameSettings extends JFrame {
         JComboBox<String> selectMario = new JComboBox<>(marios);
         JButton start = new JButton("Let's Start");
         start.addActionListener(e -> {
-            manager.currentGame().constructor(manager.currentUser().Marios().get(selectMario.getSelectedIndex()), Game.Difficulty.values()[selectDifficulty.getSelectedIndex()]);
+            try {
+                manager.currentGame().constructor(manager.currentUser().Marios().get(selectMario.getSelectedIndex()), Game.Difficulty.values()[selectDifficulty.getSelectedIndex()]);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
             dispose();
         });
         panel.add(selectDifficulty);
@@ -25,7 +29,7 @@ public class SetGameSettings extends JFrame {
         panel.add(start);
         add(panel);
         setUndecorated(true);
-        setSize(manager.SCREEN_WIDTH, manager.SCREEN_HEIGHT);
+        setSize(Manager.SCREEN_WIDTH, Manager.SCREEN_HEIGHT);
         setVisible(true);
     }
 }

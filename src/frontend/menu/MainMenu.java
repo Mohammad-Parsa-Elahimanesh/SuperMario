@@ -50,7 +50,7 @@ public class MainMenu extends JFrame {
 
     TileButton profile() {
         TileButton profile = new TileButton();
-        profile.setText("profile");
+        profile.setText("Profile");
         profile.setTileLocation(10, 7);
         profile.setTileSize(4, 2);
         profile.addActionListener(e -> new Profile());

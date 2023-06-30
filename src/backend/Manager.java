@@ -30,7 +30,7 @@ public class Manager {
     }
 
     public Section currentSection() {
-        return currentGame().levels[currentGame().levelNumber].sections[currentGame().sectionNumber];
+        return currentGame().currentSection;
     }
 
     public Mario currentMario() {
