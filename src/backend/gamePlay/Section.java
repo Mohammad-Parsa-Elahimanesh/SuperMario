@@ -241,8 +241,8 @@ public class Section {
         }
     }
     public Timer timer = new Timer((int) (Game.delay * 1000), e -> {
-        manager.currentSection().update();
         manager.currentGame().gameFrame.repaint();
+        manager.currentSection().update();
     }) {
         @Override
         public void start() {
