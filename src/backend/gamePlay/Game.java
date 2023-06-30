@@ -30,7 +30,7 @@ public class Game {
         this.difficulty = difficulty;
         currentSection = Section.makeSections(mario);
         gameFrame.setVisible(true);
-        currentSection.Start();
+        currentSection.timer.start();
     }
 
     void endGame() {

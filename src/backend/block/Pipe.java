@@ -26,6 +26,7 @@ public class Pipe extends Block {
             Manager.getInstance().currentSection().timer.stop();
             destination.mario.state = Manager.getInstance().currentMario().state;
             Manager.getInstance().currentGame().currentSection = destination;
+            destination = null;
             Manager.getInstance().currentSection().timer.start();
         }
 
