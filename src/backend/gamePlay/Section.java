@@ -3,6 +3,7 @@ package backend.gamePlay;
 import backend.Manager;
 import backend.block.Block;
 import backend.block.Checkpoint;
+import backend.block.Pipe;
 import backend.block.brick.*;
 import backend.block.brick.Spring;
 import backend.block.enemy.Goomba;
@@ -60,14 +61,29 @@ public class Section {
         add(new Brick(1, 30, -1, 0));
         this.mario = mario.getClass().getDeclaredConstructor().newInstance();
         switch (section) {
-            case 0 -> level0Section0();
-            case 1 -> Level0Section1();
-            case 2 -> Level0Section2();
+            case 0 -> section0();
+            case 1 -> section1();
+            case 2 -> section2();
         }
         add(this.mario);
         add(new Brick(3, 2, length - 3.0, 0));
         add(new Brick(1, 30, length, 0));
         new Flag(length - 3.0, 2, this);
+    }
+
+    Section(Mario mario, Section original, int hideNumber) throws Exception {
+        name = "Secret";
+        add(new Brick(1, 30, -1, 0));
+        this.mario = mario.getClass().getDeclaredConstructor().newInstance();
+        new Pipe(0, 2, false, this);
+        switch (hideNumber) {
+            case 0 -> hiddenSection0();
+            case 1 -> hiddenSection1();
+            case 2 -> hiddenSection2();
+        }
+        Pipe endPipe = new Pipe(length-2, 2, false, this);
+        add(this.mario);
+        endPipe.destination = original;
     }
 
     public void add(Block block) {
@@ -92,9 +108,9 @@ public class Section {
         coins+=number;
     }
 
-    void level0Section0() {
-        length = 85;
-        wholeTime = 100;
+    void section0() {
+        length = 95;
+        wholeTime = 80;
 
         add(new Brick(33,2,0,0));
         add(new Soft(SoftType.Coin, 3, 5));
@@ -121,12 +137,30 @@ public class Section {
         add(new Spiny(70, 2));
         add(new Koopa(75, 2));
 
-        // killer Plant and secret pipe!
-
+        new Pipe(83,3,true, this);
+        Pipe secretPipe = new Pipe(87, 3, false, this);
+        try {
+            secretPipe.destination = new Section(mario, this, 0);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
-    void Level0Section1() {
+    void hiddenSection0() {
+        length = 30;
+        wholeTime = 15;
+        add(new Brick(length-4,2,2,0));
+    }
+    void hiddenSection1() {
+
+    }
+    void hiddenSection2() {
+
+    }
+
+
+    void section1() {
         length = 45;
         wholeTime = 100;
         add(new Spring(1, 3));
@@ -157,7 +191,7 @@ public class Section {
         for (Coin coin : coinInLine) add(coin);
     }
 
-    void Level0Section2() {
+    void section2() {
         length = 60;
         wholeTime = 100;
         add(new Brick(10, 2, 0, 0));
@@ -241,6 +275,8 @@ public class Section {
         }
     }
     public Timer timer = new Timer((int) (Game.delay * 1000), e -> {
+        if(manager.currentGame() == null)
+            return;
         manager.currentGame().gameFrame.repaint();
         manager.currentSection().update();
     }) {
