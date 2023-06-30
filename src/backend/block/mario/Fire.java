@@ -20,7 +20,7 @@ public class Fire extends Block {
         alive -= Game.delay;
         if (alive < 0)
             Delete();
-        for (Block block : Manager.getInstance().CurrentSection().blocks)
+        for (Block block : Manager.getInstance().currentSection().blocks)
             if (isIntersect(block)) {
                 if (block instanceof Mario || block instanceof Item || block instanceof Checkpoint)
                     continue;

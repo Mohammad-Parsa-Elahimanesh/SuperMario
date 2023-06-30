@@ -16,7 +16,7 @@ public class MainMenu extends JFrame {
         super();
         JPanel panel = new JPanel(null);
         setUndecorated(true);
-        setSize(Manager.getInstance().W, Manager.getInstance().H);
+        setSize(Manager.getInstance().SCREEN_WIDTH, Manager.getInstance().SCREEN_HEIGHT);
         panel.add(play);
         panel.add(shop);
         panel.add(profile);

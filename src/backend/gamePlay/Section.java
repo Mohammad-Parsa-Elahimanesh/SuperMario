@@ -128,9 +128,9 @@ public class Section {
     }
 
     void SectionReward() {
-        manager.CurrentGame().score += (wholeTime - spentTime) * mario.getPowerLevel();
-        manager.CurrentGame().score += mario.heart * 20 * mario.getPowerLevel();
-        manager.CurrentUser().coins += coins;
+        manager.currentGame().score += (wholeTime - spentTime) * mario.getPowerLevel();
+        manager.currentGame().score += mario.heart * 20 * mario.getPowerLevel();
+        manager.currentUser().coins += coins;
     }
 
     void MarioDie() {
@@ -152,7 +152,7 @@ public class Section {
                 }
                 mario.heart--;
                 if (mario.heart <= 0)
-                    manager.CurrentGame().EndGame();
+                    manager.currentGame().EndGame();
                 return;
             }
             case mega -> mario.state = MarioState.mini;
@@ -176,7 +176,7 @@ public class Section {
         if (mario.Died())
             MarioDie();
         else if (mario.goNext())
-            manager.CurrentGame().NextSection();
+            manager.currentGame().NextSection();
         spentTime += Game.delay;
     }
 }

@@ -29,25 +29,25 @@ public class GamePanel extends JPanel {
     public void PaintInfo(Graphics g) {
         g.setFont(new Font("Arial", Font.ITALIC, 40));
         g.setColor(Color.GREEN);
-        g.drawString("Time : " + (int) (manager.CurrentSection().wholeTime - manager.CurrentSection().spentTime), 0, 40);
+        g.drawString("Time : " + (int) (manager.currentSection().wholeTime - manager.currentSection().spentTime), 0, 40);
         g.setColor(Color.RED);
-        g.drawString("Heart: " + manager.CurrentMario().heart, 300, 40);
+        g.drawString("Heart: " + manager.currentMario().heart, 300, 40);
         g.setColor(Color.BLUE);
-        g.drawString(Game.State(manager.CurrentGame()), 600, 40);
+        g.drawString(Game.State(manager.currentGame()), 600, 40);
         g.setColor(Color.DARK_GRAY);
-        g.drawString("Score: " + manager.CurrentGame().score, 1030, 40);
+        g.drawString("Score: " + manager.currentGame().score, 1030, 40);
         g.setColor(Color.YELLOW);
-        g.drawString("Coins: " + manager.CurrentSection().coins, 1300, 40);
+        g.drawString("Coins: " + manager.currentSection().coins, 1300, 40);
 
     }
 
     @Override
     protected void paintComponent(Graphics g) {
-        g.drawImage(background, 0, 0, manager.W, manager.H, this);
+        g.drawImage(background, 0, 0, manager.SCREEN_WIDTH, manager.SCREEN_HEIGHT, this);
         final int cameraBeforeMario = 10;
-        int cameraLeftLine = (int) (manager.w * Math.min(Math.max(0, manager.CurrentMario().X - cameraBeforeMario), manager.CurrentSection().W - manager.column));
+        int cameraLeftLine = (int) (manager.SINGLE_BLOCK_WIDTH * Math.min(Math.max(0, manager.currentMario().X - cameraBeforeMario), manager.currentSection().W - manager.COLUMN));
         PaintInfo(g);
-        for (Block block : manager.CurrentSection().blocks)
+        for (Block block : manager.currentSection().blocks)
             block.Draw(g, cameraLeftLine);
     }
 }

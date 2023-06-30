@@ -14,7 +14,7 @@ public class AD extends TileButton {
     Saleable sales;
 
     AD(Saleable sales, User user) {
-        setTileSize(manager.column / Shop.column, manager.row / Shop.row);
+        setTileSize(manager.COLUMN / Shop.column, manager.ROW / Shop.row);
         this.sales = sales;
         for (String sold : user.bought)
             if (sales.getName().equals(sold))
@@ -23,12 +23,12 @@ public class AD extends TileButton {
         addActionListener(e -> {
             if (sold)
                 new Massage("you have this since before !");
-            else if (manager.CurrentUser().coins < sales.getCost())
+            else if (manager.currentUser().coins < sales.getCost())
                 new Massage("you don't have enough coins :/");
             else {
                 sold = true;
-                manager.CurrentUser().buy(sales);
-                manager.CurrentUser().coins -= sales.getCost();
+                manager.currentUser().buy(sales);
+                manager.currentUser().coins -= sales.getCost();
                 new Massage("you buy this successfully !");
             }
         });

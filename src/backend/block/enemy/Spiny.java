@@ -25,9 +25,9 @@ public class Spiny extends Enemy {
             vx *= -1;
             X = lastX;
         }
-        if (Manager.getInstance().CurrentMario().Y == Y && Distance(Manager.getInstance().CurrentMario()) < 4) {
+        if (Manager.getInstance().currentMario().Y == Y && Distance(Manager.getInstance().currentMario()) < 4) {
             vx += (vx < 0 ? -1 : 1) * getNormalSpeed() * 0.1;
-            if (Side(Manager.getInstance().CurrentMario(), Direction.Left))
+            if (Side(Manager.getInstance().currentMario(), Direction.Left))
                 vx = -Math.abs(vx);
             else
                 vx = Math.abs(vx);
@@ -45,6 +45,6 @@ public class Spiny extends Enemy {
     protected boolean Pushed(Direction D) {
         if ((vx < 0 && D == Direction.Left) || (vx > 0 && D == Direction.Right))
             vx *= -1;
-        return Neighbor(Manager.getInstance().CurrentMario(), D);
+        return Neighbor(Manager.getInstance().currentMario(), D);
     }
 }

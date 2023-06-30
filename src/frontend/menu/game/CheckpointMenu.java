@@ -12,9 +12,9 @@ public class CheckpointMenu extends JFrame {
 
     public CheckpointMenu(Checkpoint checkpoint) {
         this.checkpoint = checkpoint;
-        progressRisk = Manager.getInstance().CurrentSection().ProgressRisk();
+        progressRisk = Manager.getInstance().currentSection().ProgressRisk();
         setSize(200, 100);
-        setLocation((Manager.getInstance().W - getWidth()) / 2, (Manager.getInstance().H - getHeight()) / 2);
+        setLocation((Manager.getInstance().SCREEN_WIDTH - getWidth()) / 2, (Manager.getInstance().SCREEN_HEIGHT - getHeight()) / 2);
         JPanel panel = new JPanel();
         add(panel);
         panel.setLayout(new GridLayout(3, 1));
@@ -28,7 +28,7 @@ public class CheckpointMenu extends JFrame {
     JButton Save() {
         JButton save = new JButton("Save");
         save.addActionListener(e -> {
-            if (Manager.getInstance().CurrentSection().coins < progressRisk)
+            if (Manager.getInstance().currentSection().coins < progressRisk)
                 return;
             checkpoint.Save();
             dispose();

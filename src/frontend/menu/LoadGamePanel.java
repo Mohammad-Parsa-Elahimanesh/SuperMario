@@ -18,12 +18,12 @@ public class LoadGamePanel extends JPanel {
         playMenu = playMenuInit;
         setLayout(new BorderLayout());
         TileButton loadGame = new TileButton();
-        loadGame.setText(Game.State(Manager.getInstance().CurrentUser().game[indexGame]));
+        loadGame.setText(Game.State(Manager.getInstance().currentUser().game[indexGame]));
         loadGame.setTileSize(8, 12);
         loadGame.setTileLocation(0, 0);
         loadGame.addActionListener(e -> {
             playMenu.dispose();
-            Manager.getInstance().CurrentUser().RunGame(indexGame);
+            Manager.getInstance().currentUser().RunGame(indexGame);
         });
 
         TileButton clear = new TileButton();
@@ -31,7 +31,7 @@ public class LoadGamePanel extends JPanel {
         clear.setTileLocation(0, 12);
         clear.setText("Clear");
         clear.addActionListener(e -> {
-            Manager.getInstance().CurrentUser().game[indexGame] = null;
+            Manager.getInstance().currentUser().game[indexGame] = null;
             loadGame.setText(Game.State(null));
         });
 

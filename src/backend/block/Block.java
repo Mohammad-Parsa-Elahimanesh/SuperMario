@@ -32,7 +32,7 @@ public abstract class Block {
     }
 
     public void Delete() {
-        Manager.getInstance().CurrentSection().Del(this);
+        Manager.getInstance().currentSection().Del(this);
     }
 
     protected Boolean Side(Block other, Direction side) {
@@ -109,7 +109,7 @@ public abstract class Block {
 
     protected double Push(Direction direction) {
         double canMove = MAX_MOVE;
-        for (Block block : Manager.getInstance().CurrentSection().blocks)
+        for (Block block : Manager.getInstance().currentSection().blocks)
             if (Neighbor(block, direction)) {
                 if (!block.Pushed(direction.Opposite()))
                     canMove = 0;
@@ -132,8 +132,8 @@ public abstract class Block {
     }
 
     public void Draw(Graphics g, int cameraLeftLine) {
-        if (cameraLeftLine <= Manager.getInstance().w * X || (X + W - Manager.getInstance().column) * Manager.getInstance().w <= cameraLeftLine) {
-            g.drawImage(getImage(), (int) (Manager.getInstance().w * X - cameraLeftLine), (int) (Manager.getInstance().H - Manager.getInstance().h * (Y + H)), (int) (W * Manager.getInstance().w), (int) (H * Manager.getInstance().h), null);
+        if (cameraLeftLine <= Manager.getInstance().SINGLE_BLOCK_WIDTH * X || (X + W - Manager.getInstance().COLUMN) * Manager.getInstance().SINGLE_BLOCK_WIDTH <= cameraLeftLine) {
+            g.drawImage(getImage(), (int) (Manager.getInstance().SINGLE_BLOCK_WIDTH * X - cameraLeftLine), (int) (Manager.getInstance().SCREEN_HEIGHT - Manager.getInstance().SINGLE_BLOCK_HEIGHT * (Y + H)), (int) (W * Manager.getInstance().SINGLE_BLOCK_WIDTH), (int) (H * Manager.getInstance().SINGLE_BLOCK_HEIGHT), null);
         }
     }
 
@@ -200,7 +200,7 @@ public abstract class Block {
     public String toString() {
         return "Block " + getImageName() + " {" +
                 "X=" + X +
-                ", W=" + W +
+                ", SCREEN_WIDTH=" + W +
                 ", H=" + H +
                 ", Y=" + Y +
                 '}';

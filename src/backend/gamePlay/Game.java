@@ -44,8 +44,8 @@ public class Game {
 
     void NextSection() {
         timer.stop();
-        manager.CurrentSection().SectionReward();
-        MarioState lastStateOfMario = manager.CurrentMario().state;
+        manager.currentSection().SectionReward();
+        MarioState lastStateOfMario = manager.currentMario().state;
         sectionNumber++;
         if (levels[levelNumber].sections.length == sectionNumber) {
             levelNumber++;
@@ -54,16 +54,16 @@ public class Game {
         if (levels.length == levelNumber)
             EndGame();
         else {
-            manager.CurrentMario().state = lastStateOfMario;
+            manager.currentMario().state = lastStateOfMario;
             timer.start();
         }
     }
 
     void EndGame() {
         timer.stop();
-        if (manager.CurrentUser().maxRating < score)
-            manager.CurrentUser().maxRating = score;
-        manager.CurrentUser().game[manager.CurrentUser().currentGameIndex] = null;
+        if (manager.currentUser().maxRating < score)
+            manager.currentUser().maxRating = score;
+        manager.currentUser().game[manager.currentUser().currentGameIndex] = null;
         gameFrame.dispose();
         new MainMenu();
     }
@@ -89,7 +89,7 @@ public class Game {
     }
 
     public transient Timer timer = new Timer((int) (delay * 1000), e -> {
-        manager.CurrentSection().Update();
+        manager.currentSection().Update();
         gameFrame.repaint();
     });
 

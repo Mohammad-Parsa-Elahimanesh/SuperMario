@@ -16,10 +16,10 @@ public class Flag extends Block {
 
     @Override
     public void Update() {
-        if (isIntersect(Manager.getInstance().CurrentMario())) {
+        if (isIntersect(Manager.getInstance().currentMario())) {
             flagPicture.goUp();
             if (flagPicture.Y + flagPicture.H + 1.5 >= Y + H)
-                Manager.getInstance().CurrentMario().nextASAP = true;
+                Manager.getInstance().currentMario().nextASAP = true;
         }
         super.Update();
     }

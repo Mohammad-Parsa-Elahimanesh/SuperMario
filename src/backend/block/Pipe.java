@@ -19,10 +19,10 @@ public class Pipe extends Block {
 
     @Override
     protected boolean Pushed(Direction D) {
-        if(Neighbor(Manager.getInstance().CurrentMario(), Direction.Up) && Manager.getInstance().CurrentMario().isDirection(Direction.Down) && destination != null)
+        if(Neighbor(Manager.getInstance().currentMario(), Direction.Up) && Manager.getInstance().currentMario().isDirection(Direction.Down) && destination != null)
         {
-            Manager.getInstance().CurrentMario().X = destination.X;
-            Manager.getInstance().CurrentMario().Y = destination.Y+ destination.H;
+            Manager.getInstance().currentMario().X = destination.X;
+            Manager.getInstance().currentMario().Y = destination.Y+ destination.H;
         }
         return false;
     }

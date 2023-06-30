@@ -90,21 +90,21 @@ public abstract class Mario extends Block implements Saleable {
         switch (state) {
             case mini -> state = MarioState.mega;
             case mega -> state = MarioState.giga;
-            case giga -> manager.CurrentGame().score += 100;
+            case giga -> manager.currentGame().score += 100;
         }
     }
 
     public void Shot() {
         if (state == MarioState.giga && shotCooldown == 0 && Push(Direction.Down) == 0) {
-            manager.CurrentSection().Add(new Fire(this));
+            manager.currentSection().Add(new Fire(this));
             shotCooldown = 3;
         }
     }
 
     private void saberShot() {
-        if (saberShotCooldown == 0 && manager.CurrentUser().coins >= 3) {
-            manager.CurrentSection().Add(new Saber(this));
-            manager.CurrentUser().coins -= 3;
+        if (saberShotCooldown == 0 && manager.currentUser().coins >= 3) {
+            manager.currentSection().Add(new Saber(this));
+            manager.currentUser().coins -= 3;
             saberShotCooldown = 5;
         }
     }
@@ -125,17 +125,17 @@ public abstract class Mario extends Block implements Saleable {
             else {
                 dieASAP = true;
                 if (state == MarioState.mini)
-                    manager.CurrentGame().score = Math.max(manager.CurrentGame().score - 20, 0);
+                    manager.currentGame().score = Math.max(manager.currentGame().score - 20, 0);
             }
         } else if (block instanceof Item && !(block instanceof Coin)) {
             Upgrade();
             block.Delete();
             if (block instanceof Flower)
-                manager.CurrentGame().score += 20;
+                manager.currentGame().score += 20;
             else if (block instanceof Mushroom)
-                manager.CurrentGame().score += 30;
+                manager.currentGame().score += 30;
             else if (block instanceof Star) {
-                manager.CurrentGame().score += 40;
+                manager.currentGame().score += 40;
                 dieBye = 15;
             }
         } else if (block instanceof Spring) {
@@ -182,7 +182,7 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     void CheckIntersection() {
-        for (Block block : manager.CurrentSection().blocks)
+        for (Block block : manager.currentSection().blocks)
             if (isIntersect(block))
                 Intersect(block);
     }
@@ -190,17 +190,17 @@ public abstract class Mario extends Block implements Saleable {
     void CheckGameState() {
         if (Y + H < 0) {
             dieASAP = true;
-            manager.CurrentGame().score = Math.max(manager.CurrentGame().score - 30, 0);
-        } else if (manager.CurrentSection().wholeTime <= manager.CurrentSection().spentTime)
+            manager.currentGame().score = Math.max(manager.currentGame().score - 30, 0);
+        } else if (manager.currentSection().wholeTime <= manager.currentSection().spentTime)
             dieASAP = true;
     }
 
     void CheckGetCoins() {
-        for (Block coin : manager.CurrentSection().blocks)
+        for (Block coin : manager.currentSection().blocks)
             if (coin instanceof Coin && Distance(coin) <= getCoinRange()) {
                 coin.Delete();
-                manager.CurrentSection().coins += 1;
-                manager.CurrentGame().score += 10;
+                manager.currentSection().coins += 1;
+                manager.currentGame().score += 10;
             }
     }
 

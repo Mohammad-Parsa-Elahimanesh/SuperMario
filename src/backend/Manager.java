@@ -5,13 +5,13 @@ import backend.gamePlay.Game;
 import backend.gamePlay.Section;
 
 public class Manager {
-    static private final Manager singleton = new Manager();
+    private static final Manager singleton = new Manager();
     public SuperMario superMario;
 
     private Manager() {
     }
 
-    public static void Start() {
+    public static void start() {
         singleton.superMario = new SuperMario();
     }
 
@@ -19,26 +19,30 @@ public class Manager {
         return singleton;
     }
 
-    public User CurrentUser() {
+    public User currentUser() {
         return superMario.currentUser;
     }
 
-    public Game CurrentGame() {
-        return CurrentUser().game[CurrentUser().currentGameIndex];
+    public Game currentGame() {
+        return currentUser().game[currentUser().currentGameIndex];
     }
 
-    public Section CurrentSection() {
-        return CurrentGame().levels[CurrentGame().levelNumber].sections[CurrentGame().sectionNumber];
+    public Section currentSection() {
+        return currentGame().levels[currentGame().levelNumber].sections[currentGame().sectionNumber];
     }
 
-    public Mario CurrentMario() {
-        return CurrentSection().mario;
+    public Mario currentMario() {
+        return currentSection().mario;
     }
 
-    public final int W = 1536, column = 24, w = W / column;
+    public static final int SCREEN_WIDTH = 1536;
+    public static final int COLUMN = 24;
+    public static final int SINGLE_BLOCK_WIDTH = SCREEN_WIDTH / COLUMN;
 
 
-    public final int H = 864, row = 16, h = H / row;
+    public static final int SCREEN_HEIGHT = 864;
+    public static final int ROW = 16;
+    public static final int SINGLE_BLOCK_HEIGHT = SCREEN_HEIGHT / ROW;
 
 
 }

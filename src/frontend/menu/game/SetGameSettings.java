@@ -11,13 +11,13 @@ public class SetGameSettings extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
         JComboBox<Game.Difficulty> selectDifficulty = new JComboBox<>(Game.Difficulty.values());
-        String[] marios = new String[manager.CurrentUser().Marios().toArray().length];
+        String[] marios = new String[manager.currentUser().Marios().toArray().length];
         for (int i = 0; i < marios.length; i++)
-            marios[i] = manager.CurrentUser().Marios().get(i).getName();
+            marios[i] = manager.currentUser().Marios().get(i).getName();
         JComboBox<String> selectMario = new JComboBox<>(marios);
         JButton start = new JButton("Let's Start");
         start.addActionListener(e -> {
-            manager.CurrentGame().constructor(manager.CurrentUser().Marios().get(selectMario.getSelectedIndex()), Game.Difficulty.values()[selectDifficulty.getSelectedIndex()]);
+            manager.currentGame().constructor(manager.currentUser().Marios().get(selectMario.getSelectedIndex()), Game.Difficulty.values()[selectDifficulty.getSelectedIndex()]);
             dispose();
         });
         panel.add(selectDifficulty);
@@ -25,7 +25,7 @@ public class SetGameSettings extends JFrame {
         panel.add(start);
         add(panel);
         setUndecorated(true);
-        setSize(manager.W, manager.H);
+        setSize(manager.SCREEN_WIDTH, manager.SCREEN_HEIGHT);
         setVisible(true);
     }
 }

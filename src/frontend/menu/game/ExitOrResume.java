@@ -9,7 +9,7 @@ import java.awt.*;
 public class ExitOrResume extends JFrame {
     ExitOrResume() {
         setSize(200, 100);
-        setLocation((Manager.getInstance().W - getWidth()) / 2, (Manager.getInstance().H - getHeight()) / 2);
+        setLocation((Manager.getInstance().SCREEN_WIDTH - getWidth()) / 2, (Manager.getInstance().SCREEN_HEIGHT - getHeight()) / 2);
         JPanel panel = new JPanel();
         add(panel);
         panel.setLayout(new GridLayout(2, 1));
@@ -32,7 +32,7 @@ public class ExitOrResume extends JFrame {
     JButton ResumeGame() {
         JButton resumeGame = new JButton("Continue ...");
         resumeGame.addActionListener(e -> {
-            Manager.getInstance().CurrentGame().Resume();
+            Manager.getInstance().currentGame().Resume();
             dispose();
         });
         return resumeGame;

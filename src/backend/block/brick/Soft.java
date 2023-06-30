@@ -19,12 +19,12 @@ public class Soft extends Brick {
 
     @Override
     protected boolean Pushed(Direction D) {
-        if (Neighbor(Manager.getInstance().CurrentMario(), Direction.Down)) {
-            Manager.getInstance().CurrentGame().score++;
+        if (Neighbor(Manager.getInstance().currentMario(), Direction.Down)) {
+            Manager.getInstance().currentGame().score++;
             if (softType == SoftType.Coin) {
-                Manager.getInstance().CurrentSection().Add(new Coin(X, Y + 1));
+                Manager.getInstance().currentSection().Add(new Coin(X, Y + 1));
                 softType = SoftType.Simple;
-            } else if (Manager.getInstance().CurrentMario().state != MarioState.mini)
+            } else if (Manager.getInstance().currentMario().state != MarioState.mini)
                 Delete();
         }
         return false;

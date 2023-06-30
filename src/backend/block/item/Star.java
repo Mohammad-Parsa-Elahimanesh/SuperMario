@@ -33,7 +33,7 @@ public class Star extends Item {
             vx *= -1;
         else if (D == Direction.Up && vy > 0)
             vy = 0;
-        return Neighbor(Manager.getInstance().CurrentMario());
+        return Neighbor(Manager.getInstance().currentMario());
     }
 
     @Override
