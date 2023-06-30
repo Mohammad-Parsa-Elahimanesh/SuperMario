@@ -20,9 +20,8 @@ public class Pipe extends Block {
     }
 
     @Override
-    protected boolean Pushed(Direction D) {
-        if(Neighbor(Manager.getInstance().currentMario(), Direction.Up) && Manager.getInstance().currentMario().isDirection(Direction.Down) && destination != null)
-        {
+    protected boolean pushed(Direction side) {
+        if (neighbor(Manager.getInstance().currentMario(), Direction.UP) && Manager.getInstance().currentMario().isDirection(Direction.DOWN) && destination != null) {
             Manager.getInstance().currentSection().timer.stop();
             Manager.getInstance().currentMario().Y += 0.5;
             destination.mario.state = Manager.getInstance().currentMario().state;

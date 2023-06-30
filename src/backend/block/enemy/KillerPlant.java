@@ -24,7 +24,7 @@ public class KillerPlant extends Enemy {
     }
 
     @Override
-    protected boolean Pushed(Block.Direction D) {
+    protected boolean pushed(Block.Direction side) {
         return true;
     }
 

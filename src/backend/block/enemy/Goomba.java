@@ -13,7 +13,7 @@ public class Goomba extends Enemy {
     public void update() {
         double lastX = X;
         super.update();
-        if (Push(Direction.Down) > 0) {
+        if (push(Direction.DOWN) > 0) {
             vx *= -1;
             X = lastX;
         }
@@ -29,11 +29,11 @@ public class Goomba extends Enemy {
     }
 
     @Override
-    protected boolean Pushed(Direction D) {
-        if (Neighbor(Manager.getInstance().currentMario(), Direction.Up)) {
+    protected boolean pushed(Direction side) {
+        if (neighbor(Manager.getInstance().currentMario(), Direction.UP)) {
             Die();
-        } else if ((vx < 0 && D == Direction.Left) || (vx > 0 && D == Direction.Right))
+        } else if ((vx < 0 && side == Direction.LEFT) || (vx > 0 && side == Direction.RIGHT))
             vx *= -1;
-        return Neighbor(Manager.getInstance().currentMario(), D) && D != Direction.Up;
+        return neighbor(Manager.getInstance().currentMario(), side) && side != Direction.UP;
     }
 }

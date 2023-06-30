@@ -11,7 +11,7 @@ public class Brick extends Block {
     }
 
     @Override
-    protected boolean Pushed(Direction D) {
+    protected boolean pushed(Direction side) {
         return false;
     }
 
@@ -21,14 +21,14 @@ public class Brick extends Block {
     }
 
     @Override
-    public void Draw(Graphics g, int cameraLeftLine) {
+    public void draw(Graphics g, int cameraLeftLine) {
         if (W == 1 && H == 1) {
-            super.Draw(g, cameraLeftLine);
+            super.draw(g, cameraLeftLine);
             return;
         }
 
         for (int i = (int) X; i < X + W; i++)
             for (int j = (int) Y; j < Y + H; j++)
-                new Brick(1, 1, i, j).Draw(g, cameraLeftLine);
+                new Brick(1, 1, i, j).draw(g, cameraLeftLine);
     }
 }

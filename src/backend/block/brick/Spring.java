@@ -13,7 +13,7 @@ public class Spring extends Brick {
     }
 
     @Override
-    protected boolean Pushed(Direction D) {
-        return Neighbor(Manager.getInstance().currentMario(), Direction.Up);
+    protected boolean pushed(Direction side) {
+        return neighbor(Manager.getInstance().currentMario(), Direction.UP);
     }
 }

@@ -17,7 +17,7 @@ public class SignInPage extends JFrame {
         super();
         JPanel panel = new JPanel(null);
         setUndecorated(true);
-        setSize(Manager.getInstance().SCREEN_WIDTH, Manager.getInstance().SCREEN_HEIGHT);
+        setSize(Manager.SCREEN_WIDTH, Manager.SCREEN_HEIGHT);
         panel.add(userName);
         panel.add(passwordField());
         panel.add(enterButton());

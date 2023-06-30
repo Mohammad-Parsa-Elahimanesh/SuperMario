@@ -2,7 +2,7 @@ package backend.block.enemy;
 
 import backend.Manager;
 import backend.block.mario.SimpleMario;
-import backend.gamePlay.Game;
+import backend.gamePlay.Section;
 
 import static java.lang.Math.max;
 
@@ -28,11 +28,11 @@ public class Koopa extends Enemy {
     public void update() {
         double lastX = X;
         super.update();
-        if (Push(Direction.Down) > 0) {
+        if (push(Direction.DOWN) > 0) {
             vx *= -1;
             X = lastX;
         }
-        freeze = max(freeze - Game.delay, 0);
+        freeze = max(freeze - Section.delay, 0);
         if (freeze == 0)
             vx = (vx < 0 ? -1 : 1) * getNormalSpeed();
         else
@@ -46,16 +46,16 @@ public class Koopa extends Enemy {
     }
 
     @Override
-    protected boolean Pushed(Direction D) {
-        if (Neighbor(Manager.getInstance().currentMario(), Direction.Up)) {
+    protected boolean pushed(Direction side) {
+        if (neighbor(Manager.getInstance().currentMario(), Direction.UP)) {
             if (0 < freeze && freeze < 2.6) {
                 Die();
             } else {
                 vx = 3 * getNormalSpeed();
                 freeze = 3;
             }
-        } else if ((vx < 0 && D == Direction.Left) || (vx > 0 && D == Direction.Right))
+        } else if ((vx < 0 && side == Direction.LEFT) || (vx > 0 && side == Direction.RIGHT))
             vx *= -1;
-        return Neighbor(Manager.getInstance().currentMario(), D) && D != Direction.Up;
+        return neighbor(Manager.getInstance().currentMario(), side) && side != Direction.UP;
     }
 }

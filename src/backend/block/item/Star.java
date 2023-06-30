@@ -3,7 +3,7 @@ package backend.block.item;
 import backend.Manager;
 import backend.block.Block;
 import backend.block.mario.SimpleMario;
-import backend.gamePlay.Game;
+import backend.gamePlay.Section;
 
 public class Star extends Item {
     double old = 0, onGround = 0;
@@ -14,12 +14,12 @@ public class Star extends Item {
 
     @Override
     public void update() {
-        if (Push(Block.Direction.Down) == 0 && old > 3) onGround += Game.delay;
+        if (push(Block.Direction.DOWN) == 0 && old > 3) onGround += Section.delay;
         else onGround = 0;
         if (onGround > 1)
             vy += new SimpleMario().getJumpSpeed() / 1.5;
         if (old < 3) {
-            old += Game.delay;
+            old += Section.delay;
             if (old >= 3)
                 vx = new SimpleMario().getSpeed() / 2.0;
         }
@@ -28,12 +28,12 @@ public class Star extends Item {
     }
 
     @Override
-    protected boolean Pushed(Block.Direction D) {
-        if ((vx < 0 && D == Direction.Left) || (vx > 0 && D == Direction.Right))
+    protected boolean pushed(Block.Direction side) {
+        if ((vx < 0 && side == Direction.LEFT) || (vx > 0 && side == Direction.RIGHT))
             vx *= -1;
-        else if (D == Direction.Up && vy > 0)
+        else if (side == Direction.UP && vy > 0)
             vy = 0;
-        return Neighbor(Manager.getInstance().currentMario());
+        return neighbor(Manager.getInstance().currentMario());
     }
 
     @Override

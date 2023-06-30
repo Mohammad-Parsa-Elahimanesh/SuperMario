@@ -1,7 +1,7 @@
 package backend.block;
 
 import backend.Manager;
-import backend.gamePlay.Game;
+import backend.gamePlay.Section;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -14,61 +14,62 @@ import java.util.Map;
 import static java.lang.Math.min;
 
 public abstract class Block {
-    final static double G = 35;
-    final static double MAX_MOVE = 0.8;
-    final static double eps = 0.01;
+    static final double G = 35;
+    static final double MAX_MOVE = 0.8;
+    static final double EPS = 0.01;
     static Map<String, BufferedImage> images = new HashMap<>();
     public double X, W, H, Y;
-    protected double vx = 0, vy = 0;
+    protected double vx = 0;
+    protected double vy = 0;
 
     protected Block(double w, double h, double x, double y) {
         setShape(w, h, x, y);
     }
 
-    protected boolean Neighbor(Block other) {
-        double x = DistanceHorizontal(other);
-        double y = DistanceVertical(other);
+    protected boolean neighbor(Block other) {
+        double x = distanceHorizontal(other);
+        double y = distanceVertical(other);
         return min(x, y) < 0 && Math.max(x, y) == 0;
     }
 
-    public void Delete() {
+    public void remove() {
         Manager.getInstance().currentSection().del(this);
     }
 
-    protected Boolean Side(Block other, Direction side) {
+    protected Boolean inSide(Block other, Direction side) {
         if (isIntersect(other))
             return false;
         if (side.isHorizontal())
-            return DistanceVertical(other) < 0 &&
-                    ((side == Direction.Left && other.X + other.W <= X) || (side == Direction.Right && X + W <= other.X));
+            return distanceVertical(other) < 0 &&
+                    ((side == Direction.LEFT && other.X + other.W <= X) || (side == Direction.RIGHT && X + W <= other.X));
         else
-            return DistanceHorizontal(other) < 0 &&
-                    ((side == Direction.Down && other.Y + other.H <= Y) || (side == Direction.Up && Y + H <= other.Y));
+            return distanceHorizontal(other) < 0 &&
+                    ((side == Direction.DOWN && other.Y + other.H <= Y) || (side == Direction.UP && Y + H <= other.Y));
     }
 
-    protected boolean Neighbor(Block other, Direction direction) {
-        return Neighbor(other) && Side(other, direction);
+    protected boolean neighbor(Block other, Direction direction) {
+        return neighbor(other) && inSide(other, direction);
     }
 
     public boolean isIntersect(Block other) {
-        return DistanceHorizontal(other) < 0 && DistanceVertical(other) < 0 && other != this;
+        return distanceHorizontal(other) < 0 && distanceVertical(other) < 0 && other != this;
     }
 
-    double ManhattanDistance(Block other) {
-        return Math.max(0, DistanceHorizontal(other)) + Math.max(0, DistanceVertical(other));
+    double manhattanDistance(Block other) {
+        return Math.max(0, distanceHorizontal(other)) + Math.max(0, distanceVertical(other));
     }
 
-    protected double Distance(Block other) {
-        return Math.sqrt(Math.pow(Math.max(0, DistanceHorizontal(other)), 2)
-                + Math.pow(Math.max(0, DistanceVertical(other)), 2));
+    protected double distance(Block other) {
+        return Math.sqrt(Math.pow(Math.max(0, distanceHorizontal(other)), 2)
+                + Math.pow(Math.max(0, distanceVertical(other)), 2));
     }
 
-    double DistanceVertical(Block other) {
-        return Math.max(-eps, Math.max(Y, other.Y) - min(Y + H, other.Y + other.H));
+    double distanceVertical(Block other) {
+        return Math.max(-EPS, Math.max(Y, other.Y) - min(Y + H, other.Y + other.H));
     }
 
-    double DistanceHorizontal(Block other) {
-        return Math.max(-eps, Math.max(X, other.X) - min(X + W, other.X + other.W));
+    double distanceHorizontal(Block other) {
+        return Math.max(-EPS, Math.max(X, other.X) - min(X + W, other.X + other.W));
     }
 
     public void setShape(double w, double h, double x, double y) {
@@ -93,6 +94,7 @@ public abstract class Block {
         return mirrorImage;
     }
 
+    static final String MIRRORED = "MIRRORED";
     public Image getImage() {
         if (!images.containsKey(getImageName())) {
             try {
@@ -101,20 +103,20 @@ public abstract class Block {
                 throw new RuntimeException(ex);
             }
         }
-        if (vx < 0 && !images.containsKey("mirrored" + getImageName())) {
-            images.put("mirrored" + getImageName(), getMirroredImage(images.get(getImageName())));
+        if (vx < 0 && !images.containsKey(MIRRORED + getImageName())) {
+            images.put(MIRRORED + getImageName(), getMirroredImage(images.get(getImageName())));
         }
-        return images.get((vx < 0 ? "mirrored" : "") + getImageName());
+        return images.get((vx < 0 ? MIRRORED : "") + getImageName());
     }
 
-    protected double Push(Direction direction) {
+    protected double push(Direction direction) {
         double canMove = MAX_MOVE;
         for (Block block : Manager.getInstance().currentSection().blocks)
-            if (Neighbor(block, direction)) {
-                if (!block.Pushed(direction.Opposite()))
+            if (neighbor(block, direction)) {
+                if (!block.pushed(direction.opposite()))
                     canMove = 0;
-            } else if (Side(block, direction))
-                canMove = min(canMove, ManhattanDistance(block));
+            } else if (Boolean.TRUE.equals(inSide(block, direction)))
+                canMove = min(canMove, manhattanDistance(block));
         return canMove;
     }
 
@@ -122,16 +124,16 @@ public abstract class Block {
         return vx < 0 ? -1 : 1;
     }
 
-    protected abstract boolean Pushed(Direction D);
+    protected abstract boolean pushed(Direction side);
 
     protected boolean doesGravityAffects() {
         return false;
     }
 
-    protected void Intersect(Block block) {
+    protected void intersect(Block block) {
     }
 
-    public void Draw(Graphics g, int cameraLeftLine) {
+    public void draw(Graphics g, int cameraLeftLine) {
         if (cameraLeftLine <= Manager.SINGLE_BLOCK_WIDTH * X || (X + W - Manager.COLUMN) * Manager.SINGLE_BLOCK_WIDTH <= cameraLeftLine) {
             g.drawImage(getImage(), (int) (Manager.SINGLE_BLOCK_WIDTH * X - cameraLeftLine), (int) (Manager.SCREEN_HEIGHT - Manager.SINGLE_BLOCK_HEIGHT * (Y + H)), (int) (W * Manager.SINGLE_BLOCK_WIDTH), (int) (H * Manager.SINGLE_BLOCK_HEIGHT), null);
         }
@@ -139,59 +141,59 @@ public abstract class Block {
 
     public void update() {
         if (doesGravityAffects()) {
-            if (Push(Direction.Down) > 0)
-                vy -= Game.delay * G;
+            if (push(Direction.DOWN) > 0)
+                vy -= Section.delay * G;
             else if (vy < 0)
                 vy = 0;
         }
 
-        if (Math.abs(vx) < eps && vx != 0) vx = eps * getDirection();
-        if (Math.abs(vy) < eps && vy != 0) vy = eps * (vy < 0 ? -1 : 1);
+        if (Math.abs(vx) < EPS && vx != 0) vx = EPS * getDirection();
+        if (Math.abs(vy) < EPS && vy != 0) vy = EPS * (vy < 0 ? -1 : 1);
 
         if (vx < 0) {
-            double maxMove = -vx * Game.delay;
+            double maxMove = -vx * Section.delay;
             double canMove = maxMove;
             while (canMove > 0) {
-                canMove = min(maxMove, Push(Direction.Left));
+                canMove = min(maxMove, push(Direction.LEFT));
                 X -= canMove;
                 maxMove -= canMove;
             }
             if (maxMove > 0)
-                Pushed(Direction.Left);
+                pushed(Direction.LEFT);
         }
         if (vx > 0) {
-            double maxMove = vx * Game.delay;
+            double maxMove = vx * Section.delay;
             double canMove = maxMove;
             while (canMove > 0) {
-                canMove = min(maxMove, Push(Direction.Right));
+                canMove = min(maxMove, push(Direction.RIGHT));
                 X += canMove;
                 maxMove -= canMove;
             }
             if (maxMove > 0)
-                Pushed(Direction.Right);
+                pushed(Direction.RIGHT);
         }
 
         if (vy < 0) {
-            double maxMove = -vy * Game.delay;
+            double maxMove = -vy * Section.delay;
             double canMove = maxMove;
             while (canMove > 0) {
-                canMove = min(maxMove, Push(Direction.Down));
+                canMove = min(maxMove, push(Direction.DOWN));
                 Y -= canMove;
                 maxMove -= canMove;
             }
             if (maxMove > 0)
-                Pushed(Direction.Down);
+                pushed(Direction.DOWN);
         }
         if (vy > 0) {
-            double maxMove = vy * Game.delay;
+            double maxMove = vy * Section.delay;
             double canMove = maxMove;
             while (canMove > 0) {
-                canMove = min(maxMove, Push(Direction.Up));
+                canMove = min(maxMove, push(Direction.UP));
                 Y += canMove;
                 maxMove -= canMove;
             }
             if (maxMove > 0)
-                Pushed(Direction.Up);
+                pushed(Direction.UP);
         }
     }
 
@@ -206,23 +208,23 @@ public abstract class Block {
     }
 
     public enum Direction {
-        Left,
-        Up,
-        Right,
-        Down;
+        LEFT,
+        UP,
+        RIGHT,
+        DOWN;
 
 
-        public Direction Opposite() {
+        public Direction opposite() {
             return switch (this) {
-                case Left -> Right;
-                case Right -> Left;
-                case Up -> Down;
-                case Down -> Up;
+                case LEFT -> RIGHT;
+                case RIGHT -> LEFT;
+                case UP -> DOWN;
+                case DOWN -> UP;
             };
         }
 
         public boolean isHorizontal() {
-            return this == Right || this == Left;
+            return this == RIGHT || this == LEFT;
         }
     }
 }

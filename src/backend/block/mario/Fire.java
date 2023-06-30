@@ -5,7 +5,7 @@ import backend.block.Block;
 import backend.block.Checkpoint;
 import backend.block.enemy.Enemy;
 import backend.block.item.Item;
-import backend.gamePlay.Game;
+import backend.gamePlay.Section;
 
 public class Fire extends Block {
     double alive = 1.1;
@@ -17,19 +17,19 @@ public class Fire extends Block {
 
     @Override
     public void update() {
-        alive -= Game.delay;
+        alive -= Section.delay;
         if (alive < 0)
-            Delete();
+            remove();
         for (Block block : Manager.getInstance().currentSection().blocks)
             if (isIntersect(block)) {
                 if (block instanceof Mario || block instanceof Item || block instanceof Checkpoint)
                     continue;
                 if (block instanceof Enemy)
                     ((Enemy) block).Die();
-                Delete();
+                remove();
                 break;
             }
-        X += vx * Game.delay;
+        X += vx * Section.delay;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class Fire extends Block {
     }
 
     @Override
-    protected boolean Pushed(Direction D) {
+    protected boolean pushed(Direction side) {
         return true;
     }
 }

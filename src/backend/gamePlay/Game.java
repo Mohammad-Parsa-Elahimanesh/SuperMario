@@ -8,12 +8,11 @@ import frontend.menu.game.SetGameSettings;
 
 
 public class Game {
-    public static final double delay = 0.03;
     public int score = 0;
     public GameFrame gameFrame = new GameFrame();
+    public Section currentSection;
     Manager manager = Manager.getInstance();
     Difficulty difficulty;
-    public Section currentSection;
 
     public Game() {
         new SetGameSettings();
@@ -42,7 +41,7 @@ public class Game {
     }
 
     String state() {
-        return  "Section: " + currentSection;
+        return "Section: " + currentSection;
     }
 
     public enum Difficulty {

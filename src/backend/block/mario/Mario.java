@@ -6,7 +6,7 @@ import backend.block.Saleable;
 import backend.block.brick.Spring;
 import backend.block.enemy.Enemy;
 import backend.block.item.*;
-import backend.gamePlay.Game;
+import backend.gamePlay.Section;
 import frontend.menu.game.AudioPlayer;
 
 import java.awt.*;
@@ -21,7 +21,7 @@ public abstract class Mario extends Block implements Saleable {
     public MarioState state = MarioState.mini;
     public double travelledDistance = 0;
     public boolean nextASAP;
-    double shield = 0.0;
+    public double shield = 0.0;
     double shotCooldown = 0.0, saberShotCooldown = 0.0, upAndDownBoth = 0.0;
     private boolean dieASAP;
 
@@ -63,7 +63,7 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     public boolean isDirection(Direction d) {
-        return task.get(d) && !task.get(d.Opposite());
+        return task.get(d) && !task.get(d.opposite());
     }
 
     public int getPowerLevel() {
@@ -96,7 +96,7 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     public void shot() {
-        if (state == MarioState.giga && shotCooldown == 0 && Push(Direction.Down) == 0) {
+        if (state == MarioState.giga && shotCooldown == 0 && push(Direction.DOWN) == 0) {
             manager.currentSection().add(new Fire(this));
             shotCooldown = 3;
         }
@@ -111,15 +111,15 @@ public abstract class Mario extends Block implements Saleable {
     }
 
     @Override
-    protected boolean Pushed(Direction D) {
-        if (D == Direction.Up && vy > 0)
+    protected boolean pushed(Direction side) {
+        if (side == Direction.UP && vy > 0)
             vy = 0;
         return true;
     }
 
 
     @Override
-    protected void Intersect(Block block) {
+    protected void intersect(Block block) {
         if (block instanceof Enemy enemy) {
             if (shield > 0)
                 enemy.Die();
@@ -130,7 +130,7 @@ public abstract class Mario extends Block implements Saleable {
             }
         } else if (block instanceof Item && !(block instanceof Coin)) {
             upgrade();
-            block.Delete();
+            block.remove();
             if (block instanceof Flower)
                 manager.currentGame().score += 20;
             else if (block instanceof Mushroom)
@@ -149,18 +149,18 @@ public abstract class Mario extends Block implements Saleable {
     void updateSpeed() {
         vx *= FRICTION;
 
-        if (task.get(Direction.Down) && task.get(Direction.Up)) {
-            upAndDownBoth += Game.delay;
+        if (task.get(Direction.DOWN) && task.get(Direction.UP)) {
+            upAndDownBoth += Section.delay;
             if (upAndDownBoth > 3)
                 saberShot();
         } else
             upAndDownBoth = 0;
 
-        if (isDirection(Direction.Left))
+        if (isDirection(Direction.LEFT))
             vx = (vx - getSpeed()) / 2;
-        else if (isDirection(Direction.Right))
+        else if (isDirection(Direction.RIGHT))
             vx = (vx + getSpeed()) / 2;
-        if (isDirection(Direction.Up) && Push(Direction.Down) == 0)
+        if (isDirection(Direction.UP) && push(Direction.DOWN) == 0)
             vy = getJumpSpeed();
     }
 
@@ -168,10 +168,10 @@ public abstract class Mario extends Block implements Saleable {
     public void update() {
         travelledDistance = (int) Math.max(travelledDistance, X);
         dieASAP = nextASAP = false;
-        shield = Math.max(0, shield - Game.delay);
-        shotCooldown = Math.max(0, shotCooldown - Game.delay);
-        saberShotCooldown = Math.max(0, saberShotCooldown - Game.delay);
-        H = state == MarioState.mini || isDirection(Direction.Down) ? 1 : 2;
+        shield = Math.max(0, shield - Section.delay);
+        shotCooldown = Math.max(0, shotCooldown - Section.delay);
+        saberShotCooldown = Math.max(0, saberShotCooldown - Section.delay);
+        H = state == MarioState.mini || isDirection(Direction.DOWN) ? 1 : 2;
         updateSpeed();
         super.update();
         checkIntersection();
@@ -187,7 +187,7 @@ public abstract class Mario extends Block implements Saleable {
     void checkIntersection() {
         for (Block block : manager.currentSection().blocks)
             if (isIntersect(block))
-                Intersect(block);
+                intersect(block);
     }
 
     void checkGameState() {
@@ -200,18 +200,18 @@ public abstract class Mario extends Block implements Saleable {
 
     void checkGetCoins() {
         for (Block coin : manager.currentSection().blocks)
-            if (coin instanceof Coin && Distance(coin) <= getCoinRange()) {
-                coin.Delete();
+            if (coin instanceof Coin && distance(coin) <= getCoinRange()) {
+                coin.remove();
                 manager.currentSection().getCoin(1);
                 manager.currentGame().score += 10;
             }
     }
 
     @Override
-    public void Draw(Graphics g, int cameraLeftLine) {
-        super.Draw(g, cameraLeftLine);
+    public void draw(Graphics g, int cameraLeftLine) {
+        super.draw(g, cameraLeftLine);
         if (shield > 0)
-            new FireRing(this).Draw(g, cameraLeftLine);
+            new FireRing(this).draw(g, cameraLeftLine);
     }
 
 }

@@ -4,7 +4,7 @@ import backend.Manager;
 import backend.block.Block;
 import backend.block.enemy.Enemy;
 import backend.block.item.Item;
-import backend.gamePlay.Game;
+import backend.gamePlay.Section;
 
 public class Saber extends Block {
     double alive = 0.5;
@@ -17,7 +17,7 @@ public class Saber extends Block {
 
     @Override
     public void update() {
-        alive -= Game.delay;
+        alive -= Section.delay;
         if (alive < 0) {
             vx *= -1;
             alive = 8;
@@ -28,10 +28,10 @@ public class Saber extends Block {
                     continue;
                 if (block instanceof Enemy)
                     ((Enemy) block).Die();
-                Delete();
+                remove();
                 break;
             }
-        X += vx * Game.delay;
+        X += vx * Section.delay;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class Saber extends Block {
     }
 
     @Override
-    protected boolean Pushed(Direction D) {
+    protected boolean pushed(Direction side) {
         return true;
     }
 }

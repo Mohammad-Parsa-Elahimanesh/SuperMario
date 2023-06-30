@@ -2,7 +2,7 @@ package backend.block;
 
 
 import backend.Manager;
-import backend.gamePlay.Game;
+import backend.gamePlay.Section;
 import frontend.menu.game.CheckpointMenu;
 
 public class Checkpoint extends Block {
@@ -16,7 +16,7 @@ public class Checkpoint extends Block {
 
     public void destroy() {
         Manager.getInstance().currentSection().getCoin(Manager.getInstance().currentSection().progressRisk() / 4);
-        Delete();
+        remove();
         resume();
     }
 
@@ -34,7 +34,7 @@ public class Checkpoint extends Block {
 
     @Override
     public void update() {
-        cooldown = Math.max(cooldown - Game.delay, 0.0);
+        cooldown = Math.max(cooldown - Section.delay, 0.0);
         if (isIntersect(Manager.getInstance().currentMario()) && cooldown == 0.0 && active) {
             cooldown = 3;
             Manager.getInstance().currentMario().reset();
@@ -55,7 +55,7 @@ public class Checkpoint extends Block {
     }
 
     @Override
-    protected boolean Pushed(Direction D) {
+    protected boolean pushed(Direction side) {
         return true;
     }
 }

@@ -21,6 +21,6 @@ public abstract class Enemy extends Block {
         AudioPlayer.getInstance().playSound("enemyDeath");
         Manager.getInstance().currentSection().getCoin(3);
         Manager.getInstance().currentGame().score += scoreWhenBeKilled();
-        Delete();
+        remove();
     }
 }

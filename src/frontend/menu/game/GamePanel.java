@@ -45,6 +45,6 @@ public class GamePanel extends JPanel {
         int cameraLeftLine = (int) (Manager.SINGLE_BLOCK_WIDTH * Math.min(Math.max(0, manager.currentMario().X - cameraBeforeMario), manager.currentSection().getLength() - Manager.COLUMN));
         paintInfo(g);
         for (Block block : manager.currentSection().blocks)
-            block.Draw(g, cameraLeftLine);
+            block.draw(g, cameraLeftLine);
     }
 }

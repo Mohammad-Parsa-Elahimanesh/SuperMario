@@ -3,7 +3,7 @@ package backend.block.item;
 import backend.Manager;
 import backend.block.Block;
 import backend.block.mario.SimpleMario;
-import backend.gamePlay.Game;
+import backend.gamePlay.Section;
 
 public class Mushroom extends Item {
     double old = 0;
@@ -15,7 +15,7 @@ public class Mushroom extends Item {
     @Override
     public void update() {
         if (old < 3) {
-            old += Game.delay;
+            old += Section.delay;
             if (old > 3)
                 vx = new SimpleMario().getSpeed() / 2.0;
         }
@@ -23,10 +23,10 @@ public class Mushroom extends Item {
     }
 
     @Override
-    protected boolean Pushed(Block.Direction D) {
-        if ((vx < 0 && D == Direction.Left) || (vx > 0 && D == Direction.Right))
+    protected boolean pushed(Block.Direction side) {
+        if ((vx < 0 && side == Direction.LEFT) || (vx > 0 && side == Direction.RIGHT))
             vx *= -1;
-        return Neighbor(Manager.getInstance().currentMario());
+        return neighbor(Manager.getInstance().currentMario());
     }
 
     @Override

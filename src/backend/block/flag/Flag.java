@@ -36,7 +36,7 @@ public class Flag extends Block {
     }
 
     @Override
-    protected boolean Pushed(Direction D) {
+    protected boolean pushed(Direction side) {
         return true;
     }
 }

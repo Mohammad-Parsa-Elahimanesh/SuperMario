@@ -33,19 +33,19 @@ public class GameFrame extends JFrame {
 
             public void keyPressed(KeyEvent e) {
                 switch (e.getExtendedKeyCode()) {
-                    case KeyEvent.VK_LEFT -> manager.currentMario().task.put(Block.Direction.Left, true);
-                    case KeyEvent.VK_UP -> manager.currentMario().task.put(Block.Direction.Up, true);
-                    case KeyEvent.VK_RIGHT -> manager.currentMario().task.put(Block.Direction.Right, true);
-                    case KeyEvent.VK_DOWN -> manager.currentMario().task.put(Block.Direction.Down, true);
+                    case KeyEvent.VK_LEFT -> manager.currentMario().task.put(Block.Direction.LEFT, true);
+                    case KeyEvent.VK_UP -> manager.currentMario().task.put(Block.Direction.UP, true);
+                    case KeyEvent.VK_RIGHT -> manager.currentMario().task.put(Block.Direction.RIGHT, true);
+                    case KeyEvent.VK_DOWN -> manager.currentMario().task.put(Block.Direction.DOWN, true);
                 }
             }
 
             public void keyReleased(KeyEvent e) {
                 switch (e.getExtendedKeyCode()) {
-                    case KeyEvent.VK_LEFT -> manager.currentMario().task.put(Block.Direction.Left, false);
-                    case KeyEvent.VK_UP -> manager.currentMario().task.put(Block.Direction.Up, false);
-                    case KeyEvent.VK_RIGHT -> manager.currentMario().task.put(Block.Direction.Right, false);
-                    case KeyEvent.VK_DOWN -> manager.currentMario().task.put(Block.Direction.Down, false);
+                    case KeyEvent.VK_LEFT -> manager.currentMario().task.put(Block.Direction.LEFT, false);
+                    case KeyEvent.VK_UP -> manager.currentMario().task.put(Block.Direction.UP, false);
+                    case KeyEvent.VK_RIGHT -> manager.currentMario().task.put(Block.Direction.RIGHT, false);
+                    case KeyEvent.VK_DOWN -> manager.currentMario().task.put(Block.Direction.DOWN, false);
                 }
             }
         };
