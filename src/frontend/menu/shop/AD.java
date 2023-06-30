@@ -10,23 +10,23 @@ import java.awt.*;
 
 public class AD extends TileButton {
     private final transient Manager manager = Manager.getInstance();
-    boolean sold = false;
-    Saleable sales;
+    boolean isSold = false;
+    transient Saleable sales;
 
     AD(Saleable sales, User user) {
-        setTileSize(manager.COLUMN / Shop.column, manager.ROW / Shop.row);
+        setTileSize(Manager.COLUMN / Shop.COLUMN, Manager.ROW / Shop.ROW);
         this.sales = sales;
         for (String sold : user.bought)
             if (sales.getName().equals(sold))
-                this.sold = true;
+                this.isSold = true;
         setToolTipText("<html>" + sales.getName() + "<br>" + sales.getDescription() + "<br>" + sales.getCost() + "</html>");
         addActionListener(e -> {
-            if (sold)
+            if (isSold)
                 new Massage("you have this since before !");
             else if (manager.currentUser().coins < sales.getCost())
                 new Massage("you don't have enough coins :/");
             else {
-                sold = true;
+                isSold = true;
                 manager.currentUser().buy(sales);
                 manager.currentUser().coins -= sales.getCost();
                 new Massage("you buy this successfully !");
@@ -34,6 +34,7 @@ public class AD extends TileButton {
         });
     }
 
+    @Override
     public void paint(Graphics g) {
         super.paint(g);
         g.drawImage(sales.getImage(), getWidth() / 4, getHeight() / 4, getWidth() / 2, getHeight() / 2, null);

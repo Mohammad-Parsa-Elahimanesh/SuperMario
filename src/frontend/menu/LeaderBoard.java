@@ -27,7 +27,7 @@ public class LeaderBoard extends JFrame {
         for (int i = 0; i < topUsers.size() && i < 5; i++) {
             JLabel label = new JLabel((i + 1) + " : " + topUsers.get(i).maxRating + "   " + topUsers.get(i).name);
             label.setSize(800, 60);
-            label.setFont(new Font("Arial", 1, 40));
+            label.setFont(new Font("Arial", Font.PLAIN, 40));
             panel.add(label);
         }
         add(panel);

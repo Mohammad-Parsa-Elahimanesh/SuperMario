@@ -12,16 +12,17 @@ import backend.block.flag.Flag;
 import backend.block.item.Coin;
 import backend.block.mario.Mario;
 import backend.block.mario.MarioState;
+import frontend.menu.game.AudioPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Section {
     public final Mario mario;
-    public final ArrayList<Checkpoint> savedCheckpoints = new ArrayList<>();
-    final transient private List<Block> mustBeAdded = new ArrayList<Block>();
-    final transient private List<Block> mustBeRemoved = new ArrayList<Block>();
-    final private transient Manager manager = Manager.getInstance();
+    public final List<Checkpoint> savedCheckpoints = new ArrayList<>();
+    private final transient List<Block> mustBeAdded = new ArrayList<Block>();
+    private final transient List<Block> mustBeRemoved = new ArrayList<Block>();
+    private final transient Manager manager = Manager.getInstance();
     public List<Block> blocks = new ArrayList<>();
     public int W;
     public int wholeTime;
@@ -76,8 +77,8 @@ public class Section {
         }
         for (int i = 20; i < 40; i += 5)
             Add(new Goomba(i, 6));
-        Pipe pipe1 = new Pipe(3,3,false, this);
-        Pipe pipe2 = new Pipe(55,3,false, this);
+        Pipe pipe1 = new Pipe(3, 3, false, this);
+        Pipe pipe2 = new Pipe(55, 3, false, this);
         pipe1.destination = pipe2;
     }
 
@@ -138,6 +139,7 @@ public class Section {
             mario.state = MarioState.mini;
         switch (mario.state) {
             case mini -> {
+                AudioPlayer.getInstance().playSound("marioDeath");
                 spentTime = 0;
                 coins -= ((savedCheckpoints.size() + 1) * coins + ProgressRisk()) / (savedCheckpoints.size() + 4);
                 mario.reset();
@@ -162,7 +164,7 @@ public class Section {
     }
 
     double ProgressRate() {
-        return mario.travelleDistance / W;
+        return mario.travelledDistance / W;
     }
 
     public int ProgressRisk() {

@@ -6,12 +6,14 @@ import backend.gamePlay.Section;
 
 public class Pipe extends Block {
     public Pipe destination = null;
+
     public Pipe(double x, double h, boolean hasPlant, Section section) {
         super(2, h, x, 0);
         section.Add(this);
-        if(hasPlant)
+        if (hasPlant)
             section.Add(new KillerPlant(this));
     }
+
     @Override
     protected String getImageName() {
         return "Pipe.png";

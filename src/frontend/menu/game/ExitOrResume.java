@@ -8,18 +8,20 @@ import java.awt.*;
 
 public class ExitOrResume extends JFrame {
     ExitOrResume() {
+        Manager.getInstance().currentMario().reset();
         setSize(200, 100);
-        setLocation((Manager.getInstance().SCREEN_WIDTH - getWidth()) / 2, (Manager.getInstance().SCREEN_HEIGHT - getHeight()) / 2);
+        setLocation((Manager.SCREEN_WIDTH - getWidth()) / 2, (Manager.SCREEN_HEIGHT - getHeight()) / 2);
         JPanel panel = new JPanel();
         add(panel);
-        panel.setLayout(new GridLayout(2, 1));
-        panel.add(ResumeGame());
-        panel.add(ExitGame());
+        panel.setLayout(new GridLayout(3, 1));
+        panel.add(resumeGame());
+        panel.add(soundControl());
+        panel.add(exitGame());
         setUndecorated(true);
         setVisible(true);
     }
 
-    JButton ExitGame() {
+    JButton exitGame() {
         JButton exitGame = new JButton("Exit Game");
         exitGame.addActionListener(e -> {
             new MainMenu();
@@ -29,7 +31,16 @@ public class ExitOrResume extends JFrame {
         return exitGame;
     }
 
-    JButton ResumeGame() {
+    JButton soundControl() {
+        JButton sound = new JButton(AudioPlayer.getInstance().silenceForever ? "turn on sound" : "turn off sound");
+        sound.addActionListener(e -> {
+            AudioPlayer.getInstance().silenceForever = !AudioPlayer.getInstance().silenceForever;
+            sound.setText(AudioPlayer.getInstance().silenceForever ? "turn on sound" : "turn off sound");
+        });
+        return sound;
+    }
+
+    JButton resumeGame() {
         JButton resumeGame = new JButton("Continue ...");
         resumeGame.addActionListener(e -> {
             Manager.getInstance().currentGame().Resume();

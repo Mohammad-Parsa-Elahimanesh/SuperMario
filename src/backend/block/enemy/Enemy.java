@@ -2,6 +2,7 @@ package backend.block.enemy;
 
 import backend.Manager;
 import backend.block.Block;
+import frontend.menu.game.AudioPlayer;
 
 public abstract class Enemy extends Block {
     Enemy(double w, double h, double x, double y) {
@@ -16,6 +17,8 @@ public abstract class Enemy extends Block {
     abstract int scoreWhenBeKilled();
 
     public void Die() {
+
+        AudioPlayer.getInstance().playSound("enemyDeath");
         Manager.getInstance().currentSection().coins += 3;
         Manager.getInstance().currentGame().score += scoreWhenBeKilled();
         Delete();
