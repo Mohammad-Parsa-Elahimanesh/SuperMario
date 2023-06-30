@@ -12,8 +12,8 @@ public class Flag extends Block {
     public Flag(double x, double y, Section section) {
         super(1, 12, x, y);
         flagPicture = new FlagPicture(x + 0.5, y);
-        section.Add(flagPicture);
-        section.Add(this);
+        section.add(flagPicture);
+        section.add(this);
     }
 
     @Override

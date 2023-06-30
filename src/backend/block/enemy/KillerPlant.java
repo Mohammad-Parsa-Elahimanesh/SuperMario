@@ -30,7 +30,7 @@ public class KillerPlant extends Enemy {
 
     @Override
     public void Update() {
-        int H = ((int) Manager.getInstance().currentSection().spentTime) % Height.length;
+        int H = ((int) Manager.getInstance().currentSection().getSpentTime()) % Height.length;
         setShape(home.W, Height[H], home.X, home.Y + home.H);
         super.Update();
     }

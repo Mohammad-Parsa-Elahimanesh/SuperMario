@@ -9,9 +9,9 @@ public class Pipe extends Block {
 
     public Pipe(double x, double h, boolean hasPlant, Section section) {
         super(2, h, x, 0);
-        section.Add(this);
+        section.add(this);
         if (hasPlant)
-            section.Add(new KillerPlant(this));
+            section.add(new KillerPlant(this));
     }
 
     @Override

@@ -3,7 +3,6 @@ package backend.gamePlay;
 import backend.Manager;
 import backend.block.Block;
 import backend.block.Checkpoint;
-import backend.block.Pipe;
 import backend.block.brick.*;
 import backend.block.enemy.Goomba;
 import backend.block.enemy.Koopa;
@@ -20,85 +19,114 @@ import java.util.List;
 public class Section {
     public final Mario mario;
     public final List<Checkpoint> savedCheckpoints = new ArrayList<>();
-    private final transient List<Block> mustBeAdded = new ArrayList<Block>();
-    private final transient List<Block> mustBeRemoved = new ArrayList<Block>();
-    private final transient Manager manager = Manager.getInstance();
-    public List<Block> blocks = new ArrayList<>();
-    public int W;
-    public int wholeTime;
-    public double spentTime = 0;
-    public int coins = 0;
+    private final List<Block> mustBeAdded = new ArrayList<>();
+    private final List<Block> mustBeRemoved = new ArrayList<>();
+    private final Manager manager = Manager.getInstance();
+    public final List<Block> blocks = new ArrayList<>();
+    private int length;
+    private int wholeTime;
+
+    public int getLength() {
+        return length;
+    }
+
+    public double getWholeTime() {
+        return wholeTime;
+    }
+
+    private double spentTime = 0;
+
+    public double getSpentTime() {
+        return spentTime;
+    }
+
+    private int coins = 0;
 
     Section(int level, int section, Mario mario) throws Exception {
-        Add(new Brick(1, 30, -1, 0));
+        add(new Brick(1, 30, -1, 0));
         this.mario = mario.getClass().getDeclaredConstructor().newInstance();
         if (level == 0) {
             switch (section) {
-                case 0 -> Level0Section0();
+                case 0 -> level0Section0();
                 case 1 -> Level0Section1();
                 case 2 -> Level0Section2();
             }
         }
-        Add(this.mario);
-        Add(new Brick(3, 2, W - 3, 0));
-        Add(new Brick(1, 30, W, 0));
-        new Flag(W - 3, 2, this);
+        add(this.mario);
+        add(new Brick(3, 2, length - 3.0, 0));
+        add(new Brick(1, 30, length, 0));
+        new Flag(length - 3.0, 2, this);
     }
 
-    public void Add(Block B) {
-        mustBeAdded.add(B);
+    public void add(Block block) {
+        mustBeAdded.add(block);
     }
 
-    public void Del(Block B) {
-        mustBeRemoved.add(B);
+    public void del(Block block) {
+        mustBeRemoved.add(block);
     }
 
-    void UpdateBlocks() {
+    private void updateBlocks() {
         blocks.addAll(mustBeAdded);
         mustBeAdded.clear();
         blocks.removeAll(mustBeRemoved);
         mustBeRemoved.clear();
     }
 
-    void Level0Section0() {
-        W = 60;
+    public int getCoins() {
+        return coins;
+    }
+    public void getCoin(int number) {
+        coins+=number;
+    }
+
+    void level0Section0() {
+        length = 85;
         wholeTime = 100;
-        Add(new Brick(60, 1, 0, 0));
-        Add(new Brick(40, 1, 10, 1));
-        Add(new Goomba(20, 2));
-        Add(new Spiny(30, 2));
-        Add(new Goomba(40, 2));
-        Add(new Koopa(25, 2));
-        Add(new Koopa(35, 2));
-        Add(new Checkpoint(30, 6));
-        for (int i = 20; i < 40; i++) {
-            if (Math.random() < 0.5) Add(new Soft(SoftType.Coin, i, 5));
-            else Add(new Solid(SolidType.Prize, i, 5));
+
+        add(new Brick(33,2,0,0));
+        add(new Soft(SoftType.Coin, 3, 5));
+        add(new Soft(SoftType.Simple, 6, 5));
+        add(new Solid(SolidType.Coins, 9, 5));
+        add(new Solid(SolidType.Simple, 12, 5));
+        for(int i = 1; i <= 9; i++)
+            add(new Solid(SolidType.Prize, 15+i, 5));
+        for(int i = 1; i <= 7; i++) {
+            add(new Soft(SoftType.Coin, 26+i, 5));
+            add(new Solid(SolidType.Prize, 26 + i, 9));
         }
-        for (int i = 20; i < 40; i += 5)
-            Add(new Goomba(i, 6));
-        Pipe pipe1 = new Pipe(3, 3, false, this);
-        Pipe pipe2 = new Pipe(55, 3, false, this);
-        pipe1.destination = pipe2;
+
+        add(new Brick(10,2,36,0));
+        add(new Goomba(38, 2));
+        add(new Goomba(42, 2));
+
+        add(new Brick(5,2,48,0));
+        add(new Checkpoint(50,2));
+        add(new Spring(52, 4));
+
+        add(new Brick(20,2,60,0));
+        add(new Koopa(65, 2));
+        add(new Spiny(70, 2));
+        add(new Koopa(75, 2));
     }
 
     void Level0Section1() {
-        W = 45;
+        length = 45;
         wholeTime = 100;
-        Add(new Spring(1, 3));
-        Add(new Solid(SolidType.Prize, 2, 5));
-        Add(new Solid(SolidType.Coins, 3, 5));
-        Add(new Solid(SolidType.Simple, 4, 5));
-        Add(new Soft(SoftType.Coin, 3, 9));
-        Add(new Soft(SoftType.Simple, 4, 9));
+        add(new Spring(1, 3));
+        add(new Solid(SolidType.Prize, 2, 5));
+        add(new Solid(SolidType.Coins, 3, 5));
+        add(new Solid(SolidType.Simple, 4, 5));
+        add(new Soft(SoftType.Coin, 3, 9));
+        add(new Soft(SoftType.Simple, 4, 9));
 
-        Add(new Brick(9, 2, 0, 0));
-        Add(new Brick(28, 2, 17, 0));
+        add(new Brick(9, 2, 0, 0));
+        add(new Brick(28, 2, 17, 0));
 
-        Add(new Brick(2, 1, 6, 6));
-        Add(new Brick(1, 8, 10, 0));
-        Add(new Brick(1, 10, 13, 0));
-        Add(new Brick(1, 12, 17, 0));
+        add(new Brick(2, 1, 6, 6));
+        add(new Brick(1, 8, 10, 0));
+        add(new Brick(1, 10, 13, 0));
+        add(new Brick(1, 12, 17, 0));
 
         Coin[] coinsWaterfall = new Coin[6];
         for (int i = 0; i < coinsWaterfall.length; i++) coinsWaterfall[i] = new Coin(20 + i, 15 - 2 * i);
@@ -107,24 +135,24 @@ public class Section {
         Coin[] coinInLine = new Coin[7];
         for (int i = 0; i < coinInLine.length; i++)
             coinInLine[i] = new Coin(28 + i, 8);
-        Add(new Brick(7, 1, 28, 6));
+        add(new Brick(7, 1, 28, 6));
 
-        for (Coin coin : coinsWaterfall) Add(coin);
-        for (Coin coin : coinInLine) Add(coin);
+        for (Coin coin : coinsWaterfall) add(coin);
+        for (Coin coin : coinInLine) add(coin);
     }
 
     void Level0Section2() {
-        W = 60;
+        length = 60;
         wholeTime = 100;
-        Add(new Brick(10, 2, 0, 0));
-        Add(new Brick(9, 2, 11, 0));
-        Add(new Brick(8, 2, 22, 0));
-        Add(new Brick(7, 2, 33, 0));
-        Add(new Brick(6, 2, 44, 0));
-        Add(new Brick(5, 2, 55, 0));
+        add(new Brick(10, 2, 0, 0));
+        add(new Brick(9, 2, 11, 0));
+        add(new Brick(8, 2, 22, 0));
+        add(new Brick(7, 2, 33, 0));
+        add(new Brick(6, 2, 44, 0));
+        add(new Brick(5, 2, 55, 0));
 
         for (int i = 0; i < 16; i++) {
-            Add(new Solid(SolidType.Prize, i * 3 + 2, 4 + (int) (Math.random() * 3)));
+            add(new Solid(SolidType.Prize, i * 3 + 2, 4 + (int) (Math.random() * 3)));
         }
     }
 
@@ -164,7 +192,7 @@ public class Section {
     }
 
     double ProgressRate() {
-        return mario.travelledDistance / W;
+        return mario.travelledDistance / length;
     }
 
     public int ProgressRisk() {
@@ -172,7 +200,7 @@ public class Section {
     }
 
     void Update() {
-        UpdateBlocks();
+        updateBlocks();
         for (Block block : blocks)
             block.Update();
         if (mario.Died())

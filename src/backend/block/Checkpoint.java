@@ -15,15 +15,15 @@ public class Checkpoint extends Block {
     }
 
     public void Destroy() {
-        Manager.getInstance().currentSection().coins += Manager.getInstance().currentSection().ProgressRisk() / 4;
+        Manager.getInstance().currentSection().getCoin(Manager.getInstance().currentSection().ProgressRisk() / 4);
         Delete();
         Continue();
     }
 
     public void Save() {
         active = false;
-        spendTime = Manager.getInstance().currentSection().spentTime;
-        Manager.getInstance().currentSection().coins -= Manager.getInstance().currentSection().ProgressRisk();
+        spendTime = Manager.getInstance().currentSection().getSpentTime();
+        Manager.getInstance().currentSection().getCoin(-Manager.getInstance().currentSection().ProgressRisk());
         Manager.getInstance().currentSection().savedCheckpoints.add(this);
         Continue();
     }

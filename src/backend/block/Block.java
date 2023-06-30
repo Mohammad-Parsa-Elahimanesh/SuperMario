@@ -32,7 +32,7 @@ public abstract class Block {
     }
 
     public void Delete() {
-        Manager.getInstance().currentSection().Del(this);
+        Manager.getInstance().currentSection().del(this);
     }
 
     protected Boolean Side(Block other, Direction side) {

@@ -97,14 +97,14 @@ public abstract class Mario extends Block implements Saleable {
 
     public void Shot() {
         if (state == MarioState.giga && shotCooldown == 0 && Push(Direction.Down) == 0) {
-            manager.currentSection().Add(new Fire(this));
+            manager.currentSection().add(new Fire(this));
             shotCooldown = 3;
         }
     }
 
     private void saberShot() {
         if (saberShotCooldown == 0 && manager.currentUser().coins >= 3) {
-            manager.currentSection().Add(new Saber(this));
+            manager.currentSection().add(new Saber(this));
             manager.currentUser().coins -= 3;
             saberShotCooldown = 5;
         }
@@ -174,7 +174,7 @@ public abstract class Mario extends Block implements Saleable {
         UpdateSpeed();
         super.Update();
         CheckIntersection();
-        CheckGetCoins();
+        checkGetCoins();
         CheckGameState();
     }
 
@@ -193,15 +193,15 @@ public abstract class Mario extends Block implements Saleable {
         if (Y + H < 0) {
             dieASAP = true;
             manager.currentGame().score = Math.max(manager.currentGame().score - 30, 0);
-        } else if (manager.currentSection().wholeTime <= manager.currentSection().spentTime)
+        } else if (manager.currentSection().getWholeTime() <= manager.currentSection().getSpentTime())
             dieASAP = true;
     }
 
-    void CheckGetCoins() {
+    void checkGetCoins() {
         for (Block coin : manager.currentSection().blocks)
             if (coin instanceof Coin && Distance(coin) <= getCoinRange()) {
                 coin.Delete();
-                manager.currentSection().coins += 1;
+                manager.currentSection().getCoin(1);
                 manager.currentGame().score += 10;
             }
     }

@@ -28,7 +28,7 @@ public class CheckpointMenu extends JFrame {
     JButton save() {
         JButton save = new JButton("Save");
         save.addActionListener(e -> {
-            if (Manager.getInstance().currentSection().coins < progressRisk)
+            if (Manager.getInstance().currentSection().getCoins() < progressRisk)
                 return;
             checkpoint.Save();
             dispose();

@@ -22,7 +22,7 @@ public class Soft extends Brick {
         if (Neighbor(Manager.getInstance().currentMario(), Direction.Down)) {
             Manager.getInstance().currentGame().score++;
             if (softType == SoftType.Coin) {
-                Manager.getInstance().currentSection().Add(new Coin(X, Y + 1));
+                Manager.getInstance().currentSection().add(new Coin(X, Y + 1));
                 softType = SoftType.Simple;
             } else if (Manager.getInstance().currentMario().state != MarioState.mini)
                 Delete();
