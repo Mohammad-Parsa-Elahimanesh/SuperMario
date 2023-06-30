@@ -26,7 +26,7 @@ public class User {
     public List<Mario> Marios() {
         List<Mario> marios = new ArrayList<>();
         for (String have : bought)
-            for (Saleable mario : SuperMario.saleables)
+            for (Saleable mario : SuperMario.saleable)
                 if ((mario instanceof Mario) && mario.getName().equals(have))
                     marios.add((Mario) mario);
         return marios;

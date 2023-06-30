@@ -17,7 +17,7 @@ public class Flag extends Block {
     }
 
     @Override
-    public void Update() {
+    public void update() {
 
         if (isIntersect(Manager.getInstance().currentMario()) || finished) {
             if (!finished)
@@ -27,7 +27,7 @@ public class Flag extends Block {
             if (flagPicture.Y + flagPicture.H + 1.5 >= Y + H)
                 Manager.getInstance().currentMario().nextASAP = true;
         }
-        super.Update();
+        super.update();
     }
 
     @Override

@@ -13,7 +13,7 @@ public class Star extends Item {
     }
 
     @Override
-    public void Update() {
+    public void update() {
         if (Push(Block.Direction.Down) == 0 && old > 3) onGround += Game.delay;
         else onGround = 0;
         if (onGround > 1)
@@ -24,7 +24,7 @@ public class Star extends Item {
                 vx = new SimpleMario().getSpeed() / 2.0;
         }
 
-        super.Update();
+        super.update();
     }
 
     @Override

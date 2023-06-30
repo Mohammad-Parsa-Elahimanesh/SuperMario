@@ -13,13 +13,13 @@ public class Mushroom extends Item {
     }
 
     @Override
-    public void Update() {
+    public void update() {
         if (old < 3) {
             old += Game.delay;
             if (old > 3)
                 vx = new SimpleMario().getSpeed() / 2.0;
         }
-        super.Update();
+        super.update();
     }
 
     @Override

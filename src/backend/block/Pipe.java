@@ -24,7 +24,9 @@ public class Pipe extends Block {
         if(Neighbor(Manager.getInstance().currentMario(), Direction.Up) && Manager.getInstance().currentMario().isDirection(Direction.Down) && destination != null)
         {
             Manager.getInstance().currentSection().timer.stop();
+            Manager.getInstance().currentMario().Y += 0.5;
             destination.mario.state = Manager.getInstance().currentMario().state;
+            destination.mario.heart = Manager.getInstance().currentMario().heart;
             Manager.getInstance().currentGame().currentSection = destination;
             destination = null;
             Manager.getInstance().currentSection().timer.start();

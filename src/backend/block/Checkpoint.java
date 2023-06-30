@@ -14,26 +14,26 @@ public class Checkpoint extends Block {
         super(1, 3, x, y);
     }
 
-    public void Destroy() {
+    public void destroy() {
         Manager.getInstance().currentSection().getCoin(Manager.getInstance().currentSection().progressRisk() / 4);
         Delete();
-        Continue();
+        resume();
     }
 
-    public void Save() {
+    public void save() {
         active = false;
         spendTime = Manager.getInstance().currentSection().getSpentTime();
         Manager.getInstance().currentSection().getCoin(-Manager.getInstance().currentSection().progressRisk());
         Manager.getInstance().currentSection().savedCheckpoints.add(this);
-        Continue();
+        resume();
     }
 
-    public void Continue() {
+    public void resume() {
         Manager.getInstance().currentSection().timer.start();
     }
 
     @Override
-    public void Update() {
+    public void update() {
         cooldown = Math.max(cooldown - Game.delay, 0.0);
         if (isIntersect(Manager.getInstance().currentMario()) && cooldown == 0.0 && active) {
             cooldown = 3;
@@ -41,7 +41,7 @@ public class Checkpoint extends Block {
             Manager.getInstance().currentSection().timer.stop();
             new CheckpointMenu(this);
         }
-        super.Update();
+        super.update();
     }
 
     @Override

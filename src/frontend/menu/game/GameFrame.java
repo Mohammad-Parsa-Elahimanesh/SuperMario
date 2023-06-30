@@ -24,7 +24,7 @@ public class GameFrame extends JFrame {
         return new KeyListener() {
             public void keyTyped(KeyEvent e) {
                 if (e.getKeyChar() == KeyEvent.VK_SPACE)
-                    manager.currentMario().Shot();
+                    manager.currentMario().shot();
                 if (manager.currentSection().timer.isRunning() && e.getKeyChar() == KeyEvent.VK_ESCAPE) {
                     manager.currentSection().timer.stop();
                     new ExitOrResume();

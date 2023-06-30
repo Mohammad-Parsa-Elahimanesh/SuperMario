@@ -30,7 +30,7 @@ public class CheckpointMenu extends JFrame {
         save.addActionListener(e -> {
             if (Manager.getInstance().currentSection().getCoins() < progressRisk)
                 return;
-            checkpoint.Save();
+            checkpoint.save();
             dispose();
         });
         save.setToolTipText("Your progress and time will be saved and you must pay " + progressRisk + " coins.");
@@ -40,7 +40,7 @@ public class CheckpointMenu extends JFrame {
     JButton ignore() {
         JButton ignore = new JButton("Ignore");
         ignore.addActionListener(e -> {
-            checkpoint.Continue();
+            checkpoint.resume();
             dispose();
         });
         ignore.setToolTipText("Ignore checkpoint.");
@@ -50,7 +50,7 @@ public class CheckpointMenu extends JFrame {
     JButton destroy() {
         JButton destroy = new JButton("Destroy");
         destroy.addActionListener(e -> {
-            checkpoint.Destroy();
+            checkpoint.destroy();
             dispose();
         });
         destroy.setToolTipText("Checkpoint will be destroyed and you gain " + progressRisk / 4 + " coins.");

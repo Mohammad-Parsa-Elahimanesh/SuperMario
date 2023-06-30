@@ -16,7 +16,7 @@ public class Fire extends Block {
     }
 
     @Override
-    public void Update() {
+    public void update() {
         alive -= Game.delay;
         if (alive < 0)
             Delete();

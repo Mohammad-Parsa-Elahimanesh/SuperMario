@@ -10,7 +10,6 @@ import backend.block.enemy.Goomba;
 import backend.block.enemy.Koopa;
 import backend.block.enemy.Spiny;
 import backend.block.flag.Flag;
-import backend.block.item.Coin;
 import backend.block.mario.Mario;
 import backend.block.mario.MarioState;
 import frontend.menu.game.AudioPlayer;
@@ -147,53 +146,7 @@ public class Section {
 
     }
 
-    void hiddenSection0() {
-        length = 30;
-        wholeTime = 15;
-        add(new Brick(length-4.0,2,2,0));
-    }
-    void hiddenSection1() {
-        length = 30;
-        wholeTime = 15;
-        add(new Brick(length-4.0,2,2,0));
-    }
-    void hiddenSection2() {
-
-    }
-
-
-    void section2() {
-        length = 45;
-        wholeTime = 100;
-        add(new Spring(1, 3));
-        add(new Solid(SolidType.Prize, 2, 5));
-        add(new Solid(SolidType.Coins, 3, 5));
-        add(new Solid(SolidType.Simple, 4, 5));
-        add(new Soft(SoftType.Coin, 3, 9));
-        add(new Soft(SoftType.Simple, 4, 9));
-
-        add(new Brick(9, 2, 0, 0));
-        add(new Brick(28, 2, 17, 0));
-
-        add(new Brick(2, 1, 6, 6));
-        add(new Brick(1, 8, 10, 0));
-        add(new Brick(1, 10, 13, 0));
-        add(new Brick(1, 12, 17, 0));
-
-        Coin[] coinsWaterfall = new Coin[6];
-        for (int i = 0; i < coinsWaterfall.length; i++) coinsWaterfall[i] = new Coin(20 + i, 15 - 2 * i);
-
-
-        Coin[] coinInLine = new Coin[7];
-        for (int i = 0; i < coinInLine.length; i++)
-            coinInLine[i] = new Coin(28 + i, 8);
-        add(new Brick(7, 1, 28, 6));
-
-        for (Coin coin : coinsWaterfall) add(coin);
-        for (Coin coin : coinInLine) add(coin);
-    }
-
-    void section1() throws Exception {
+    void section2() throws Exception {
         length = 70;
         wholeTime = 100;
         add(new Brick(40, 1, 0, 0));
@@ -221,6 +174,63 @@ public class Section {
         new Pipe(59, 10, true, this);
         Pipe secretpipe = new Pipe(63, 10, true, this);
         secretpipe.destination = new Section(mario, this, 1);
+    }
+
+    void section1() {
+        length = 115;
+        wholeTime = 100;
+        add(new Brick(5,1,0,0));
+        for(int i = 2; i <= 4; i++)
+            add(new Solid(SolidType.Coins, i, 9));
+
+        add(new Brick(5,1,6,3));
+        for(double i = 6; i < 11; i += 2.5)
+            add(new Goomba(i,4));
+        for(int i = 7; i <= 9; i++)
+            add(new Solid(SolidType.Prize, i, 12));
+
+        add(new Brick(5,1,11,6));
+        for(int i = 11; i <= 16; i+= 2)
+            add(new Koopa(i, 7));
+        for(int i = 12; i <= 14; i++)
+            add(new Soft(SoftType.Coin,i, 15));
+
+        add(new Brick(4,1,16,9));
+        add(new Spiny(18, 10));
+        add(new Brick(1,1,23,2));
+        add(new Brick(1,1,27,6));
+        add(new Brick(1,1,34,3));
+        add(new Brick(1,1,37,9));
+        add(new Checkpoint(37,10));
+
+        add(new Brick(10, 1, 45, 1 ));
+        add(new Spiny(50,2));
+        add(new Brick(10, 1, 58, 5 ));
+        add(new Spiny(61,6));
+        add(new Spiny(67,6));
+        add(new Brick(10, 1, 71, 9 ));
+        add(new Spiny(72,10));
+        add(new Spiny(76,10));
+        add(new Spiny(80,10));
+
+        add(new Spring(85, 1));
+        add(new Spring(93, 8));
+        add(new Spring(102, 3));
+
+    }
+
+    void hiddenSection0() {
+        length = 30;
+        wholeTime = 15;
+        add(new Brick(length-4.0,2,2,0));
+    }
+    void hiddenSection1() {
+        length = 30;
+        wholeTime = 15;
+        add(new Brick(length-4.0,2,2,0));
+    }
+    void hiddenSection2() {
+
     }
 
     void sectionReward() {
@@ -257,7 +267,7 @@ public class Section {
             case mega -> mario.state = MarioState.mini;
             case giga -> mario.state = MarioState.mega;
         }
-        mario.BeAlive();
+        mario.beAlive();
     }
 
     double progressRate() {
@@ -271,8 +281,8 @@ public class Section {
     void update() {
         updateBlocks();
         for (Block block : blocks)
-            block.Update();
-        if (mario.Died())
+            block.update();
+        if (!mario.isAlive())
             marioDie();
         else if (mario.goNext())
             nextSection();
@@ -282,19 +292,18 @@ public class Section {
     void nextSection() {
         timer.stop();
         manager.currentSection().sectionReward();
-        MarioState lastStateOfMario = manager.currentMario().state;
-        manager.currentGame().currentSection = nextSection;
-        if(manager.currentSection() == null) {
+        if(nextSection == null) {
             timer.stop();
             manager.currentGame().endGame();
+            return;
         }
-        else {
-            manager.currentMario().state = lastStateOfMario;
-            manager.currentSection().timer.start();
-        }
+        nextSection.mario.heart = mario.heart;
+        nextSection.mario.state = mario.state;
+        manager.currentGame().currentSection = nextSection;
+        manager.currentSection().timer.start();
+
     }
     public Timer timer = new Timer((int) (Game.delay * 1000), e -> {
-        //if(manager.currentGame() == null || manager.currentSection() == null) return;
         manager.currentGame().gameFrame.repaint();
         manager.currentSection().update();
     }) {

@@ -25,9 +25,9 @@ public class Koopa extends Enemy {
     }
 
     @Override
-    public void Update() {
+    public void update() {
         double lastX = X;
-        super.Update();
+        super.update();
         if (Push(Direction.Down) > 0) {
             vx *= -1;
             X = lastX;

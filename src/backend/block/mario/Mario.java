@@ -15,7 +15,7 @@ import java.util.Map;
 
 public abstract class Mario extends Block implements Saleable {
     static final double FRICTION = 0.7;
-    final transient Manager manager = Manager.getInstance();
+    final Manager manager = Manager.getInstance();
     public int heart = 3;
     public Map<Direction, Boolean> task = new EnumMap<>(Direction.class);
     public MarioState state = MarioState.mini;
@@ -37,8 +37,8 @@ public abstract class Mario extends Block implements Saleable {
         return nextASAP;
     }
 
-    public boolean Died() {
-        return dieASAP;
+    public boolean isAlive() {
+        return !dieASAP;
     }
 
     public int getSpeed() {
@@ -87,7 +87,7 @@ public abstract class Mario extends Block implements Saleable {
         vx = vy = upAndDownBoth = 0;
     }
 
-    void Upgrade() {
+    void upgrade() {
         switch (state) {
             case mini -> state = MarioState.mega;
             case mega -> state = MarioState.giga;
@@ -95,7 +95,7 @@ public abstract class Mario extends Block implements Saleable {
         }
     }
 
-    public void Shot() {
+    public void shot() {
         if (state == MarioState.giga && shotCooldown == 0 && Push(Direction.Down) == 0) {
             manager.currentSection().add(new Fire(this));
             shotCooldown = 3;
@@ -120,16 +120,16 @@ public abstract class Mario extends Block implements Saleable {
 
     @Override
     protected void Intersect(Block block) {
-        if (block instanceof Enemy) {
+        if (block instanceof Enemy enemy) {
             if (shield > 0)
-                ((Enemy) block).Die();
+                enemy.Die();
             else {
                 dieASAP = true;
                 if (state == MarioState.mini)
                     manager.currentGame().score = Math.max(manager.currentGame().score - 20, 0);
             }
         } else if (block instanceof Item && !(block instanceof Coin)) {
-            Upgrade();
+            upgrade();
             block.Delete();
             if (block instanceof Flower)
                 manager.currentGame().score += 20;
@@ -146,7 +146,7 @@ public abstract class Mario extends Block implements Saleable {
 
     }
 
-    void UpdateSpeed() {
+    void updateSpeed() {
         vx *= FRICTION;
 
         if (task.get(Direction.Down) && task.get(Direction.Up)) {
@@ -164,32 +164,33 @@ public abstract class Mario extends Block implements Saleable {
             vy = getJumpSpeed();
     }
 
-    public void Update() {
+    @Override
+    public void update() {
         travelledDistance = (int) Math.max(travelledDistance, X);
         dieASAP = nextASAP = false;
         shield = Math.max(0, shield - Game.delay);
         shotCooldown = Math.max(0, shotCooldown - Game.delay);
         saberShotCooldown = Math.max(0, saberShotCooldown - Game.delay);
         H = state == MarioState.mini || isDirection(Direction.Down) ? 1 : 2;
-        UpdateSpeed();
-        super.Update();
-        CheckIntersection();
+        updateSpeed();
+        super.update();
+        checkIntersection();
         checkGetCoins();
-        CheckGameState();
+        checkGameState();
     }
 
-    public void BeAlive() {
+    public void beAlive() {
         vy = getJumpSpeed() * 0.7;
         Y += 5;
     }
 
-    void CheckIntersection() {
+    void checkIntersection() {
         for (Block block : manager.currentSection().blocks)
             if (isIntersect(block))
                 Intersect(block);
     }
 
-    void CheckGameState() {
+    void checkGameState() {
         if (Y + H < 0) {
             dieASAP = true;
             manager.currentGame().score = Math.max(manager.currentGame().score - 30, 0);

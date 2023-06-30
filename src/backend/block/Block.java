@@ -132,13 +132,12 @@ public abstract class Block {
     }
 
     public void Draw(Graphics g, int cameraLeftLine) {
-        if (cameraLeftLine <= Manager.getInstance().SINGLE_BLOCK_WIDTH * X || (X + W - Manager.getInstance().COLUMN) * Manager.getInstance().SINGLE_BLOCK_WIDTH <= cameraLeftLine) {
-            g.drawImage(getImage(), (int) (Manager.getInstance().SINGLE_BLOCK_WIDTH * X - cameraLeftLine), (int) (Manager.getInstance().SCREEN_HEIGHT - Manager.getInstance().SINGLE_BLOCK_HEIGHT * (Y + H)), (int) (W * Manager.getInstance().SINGLE_BLOCK_WIDTH), (int) (H * Manager.getInstance().SINGLE_BLOCK_HEIGHT), null);
+        if (cameraLeftLine <= Manager.SINGLE_BLOCK_WIDTH * X || (X + W - Manager.COLUMN) * Manager.SINGLE_BLOCK_WIDTH <= cameraLeftLine) {
+            g.drawImage(getImage(), (int) (Manager.SINGLE_BLOCK_WIDTH * X - cameraLeftLine), (int) (Manager.SCREEN_HEIGHT - Manager.SINGLE_BLOCK_HEIGHT * (Y + H)), (int) (W * Manager.SINGLE_BLOCK_WIDTH), (int) (H * Manager.SINGLE_BLOCK_HEIGHT), null);
         }
     }
 
-    public void Update() {
-
+    public void update() {
         if (doesGravityAffects()) {
             if (Push(Direction.Down) > 0)
                 vy -= Game.delay * G;
